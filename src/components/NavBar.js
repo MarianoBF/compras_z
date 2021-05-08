@@ -1,17 +1,18 @@
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import logo from "../logo.svg";
+import logo from "../logo192.png";
 
-function Navigation() {
+function NavBar() {
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" className="justify-content-end">
-      <Navbar.Brand href="#home">
-      <img src={logo} roundedCircle alt="logo" />
-        RICARDA COMPRAS 
-      </Navbar.Brand>
-      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+
       <Navbar.Collapse id="responsive-navbar-nav">
-        <Nav>
+      <Navbar.Brand href="#home"  className="justify-content-start" style={{ width: "5%" }}>
+      <img src={logo} roundedCircle alt="logo" className="logo" />&nbsp;
+      </Navbar.Brand>
+      
+        <Nav className="justify-content-end" style={{ width: "100%" }}>
           <Nav.Link href="#productos">Productos</Nav.Link>
           <Nav.Link eventKey={2} href="#marcas">
             Marcas
@@ -25,4 +26,4 @@ function Navigation() {
   );
 }
 
-export default Navigation;
+export default NavBar;

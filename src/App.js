@@ -1,10 +1,10 @@
 import './App.css';
-import Navigation from "./components/Navigation"
+import NavBar from "./components/NavBar"
 
 function App() {
   return (
     <div className="App">
-    <Navigation />
+    <NavBar />
         <p>
           Una aplicación creada con Create React App como base para un proyecto.
         </p>
