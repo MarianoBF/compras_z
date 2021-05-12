@@ -4,7 +4,7 @@ export default function ItemListContainer({name}) {
   return (
     <div>
       <h1 style={{textAlign: "center"}}>
-        Hola {name}, desde aquí podrás ver los productos agregados a tu compra{" "}
+        Hola {name}, desde aquí podrás ver un listado{" "}
       </h1>
       <ListGroup>
         <ListGroup.Item variant="info">Item 1</ListGroup.Item>
