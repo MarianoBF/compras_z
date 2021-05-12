@@ -1,10 +1,10 @@
 import ListGroup from 'react-bootstrap/ListGroup';
 
-export default function ItemListContainer({name}) {
+export default function ItemListContainer({greeting}) {
   return (
     <div>
       <h1 style={{textAlign: "center"}}>
-        Hola {name}, desde aquí podrás ver un listado{" "}
+        {greeting}, desde aquí podrás ver un listado{" "}
       </h1>
       <ListGroup>
         <ListGroup.Item variant="info">Item 1</ListGroup.Item>
