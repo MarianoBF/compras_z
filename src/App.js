@@ -1,13 +1,12 @@
 import './App.css';
 import NavBar from "./components/NavBar"
+import ItemListContainer from "./components/ItemListContainer"
 
 function App() {
   return (
     <div className="App">
     <NavBar />
-        <p>
-          Una aplicación creada con Create React App como base para un proyecto.
-        </p>
+    <ItemListContainer name={"Ricardo"}/>
     </div>
   );
 }
