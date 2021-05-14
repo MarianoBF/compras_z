@@ -3,13 +3,21 @@ import {useState} from "react"
 
 export default function ItemCount() {
 
-const [quantity, setQuantity] = useState();
+const [quantity, setQuantity] = useState(0);
+
+const handleMore = () => {
+    setQuantity(quantity=>quantity + 1)
+}
+
+const handleLess = () => {
+    setQuantity(quantity=>quantity - 1)
+}
 
     return(
         <div>
-        <Button>+</Button>
+        <Button onClick={handleMore}>+</Button>
         {quantity}
-        <Button>-</Button>
+        <Button onClick={handleLess}>-</Button>
         </div>
     )
 }
