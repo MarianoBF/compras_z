@@ -19,7 +19,7 @@ export default function ItemListContainer({greeting}) {
       setStock({...stock, [item]: previousStock - quantity});
       console.log("Sumar al carrito " + quantity + " unidades del " + item);
     } else {
-      console.log("No hay stock suficiente");
+      console.log("No hay stock suficiente, solo queda(n) " + previousStock);
     }
   };
 

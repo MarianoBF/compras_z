@@ -18,17 +18,16 @@ export default function ItemCount({stock, initialValue, handleAdd}) {
 
   return (
     <>
-        <Button color="info" onClick={handleMore}>
-          {" "}
-          +{" "}
-        </Button>
-         {` ${quantity} `}
-        <Button color="info" onClick={handleLess}>
-          {" "}
-          -{" "}
-        </Button>
+      <Button color="info" onClick={handleMore}>
         {" "}
-      <Button onClick={(e)=>handleAdd(e, quantity)}>Agregar al Carrito</Button>
+        +{" "}
+      </Button>
+      {` ${quantity} `}
+      <Button color="info" onClick={handleLess}>
+        {" "}
+        -{" "}
+      </Button>{" "}
+      <Button onClick={e => handleAdd(e, quantity)}>Agregar al Carrito</Button>
     </>
   );
 }
