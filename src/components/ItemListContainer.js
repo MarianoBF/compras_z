@@ -1,6 +1,5 @@
-import ListGroup from "react-bootstrap/ListGroup";
-import ItemCount from "./ItemCount";
 import {useState} from "react";
+import ItemList from "./ItemList";
 
 export default function ItemListContainer({greeting}) {
   const initialStocks = {
@@ -28,40 +27,7 @@ export default function ItemListContainer({greeting}) {
       <h1 style={{textAlign: "center"}}>
         {greeting}, desde aquí podrás ver un listado{" "}
       </h1>
-      <ListGroup>
-        <ListGroup.Item variant="info" name="item1">
-          {" Item 1 "}
-          <ItemCount
-            stock={stock.item1}
-            initialValue={1}
-            handleAdd={handleAdd}
-          />
-        </ListGroup.Item>
-        <ListGroup.Item variant="info" name="item2">
-          {" Item 2 "}
-          <ItemCount
-            stock={stock.item2}
-            initialValue={1}
-            handleAdd={handleAdd}
-          />
-        </ListGroup.Item>
-        <ListGroup.Item variant="info" name="item3">
-          {" Item 3 "}
-          <ItemCount
-            stock={stock.item3}
-            initialValue={1}
-            handleAdd={handleAdd}
-          />
-        </ListGroup.Item>
-        <ListGroup.Item variant="info" name="item4">
-          {" Item 4 "}
-          <ItemCount
-            stock={stock.item4}
-            initialValue={2}
-            handleAdd={handleAdd}
-          />
-        </ListGroup.Item>
-      </ListGroup>
+        <ItemList handleAdd={handleAdd}/>
     </div>
   );
 }
