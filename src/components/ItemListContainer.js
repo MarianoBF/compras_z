@@ -1,23 +1,32 @@
-import ListGroup from "react-bootstrap/ListGroup";
-import ItemCount from "./ItemCount";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import ItemList from "./ItemList";
+import {MOCKPRODUCTS} from "../utils/mockProducts";
 
 export default function ItemListContainer({greeting}) {
-  const initialStocks = {
-    item1: 10,
-    item2: 5,
-    item3: 8,
-    item4: 7,
-  };
+  const [products, setProducts] = useState([]);
 
-  const [stock, setStock] = useState(initialStocks);
+  useEffect(() => {
+    const getProducts = new Promise(
+      (resolve, reject) => {
+        setTimeout(() => {
+          resolve(MOCKPRODUCTS);
+        }, 3000);
+      },
+      [products]
+    );
+    getProducts.then(data => setProducts(data));
+  });
 
   const handleAdd = (e, quantity) => {
-    const item = e.target.parentNode.getAttribute("name");
-    const previousStock = stock[item];
+    const itemName = e.target.parentNode.getAttribute("name");
+    const product = products.filter(item => item.name === itemName);
+    const previousStock = product[0].stock;
     if (previousStock >= quantity) {
-      setStock({...stock, [item]: previousStock - quantity});
-      alert("Sumar al carrito " + quantity + " unidades del " + item);
+      const newProducts = [...products]
+      const position = products.findIndex(item=>item.name === itemName)
+      newProducts[position].stock = previousStock - quantity
+      setProducts(newProducts);
+      alert("Sumar al carrito " + quantity + " unidades del " + itemName);
     } else {
       alert("No hay stock suficiente, solo queda(n) " + previousStock);
     }
@@ -28,40 +37,7 @@ export default function ItemListContainer({greeting}) {
       <h1 style={{textAlign: "center"}}>
         {greeting}, desde aquí podrás ver un listado{" "}
       </h1>
-      <ListGroup>
-        <ListGroup.Item variant="info" name="item1">
-          {" Item 1 "}
-          <ItemCount
-            stock={stock.item1}
-            initialValue={1}
-            handleAdd={handleAdd}
-          />
-        </ListGroup.Item>
-        <ListGroup.Item variant="info" name="item2">
-          {" Item 2 "}
-          <ItemCount
-            stock={stock.item2}
-            initialValue={1}
-            handleAdd={handleAdd}
-          />
-        </ListGroup.Item>
-        <ListGroup.Item variant="info" name="item3">
-          {" Item 3 "}
-          <ItemCount
-            stock={stock.item3}
-            initialValue={1}
-            handleAdd={handleAdd}
-          />
-        </ListGroup.Item>
-        <ListGroup.Item variant="info" name="item4">
-          {" Item 4 "}
-          <ItemCount
-            stock={stock.item4}
-            initialValue={2}
-            handleAdd={handleAdd}
-          />
-        </ListGroup.Item>
-      </ListGroup>
+      <ItemList handleAdd={handleAdd} products={products} />
     </div>
   );
 }
