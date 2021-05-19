@@ -17,9 +17,9 @@ export default function ItemListContainer({greeting}) {
     const previousStock = stock[item];
     if (previousStock >= quantity) {
       setStock({...stock, [item]: previousStock - quantity});
-      console.log("Sumar al carrito " + quantity + " unidades del " + item);
+      alert("Sumar al carrito " + quantity + " unidades del " + item);
     } else {
-      console.log("No hay stock suficiente, solo queda(n) " + previousStock);
+      alert("No hay stock suficiente, solo queda(n) " + previousStock);
     }
   };
 
