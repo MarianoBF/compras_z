@@ -4,7 +4,7 @@ import Item from "./Item";
 export default function ItemList({handleAdd, products}) {
 
   const product = products?.map(item => (
-    <Item
+    <Item key={item.id}
       name={item.name}
       description={item.description}
       stock={item.stock}
