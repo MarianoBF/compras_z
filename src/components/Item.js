@@ -9,14 +9,16 @@ export default function ItemList({
   initialValue,
 }) {
   return (
-    <ListGroup.Item variant="info">
+    //TODO: ADD ITEM DETAILS PAGE
+    <ListGroup.Item variant="info" name={name}>
       {" "}
-      {name} {" - "} {description} {" - "} 
+      {name} {" - "} {description} {" - "}
       <ItemCount
         stock={stock}
         initialValue={initialValue}
         handleAdd={handleAdd}
-      />
+      />{" "}
+      <p style={{display: "inline"}}>Stock disponible: {stock}</p>
     </ListGroup.Item>
   );
 }

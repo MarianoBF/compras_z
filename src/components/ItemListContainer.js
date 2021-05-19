@@ -10,26 +10,26 @@ export default function ItemListContainer({greeting}) {
       (resolve, reject) => {
         setTimeout(() => {
           resolve(MOCKPRODUCTS);
-        }, 2000);
-        console.log(products);
+        }, 3000);
       },
       [products]
     );
-    getProducts.then(data=>setProducts(data))
-    ;
+    getProducts.then(data => setProducts(data));
   });
 
   const handleAdd = (e, quantity) => {
-    console.log(quantity);
-    //   const item = e.target.parentNode.getAttribute("name");
-    //   const previousStock = stock[item];
-    //   if (previousStock >= quantity) {
-    //     setStock({...stock, [item]: previousStock - quantity});
-    //     alert("Sumar al carrito " + quantity + " unidades del " + item);
-    //   } else {
-    //     alert("No hay stock suficiente, solo queda(n) " + previousStock);
-    //   }
-    // };
+    const itemName = e.target.parentNode.getAttribute("name");
+    const product = products.filter(item => item.name === itemName);
+    const previousStock = product[0].stock;
+    if (previousStock >= quantity) {
+      const newProducts = [...products]
+      const position = products.findIndex(item=>item.name === itemName)
+      newProducts[position].stock = previousStock - quantity
+      setProducts(newProducts);
+      alert("Sumar al carrito " + quantity + " unidades del " + itemName);
+    } else {
+      alert("No hay stock suficiente, solo queda(n) " + previousStock);
+    }
   };
 
   return (

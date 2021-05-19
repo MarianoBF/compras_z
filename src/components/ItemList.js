@@ -3,8 +3,6 @@ import Item from "./Item";
 
 export default function ItemList({handleAdd, products}) {
 
-console.log("products", products)
-
   const product = products?.map(item => (
     <Item
       name={item.name}
@@ -14,8 +12,6 @@ console.log("products", products)
       handleAdd={handleAdd}
     />
   ));
-
-// const product = "daskjmas"
 
   return <ListGroup>{product}</ListGroup>;
 }
