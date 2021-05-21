@@ -1,6 +1,6 @@
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import logo from "../../logo192.png";
+import logo from "../../assets/logo192.png";
 import CartWidget from "./CartWidget";
 
 function NavBar() {
