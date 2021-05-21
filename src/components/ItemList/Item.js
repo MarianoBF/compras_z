@@ -8,8 +8,13 @@ export default function ItemList({
   stock,
   initialValue,
 }) {
+
+  //Placeholder to replace with item details
+  const handleDetailsView = (name) => {
+    console.log(name)
+  }
+
   return (
-    //TODO: ADD ITEM DETAILS PAGE
     <ListGroup.Item variant="info" name={name}>
       {" "}
       {name} {" - "} {description} {" - "}
@@ -18,7 +23,8 @@ export default function ItemList({
         initialValue={initialValue}
         handleAdd={handleAdd}
       />{" "}
-      <p style={{display: "inline"}}>Stock disponible: {stock}</p>
+      <p style={{display: "inline"}}>Stock disponible: {stock}</p> {" ---  "}
+      <p onClick={()=>handleDetailsView(name)} style={{display: "inline"}}>Ver detalle del producto</p>
     </ListGroup.Item>
   );
 }
