@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import ItemList from "./ItemList";
-import {MOCKPRODUCTS} from "../utils/mockProducts";
+import {MOCKPRODUCTS} from "../../utils/mockProducts";
 
 export default function ItemListContainer({greeting}) {
   const [products, setProducts] = useState([]);
