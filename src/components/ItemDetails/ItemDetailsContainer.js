@@ -1,25 +1,25 @@
-import {ItemDetails} from "./ItemDetails";
+import ItemDetails from "./ItemDetails";
 import {useEffect, useState} from "react";
-import {MOCKPRODUCTS} from "../../utils/mockProducts";
 
-export default function ItemListContainer({item}) {
-  const [products, setProducts] = useState([]);
+export default function ItemListContainer({item, handleCloseDetails}) {
+  const [product, setProduct] = useState([]);
 
+  //MOCK REQUEST FOR PRODUCT DETAILS
   useEffect(() => {
-    const getProducts = new Promise(
+    const getProduct = new Promise(
       (resolve, reject) => {
         setTimeout(() => {
-          resolve(MOCKPRODUCTS);
-        }, 3000);
+          resolve(item);
+        }, 1500);
       },
-      [products]
+      [product]
     );
-    getProducts.then(data => setProducts(data));
+    getProduct.then(data => setProduct(data));
   });
 
   return (
     <>
-      <ItemDetails item={products[0]} />
+      <ItemDetails item={product} handleCloseDetails={handleCloseDetails} />
     </>
   );
 }

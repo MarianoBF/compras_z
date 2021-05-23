@@ -2,15 +2,16 @@ import {useEffect, useState} from "react";
 import ItemList from "./ItemList";
 import {MOCKPRODUCTS} from "../../utils/mockProducts";
 
-export default function ItemListContainer({greeting}) {
+export default function ItemListContainer({greeting, handleShowDetails}) {
   const [products, setProducts] = useState([]);
 
-  useEffect(() => {
+  //MOCK REQUEST FOR PRODUCT LIST
+    useEffect(() => {
     const getProducts = new Promise(
       (resolve, reject) => {
         setTimeout(() => {
           resolve(MOCKPRODUCTS);
-        }, 3000);
+        }, 1500);
       },
       [products]
     );
@@ -37,7 +38,7 @@ export default function ItemListContainer({greeting}) {
       <h1 style={{textAlign: "center"}}>
         {greeting}, desde aquí podrás ver un listado{" "}
       </h1>
-      <ItemList handleAdd={handleAdd} products={products} />
+      <ItemList handleAdd={handleAdd} handleShowDetails={handleShowDetails} products={products} />
     </div>
   );
 }
