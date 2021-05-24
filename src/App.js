@@ -8,7 +8,7 @@ function App() {
   const [showDetails, setShowDetails] = useState(false);
   const [itemDetails, setItemDetails] = useState(false);
 
-  const handleShowDetails = (item) => {
+  const handleShowDetails = item => {
     setItemDetails(item);
     setShowDetails(true);
     console.log(item);
@@ -16,13 +16,21 @@ function App() {
 
   const handleCloseDetails = () => {
     setShowDetails(false);
-  }
+  };
 
   return (
     <div className="App">
       <NavBar />
-      <ItemListContainer greeting={"Hola Ricardo"} handleShowDetails={handleShowDetails}/>
-      {showDetails && <ItemDetailsContainer item={itemDetails} handleCloseDetails={handleCloseDetails}/>}
+      <ItemListContainer
+        greeting={"Hola Ricardo"}
+        handleShowDetails={handleShowDetails}
+      />
+      {showDetails && (
+        <ItemDetailsContainer
+          item={itemDetails}
+          handleCloseDetails={handleCloseDetails}
+        />
+      )}
     </div>
   );
 }

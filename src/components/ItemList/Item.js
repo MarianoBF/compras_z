@@ -9,9 +9,8 @@ export default function ItemList({
   description,
   stock,
   initialValue,
-  handleShowDetails
+  handleShowDetails,
 }) {
-
   //Placeholder to replace with item details
 
   return (
@@ -24,7 +23,12 @@ export default function ItemList({
         handleAdd={handleAdd}
       />{" "}
       <p style={{display: "inline"}}>Stock disponible: {stock}</p> {" ---  "}
-      <Button type="primary" onClick={()=>handleShowDetails(item)} style={{display: "inline"}}>Ver detalle del producto</Button>
+      <Button
+        type="primary"
+        onClick={() => handleShowDetails(item)}
+        style={{display: "inline"}}>
+        Ver detalle del producto
+      </Button>
     </ListGroup.Item>
   );
 }

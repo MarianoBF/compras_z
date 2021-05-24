@@ -10,7 +10,7 @@ export default function ItemListContainer({item, handleCloseDetails}) {
       (resolve, reject) => {
         setTimeout(() => {
           resolve(item);
-        }, 1500);
+        }, 2000);
       },
       [product]
     );

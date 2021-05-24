@@ -6,11 +6,11 @@ import CartWidget from "./CartWidget";
 function NavBar() {
   return (
     <Navbar
+      style={{padding: "10px"}}
       collapseOnSelect
       expand="lg"
       bg="dark"
-      variant="dark"
-      >
+      variant="dark">
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
 
       <Navbar.Collapse id="responsive-navbar-nav">
@@ -33,9 +33,9 @@ function NavBar() {
           <Nav.Link eventKey={2} href="#ofertas">
             Ofertas
           </Nav.Link>
-          </Nav>
+        </Nav>
 
-          <CartWidget className="justify-content-end" />
+        <CartWidget className="justify-content-end" />
       </Navbar.Collapse>
     </Navbar>
   );
