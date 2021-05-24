@@ -1,9 +1,9 @@
 # Description
 Un sitio de compras.
 
-# Installation
-
 # Descripción
 A shopping website 
 
-# Instalación
+# Installation \ Instalación
+1. `npm install`
+1. `npm start`
