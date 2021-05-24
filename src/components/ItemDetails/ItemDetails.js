@@ -1,9 +1,12 @@
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
+import { useHistory } from "react-router-dom";
 
-export default function ItemDetails({item, handleCloseDetails}) {
+export default function ItemDetails({item}) {
   const {name, description, image, price, stock} = item;
+
+  const history = useHistory();
 
   const styles = {
     Container: {
@@ -45,9 +48,7 @@ export default function ItemDetails({item, handleCloseDetails}) {
           <Card.Text>{description}</Card.Text>
           <Card.Text>{stock} unidades disponibles</Card.Text>
           <Button variant="primary">Comprar</Button>{" "}
-          <Button variant="secondary" onClick={handleCloseDetails}>
-            Cerrar Detalle
-          </Button>
+          <Button variant="secondary" onClick={()=>history.goBack()}>Volver</Button>{" "}
         </Card.Body>
       </Card>
     </Container>
