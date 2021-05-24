@@ -1,15 +1,19 @@
+import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import ItemCount from "./ItemCount";
 
 export default function ItemList({
   handleAdd,
+  item,
   name,
   description,
   stock,
   initialValue,
+  handleShowDetails,
 }) {
+  //Placeholder to replace with item details
+
   return (
-    //TODO: ADD ITEM DETAILS PAGE
     <ListGroup.Item variant="info" name={name}>
       {" "}
       {name} {" - "} {description} {" - "}
@@ -18,7 +22,13 @@ export default function ItemList({
         initialValue={initialValue}
         handleAdd={handleAdd}
       />{" "}
-      <p style={{display: "inline"}}>Stock disponible: {stock}</p>
+      <p style={{display: "inline"}}>Stock disponible: {stock}</p> {" ---  "}
+      <Button
+        type="primary"
+        onClick={() => handleShowDetails(item)}
+        style={{display: "inline"}}>
+        Ver detalle del producto
+      </Button>
     </ListGroup.Item>
   );
 }
