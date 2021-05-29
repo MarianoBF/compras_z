@@ -27,7 +27,7 @@ function NavBar() {
 
   return (
     <Navbar
-      style={{padding: "10px"}}
+      style={{padding: "20px"}}
       collapseOnSelect
       expand="lg"
       variant="dark"
