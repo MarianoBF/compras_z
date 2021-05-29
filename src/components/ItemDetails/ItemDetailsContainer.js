@@ -23,6 +23,20 @@ export default function ItemListContainer({item}) {
     });
   });
 
+  //TODO: REFLECT IN CART & STOCK LEVELS
+  const handleAdd = (e, quantity, stock, name) => {
+    alert(
+      "Sumar al carrito " +
+        quantity +
+        " unidades del " +
+        name +
+        ", quedan " +
+        (stock -
+        quantity) +
+        "unidades disponibles."
+    );
+  };
+
   if (isLoading) {
     return (
       <div style={{textAlign: "center"}}>
@@ -34,7 +48,8 @@ export default function ItemListContainer({item}) {
 
   return (
     <>
-      <ItemDetails item={product} />
+      <h1 className="mainTitle">Detalles del producto</h1>
+      <ItemDetails item={product} handleAdd={handleAdd} />
     </>
   );
 }

@@ -1,8 +1,8 @@
 import Button from "react-bootstrap/Button";
 import {useState} from "react";
 
-export default function ItemCount({stock, initialValue, handleAdd}) {
-  const [quantity, setQuantity] = useState(initialValue);
+export default function ItemCount({stock, name, initialValue, handleAdd}) {
+  const [quantity, setQuantity] = useState(initialValue||1);
 
   const handleMore = () => {
     if (quantity < stock) {
@@ -16,6 +16,7 @@ export default function ItemCount({stock, initialValue, handleAdd}) {
     }
   };
 
+
   return (
     <>
       <Button color="info" onClick={handleMore}>
@@ -27,7 +28,7 @@ export default function ItemCount({stock, initialValue, handleAdd}) {
         {" "}
         -{" "}
       </Button>{" "}
-      <Button onClick={e => handleAdd(e, quantity)}>Agregar al Carrito</Button>
+      <Button className="spacedButton" onClick={e => handleAdd(e, quantity, stock, name)}>Agregar al Carrito</Button>
     </>
   );
 }

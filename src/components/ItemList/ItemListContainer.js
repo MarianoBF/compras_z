@@ -5,7 +5,7 @@ import {MOCKPRODUCTS} from "../../utils/mockProducts";
 import {MOCKCATEGORIES} from "../../utils/mockCategories";
 import Spinner from "react-bootstrap/Spinner";
 
-export default function ItemListContainer({greeting, handleShowDetails}) {
+export default function ItemListContainer({greeting}) {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const {id_category} = useParams();
@@ -25,6 +25,7 @@ export default function ItemListContainer({greeting, handleShowDetails}) {
       });
     } else {
       //MOCK REQUEST WITH "FILTER"
+      setIsLoading(true);
       let filtered = [...MOCKPRODUCTS];
       filtered = filtered.filter(item => item.category === +id_category);
       const getProducts = new Promise((resolve, reject) => {
@@ -62,21 +63,6 @@ export default function ItemListContainer({greeting, handleShowDetails}) {
     }
   }, [categories, id_category, category]);
 
-  const handleAdd = (e, quantity) => {
-    const itemName = e.target.parentNode.getAttribute("name");
-    const product = products.filter(item => item.name === itemName);
-    const previousStock = product[0].stock;
-    if (previousStock >= quantity) {
-      const newProducts = [...products];
-      const position = products.findIndex(item => item.name === itemName);
-      newProducts[position].stock = previousStock - quantity;
-      setProducts(newProducts);
-      alert("Sumar al carrito " + quantity + " unidades del " + itemName);
-    } else {
-      alert("No hay stock suficiente, solo queda(n) " + previousStock);
-    }
-  };
-
   if (isLoading) {
     return (
       <div style={{textAlign: "center"}}>
@@ -89,14 +75,10 @@ export default function ItemListContainer({greeting, handleShowDetails}) {
 
   return (
     <div>
-      <h1 style={{textAlign: "center"}}>
+      <h1 className="mainTitle">
         {greeting}, desde aquí podrás ver un listado de {category}{" "}
       </h1>
-      <ItemList
-        handleAdd={handleAdd}
-        handleShowDetails={handleShowDetails}
-        products={products}
-      />
+      <ItemList products={products} />
     </div>
   );
 }

@@ -1,8 +1,8 @@
-import ListGroup from "react-bootstrap/ListGroup";
+import CardDeck from "react-bootstrap/CardDeck";
 import Item from "./Item";
 
-export default function ItemList({handleAdd, handleShowDetails, products}) {
-  const product = products?.map(item => (
+export default function ItemList({products}) {
+  const productList = products?.map(item => (
     <Item
       key={item.id}
       item={item}
@@ -10,10 +10,8 @@ export default function ItemList({handleAdd, handleShowDetails, products}) {
       description={item.description}
       stock={item.stock}
       initialValue={item.initialValue}
-      handleAdd={handleAdd}
-      handleShowDetails={handleShowDetails}
     />
   ));
 
-  return <ListGroup>{product}</ListGroup>;
+  return <CardDeck className="cardDeck">{productList}</CardDeck>;
 }

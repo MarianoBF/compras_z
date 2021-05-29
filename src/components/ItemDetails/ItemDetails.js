@@ -1,9 +1,10 @@
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
+import ItemCount from "./ItemCount";
 
-export default function ItemDetails({item}) {
+export default function ItemDetails({item, handleAdd}) {
   const {name, description, image, price, stock} = item;
 
   const history = useHistory();
@@ -18,12 +19,12 @@ export default function ItemDetails({item}) {
       justifyContent: "center",
       textAlign: "center",
       alignItems: "center",
-      width: "300px",
-      height: "500px",
+      maxWidth: "400px",
+      maxHeight: "800px",
     },
     Image: {
-      height: "250px",
-      maxWidth: "250px",
+      maxHeight: "350px",
+      maxWidth: "350px",
       objectFit: "contain",
       margin: "25px auto",
     },
@@ -42,14 +43,19 @@ export default function ItemDetails({item}) {
           alt="Imagen del producto"
         />
         <Card.Body style={styles.CardBody}>
-          <Card.Title>
-            {name} {"- $" + price}
-          </Card.Title>
+          <Card.Title>{name}</Card.Title>
+          <Card.Text>{"$" + price}</Card.Text>
           <Card.Text>{description}</Card.Text>
-          <Card.Text>{stock} unidades disponibles</Card.Text>
-          <Button variant="primary">Comprar</Button>{" "}
-          <Button variant="secondary" onClick={()=>history.goBack()}>Volver</Button>{" "}
+                    <ItemCount
+            stock={stock}
+            name={name}
+            handleAdd={handleAdd}
+          />
+          <Card.Text><Button variant="secondary" onClick={() => history.goBack()}>
+            Volver
+          </Button></Card.Text>
         </Card.Body>
+        <Card.Footer>{stock} unidades disponibles</Card.Footer>
       </Card>
     </Container>
   );
