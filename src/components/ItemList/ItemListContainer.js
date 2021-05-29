@@ -3,28 +3,40 @@ import {useParams} from "react-router-dom";
 import ItemList from "./ItemList";
 import {MOCKPRODUCTS} from "../../utils/mockProducts";
 import {MOCKCATEGORIES} from "../../utils/mockCategories";
+import Spinner from "react-bootstrap/Spinner";
 
 export default function ItemListContainer({greeting, handleShowDetails}) {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const {id_category} = useParams();
+  const [isLoading, setIsLoading] = useState(true);
 
   //MOCK REQUEST FOR PRODUCT LIST
   useEffect(() => {
-    const getProducts = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(MOCKPRODUCTS);
-      }, 500);
-    }, []);
-    getProducts.then(data => {
-      if (id_category === undefined) {
+    if (id_category === undefined) {
+      const getProducts = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(MOCKPRODUCTS);
+        }, 500);
+      });
+      getProducts.then(data => {
         setProducts(data);
-      } else {
-        let filtered = [...data];
-        filtered = filtered.filter((item) => item.category === +id_category);
-        setProducts(filtered);
-      }
-    });
+        setIsLoading(false);
+      });
+    } else {
+      //MOCK REQUEST WITH "FILTER"
+      let filtered = [...MOCKPRODUCTS];
+      filtered = filtered.filter(item => item.category === +id_category);
+      const getProducts = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(filtered);
+        }, 1000);
+      });
+      getProducts.then(data => {
+        setProducts(data);
+        setIsLoading(false);
+      });
+    }
   }, [id_category]);
 
   //MOCK REQUEST FOR CATEGORY LIST
@@ -64,6 +76,16 @@ export default function ItemListContainer({greeting, handleShowDetails}) {
       alert("No hay stock suficiente, solo queda(n) " + previousStock);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div style={{textAlign: "center"}}>
+        <h1>{greeting}</h1>
+        <h2>Trayendo listado de productos...</h2>
+        <Spinner animation="border" />
+      </div>
+    );
+  }
 
   return (
     <div>
