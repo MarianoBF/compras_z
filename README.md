@@ -1,8 +1,8 @@
 # Description
-Un sitio de compras.
+Un sitio de compras, utilizando React Bootstrap para la interfaz.
 
 # Descripción
-A shopping website 
+A shopping website, using React Bootstrap for the UI.
 
 # Installation \ Instalación
 1. `npm install`
