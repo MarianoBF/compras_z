@@ -6,6 +6,7 @@ export default function ItemList({products}) {
     <Item
       key={item.id}
       item={item}
+      image={item.image}
       name={item.name}
       description={item.description}
       stock={item.stock}

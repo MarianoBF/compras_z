@@ -1,25 +1,31 @@
 import Button from "react-bootstrap/Button";
-import Card from 'react-bootstrap/Card'
+import Card from "react-bootstrap/Card";
 import {Link} from "react-router-dom";
 
-export default function ItemList({
-  item,
-  name,
-  description,
-  stock,
-}) {
+export default function ItemList({item, name, image, description, stock}) {
+  const styles = {
+    Image: {
+      maxHeight: "100px",
+      maxWidth: "200px",
+      objectFit: "contain",
+      margin: "5px auto",
+    },
+  };
+
   return (
     <Card border="dark" className="card" bg="light">
       <Card.Header>{name}</Card.Header>
+      <Card.Img
+        variant="top"
+        src={image}
+        style={styles.Image}
+        alt="Imagen del producto"
+      />
       <Card.Body>
-        <Card.Text>
-          {description}
-          </Card.Text>
-          <Link to={"/item/" + item.id}>
-            <Button className="spacedButton">
-              Ver detalle del producto
-            </Button>
-          </Link>
+        <Card.Text>{description}</Card.Text>
+        <Link to={"/item/" + item.id}>
+          <Button className="spacedButton">Ver detalle del producto</Button>
+        </Link>
       </Card.Body>
       <Card.Footer>
         <p style={{display: "inline"}}>Stock disponible: {stock}</p>
