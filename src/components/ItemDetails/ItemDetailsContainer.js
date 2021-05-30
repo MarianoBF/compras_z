@@ -21,20 +21,27 @@ export default function ItemListContainer({item}) {
       setProduct(data);
       setIsLoading(false);
     });
-  });
+  },[id_product]);
 
-  //TODO: REFLECT IN CART & STOCK LEVELS
-  const handleAdd = (e, quantity, stock, name) => {
-    alert(
-      "Sumar al carrito " +
-        quantity +
-        " unidades del " +
-        name +
-        ", quedan " +
-        (stock -
-        quantity) +
-        "unidades disponibles."
-    );
+  //TODO: REFLECT IN CART & PERSIST STOCK LEVELS
+  const handleAdd = (quantity, stock, name) => {
+    console.log(quantity, stock)
+    if (stock >= quantity) {
+      const newProduct = {...product};
+      newProduct.stock = stock - quantity;
+      setProduct(newProduct);
+      alert(
+        "Sumar al carrito " +
+          quantity +
+          " unidades del " +
+          name +
+          ", quedan " +
+          (stock - quantity) +
+          " unidades disponibles."
+      );
+    } else {
+      alert("No hay stock suficiente, solo queda(n) " + stock);
+    }
   };
 
   if (isLoading) {

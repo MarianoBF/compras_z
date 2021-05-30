@@ -28,7 +28,7 @@ export default function ItemCount({stock, name, initialValue, handleAdd}) {
         {" "}
         -{" "}
       </Button>{" "}
-      <Button className="spacedButton" onClick={e => handleAdd(e, quantity, stock, name)}>Agregar al Carrito</Button>
+      <Button className="spacedButton" onClick={e => handleAdd(quantity, stock, name)}>Agregar al Carrito</Button>
     </>
   );
 }
