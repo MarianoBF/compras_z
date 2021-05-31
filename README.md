@@ -7,3 +7,5 @@ A shopping website, using React Bootstrap for the UI.
 # Installation \ Instalación
 1. `npm install`
 1. `npm start`
+
+![Navegacion](navegacion.gif)
