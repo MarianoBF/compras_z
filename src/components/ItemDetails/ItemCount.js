@@ -1,5 +1,6 @@
 import Button from "react-bootstrap/Button";
 import {useState} from "react";
+import {Link} from "react-router-dom";
 
 export default function ItemCount({
   stock,
@@ -42,9 +43,11 @@ export default function ItemCount({
           </Button>
         </>
       ) : (
-        <Button className="spacedButton" onClick={null}>
-          Finalizar compra (ir al carrito)
-        </Button>
+        <Link to="/cart">
+          <Button className="spacedButton" onClick={null}>
+            Terminar mi compra (ir al carrito)
+          </Button>
+        </Link>
       )}
     </>
   );
