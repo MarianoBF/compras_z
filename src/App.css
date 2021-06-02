@@ -3,7 +3,7 @@
 }
 
 .btn {
-  border: 1px solid darkolivegreen !important;
+  border: 2px solid darkolivegreen !important;
   background-color: lightgray !important;
   color: black !important;
   font-weight: bold !important;
@@ -27,6 +27,7 @@
   max-width: 16rem;
   margin: 10px auto;
   text-align: center;
+  border: 2px solid darkolivegreen !important;
 }
 
 .cardDeck {

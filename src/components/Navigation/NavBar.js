@@ -12,6 +12,15 @@ function NavBar() {
     categories: {
       padding: "15px",
       fontWeight: "bold",
+    },
+    HomeCategory: {
+      padding: "15px",
+      fontWeight: "bold",
+      backgroundColor: "white",
+      color: "darkolivegreen",
+      borderRadius: "50px",
+      marginRight: "10%",
+      
     }
   }
 
@@ -47,7 +56,7 @@ function NavBar() {
           </Navbar.Brand>
         </LinkContainer>
         <Nav className="justify-content-center" style={{width: "100%"}}>
-          <LinkContainer style={styles.categories} to={"/"}>
+          <LinkContainer style={styles.HomeCategory} to={"/"}>
             <Nav.Link >Inicio</Nav.Link>
           </LinkContainer>
           {categoryList}
