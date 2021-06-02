@@ -3,8 +3,10 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import {useHistory} from "react-router-dom";
 import ItemCount from "./ItemCount";
+import {Link} from "react-router-dom";
+import {useState} from "react";
 
-export default function ItemDetails({item, handleAdd, showBuy}) {
+export default function ItemDetails({item}) {
   const {name, description, image, price, stock} = item;
 
   const history = useHistory();
@@ -33,6 +35,16 @@ export default function ItemDetails({item, handleAdd, showBuy}) {
     },
   };
 
+  //TODO: reflect in cart & stock leveles
+  const [showBuy, setShowBuy] = useState(false);
+  const handleAdd = (quantity, name) => {
+    alert("Sumar al carrito " + quantity + " unidades del producto " + name);
+    const purchase = {"product": name, "quantity": quantity}
+    //PLACEHOLDER log
+    console.log(purchase)
+    setShowBuy(true);
+  };
+
   return (
     <Container style={styles.Container}>
       <Card style={styles.Card}>
@@ -46,15 +58,24 @@ export default function ItemDetails({item, handleAdd, showBuy}) {
           <Card.Title>{name}</Card.Title>
           <Card.Text>{"$" + price}</Card.Text>
           <Card.Text>{description}</Card.Text>
-                    <ItemCount
+          <ItemCount
             stock={stock}
             name={name}
             handleAdd={handleAdd}
             showBuy={showBuy}
           />
-          <Card.Text><Button variant="secondary" onClick={() => history.goBack()}>
-            Volver
-          </Button></Card.Text>
+          {showBuy && (
+            <Link to="/cart">
+              <Button className="spacedButton" onClick={null}>
+                Terminar mi compra (ir al carrito)
+              </Button>
+            </Link>
+          )}
+          <Card.Text>
+            <Button variant="secondary" onClick={() => history.goBack()}>
+              Volver
+            </Button>
+          </Card.Text>
         </Card.Body>
         {!showBuy && <Card.Footer>{stock} unidades disponibles</Card.Footer>}
       </Card>

@@ -21,30 +21,7 @@ export default function ItemListContainer() {
       setProduct(data);
       setIsLoading(false);
     });
-  },[id_product]);
-
-  const [showBuy, setShowBuy] = useState(false)
-
-  //TODO: REFLECT IN CART & PERSIST STOCK LEVELS
-  const handleAdd = (quantity, stock, name) => {
-    setShowBuy(true)
-    if (stock >= quantity) {
-      const newProduct = {...product};
-      newProduct.stock = stock - quantity;
-      setProduct(newProduct);
-      alert(
-        "Sumar al carrito " +
-          quantity +
-          " unidades del " +
-          name +
-          ", quedan " +
-          (stock - quantity) +
-          " unidades disponibles."
-      );
-    } else {
-      alert("No hay stock suficiente, solo queda(n) " + stock);
-    }
-  };
+  }, [id_product]);
 
   if (isLoading) {
     return (
@@ -58,7 +35,7 @@ export default function ItemListContainer() {
   return (
     <>
       <h1 className="mainTitle">Detalles del producto</h1>
-      <ItemDetails item={product} handleAdd={handleAdd} showBuy={showBuy}/>
+      <ItemDetails item={product} />
     </>
   );
 }
