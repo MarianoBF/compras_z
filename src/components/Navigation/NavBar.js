@@ -7,6 +7,14 @@ import {MOCKCATEGORIES} from "../../utils/mockCategories";
 import {useState, useEffect} from "react";
 
 function NavBar() {
+
+  const styles = {
+    categories: {
+      padding: "15px",
+      fontWeight: "bold",
+    }
+  }
+
   const [categories, setCategories] = useState([]);
 
   //MOCK REQUEST FOR CATEGORY LIST
@@ -20,7 +28,7 @@ function NavBar() {
   });
 
   const categoryList = categories.map(item => (
-    <LinkContainer to={"/category/"+item.id} key={item.id}>
+    <LinkContainer style={styles.categories} to={"/category/" + item.id} key={item.id}>
       <Nav.Link>{item.name}</Nav.Link>
     </LinkContainer>
   ));
@@ -30,8 +38,7 @@ function NavBar() {
       style={{padding: "20px"}}
       collapseOnSelect
       expand="lg"
-      variant="dark"
-      bg="dark">
+      variant="dark">
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <LinkContainer to={"/"}>
@@ -40,6 +47,9 @@ function NavBar() {
           </Navbar.Brand>
         </LinkContainer>
         <Nav className="justify-content-center" style={{width: "100%"}}>
+          <LinkContainer style={styles.categories} to={"/"}>
+            <Nav.Link >Inicio</Nav.Link>
+          </LinkContainer>
           {categoryList}
         </Nav>
 

@@ -38,7 +38,7 @@ export default function ItemDetails({item}) {
   //TODO: reflect in cart & stock leveles
   const [showBuy, setShowBuy] = useState(false);
   const handleAdd = (quantity, name) => {
-    alert("Sumar al carrito " + quantity + " unidades del producto " + name);
+    alert("Sumados al carrito " + quantity + " unidades del producto " + name);
     const purchase = {"product": name, "quantity": quantity}
     //PLACEHOLDER log
     console.log(purchase)
