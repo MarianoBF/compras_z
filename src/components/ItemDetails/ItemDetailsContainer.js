@@ -4,7 +4,7 @@ import {useParams} from "react-router-dom";
 import {MOCKPRODUCTS} from "../../utils/mockProducts";
 import Spinner from "react-bootstrap/Spinner";
 
-export default function ItemListContainer({item}) {
+export default function ItemListContainer() {
   const [product, setProduct] = useState([]);
   const {id_product} = useParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -23,9 +23,11 @@ export default function ItemListContainer({item}) {
     });
   },[id_product]);
 
+  const [showBuy, setShowBuy] = useState(false)
+
   //TODO: REFLECT IN CART & PERSIST STOCK LEVELS
   const handleAdd = (quantity, stock, name) => {
-    console.log(quantity, stock)
+    setShowBuy(true)
     if (stock >= quantity) {
       const newProduct = {...product};
       newProduct.stock = stock - quantity;
@@ -56,7 +58,7 @@ export default function ItemListContainer({item}) {
   return (
     <>
       <h1 className="mainTitle">Detalles del producto</h1>
-      <ItemDetails item={product} handleAdd={handleAdd} />
+      <ItemDetails item={product} handleAdd={handleAdd} showBuy={showBuy}/>
     </>
   );
 }

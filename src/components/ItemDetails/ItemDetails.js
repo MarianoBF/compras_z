@@ -4,7 +4,7 @@ import Container from "react-bootstrap/Container";
 import {useHistory} from "react-router-dom";
 import ItemCount from "./ItemCount";
 
-export default function ItemDetails({item, handleAdd}) {
+export default function ItemDetails({item, handleAdd, showBuy}) {
   const {name, description, image, price, stock} = item;
 
   const history = useHistory();
@@ -50,12 +50,13 @@ export default function ItemDetails({item, handleAdd}) {
             stock={stock}
             name={name}
             handleAdd={handleAdd}
+            showBuy={showBuy}
           />
           <Card.Text><Button variant="secondary" onClick={() => history.goBack()}>
             Volver
           </Button></Card.Text>
         </Card.Body>
-        <Card.Footer>{stock} unidades disponibles</Card.Footer>
+        {!showBuy && <Card.Footer>{stock} unidades disponibles</Card.Footer>}
       </Card>
     </Container>
   );
