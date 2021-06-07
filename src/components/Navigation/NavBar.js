@@ -5,9 +5,9 @@ import CartWidget from "./CartWidget";
 import {LinkContainer} from "react-router-bootstrap";
 import {MOCKCATEGORIES} from "../../utils/mockCategories";
 import {useState, useEffect} from "react";
+import {Link} from "react-router-dom"
 
 function NavBar() {
-
   const styles = {
     categories: {
       padding: "15px",
@@ -20,9 +20,8 @@ function NavBar() {
       color: "darkolivegreen",
       borderRadius: "50px",
       marginRight: "10%",
-      
-    }
-  }
+    },
+  };
 
   const [categories, setCategories] = useState([]);
 
@@ -37,7 +36,10 @@ function NavBar() {
   });
 
   const categoryList = categories.map(item => (
-    <LinkContainer style={styles.categories} to={"/category/" + item.id} key={item.id}>
+    <LinkContainer
+      style={styles.categories}
+      to={"/category/" + item.id}
+      key={item.id}>
       <Nav.Link>{item.name}</Nav.Link>
     </LinkContainer>
   ));
@@ -57,12 +59,13 @@ function NavBar() {
         </LinkContainer>
         <Nav className="justify-content-center" style={{width: "100%"}}>
           <LinkContainer style={styles.HomeCategory} to={"/"}>
-            <Nav.Link >Inicio</Nav.Link>
+            <Nav.Link>Inicio</Nav.Link>
           </LinkContainer>
           {categoryList}
         </Nav>
-
-        <CartWidget className="justify-content-end" />
+        <Link to={"/cart"}>
+          <CartWidget className="justify-content-end" />
+        </Link>
       </Navbar.Collapse>
     </Navbar>
   );
