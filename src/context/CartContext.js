@@ -7,9 +7,10 @@ export const useCart = () => useContext(CartContext);
 export const CartProvider = ({children}) => {
   const [cartProducts, setCartProducts] = useState([]);
 
-  const addItem = (product_id, quantity) => {
+  const addItem = (quantity, product_id) => {
       //TODO: Should only reject? Warn? Add to cartProducts duplicate product?
     if (cartProducts.filter(item => item.id === product_id).length === 0) {
+      console.log("added to", cartProducts)
       setCartProducts([...cartProducts, {id: product_id, quantity}]);
     }
     //placeholder LOG

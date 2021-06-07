@@ -7,8 +7,7 @@ import {Link} from "react-router-dom";
 import {useState} from "react";
 
 export default function ItemDetails({item, addToCart}) {
-  const {name, description, image, price, stock} = item;
-
+  const {name, description, image, price, stock, id} = item;
   const history = useHistory();
 
   const styles = {
@@ -58,13 +57,13 @@ export default function ItemDetails({item, addToCart}) {
           <Card.Text>{description}</Card.Text>
           <ItemCount
             stock={stock}
-            name={name}
+            id={id}
             handleAdd={handleAdd}
             showBuy={showBuy}
           />
           {showBuy && (
             <Link to="/cart">
-              <Button className="spacedButton" onClick={addToCart}>
+              <Button className="spacedButton">
                 Terminar mi compra (ir al carrito)
               </Button>
             </Link>

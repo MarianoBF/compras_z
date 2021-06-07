@@ -3,7 +3,7 @@ import {useState} from "react";
 
 export default function ItemCount({
   stock,
-  name,
+  id,
   initialValue,
   handleAdd,
   showBuy,
@@ -37,7 +37,7 @@ export default function ItemCount({
           </Button>{" "}
           <Button
             className="spacedButton"
-            onClick={() => handleAdd(quantity, stock, name)}>
+            onClick={() => handleAdd(quantity, id)}>
             Agregar al Carrito
           </Button>
         </>
