@@ -6,7 +6,7 @@ import ItemCount from "./ItemCount";
 import {Link} from "react-router-dom";
 import {useState} from "react";
 
-export default function ItemDetails({item}) {
+export default function ItemDetails({item, addToCart}) {
   const {name, description, image, price, stock} = item;
 
   const history = useHistory();
@@ -37,12 +37,10 @@ export default function ItemDetails({item}) {
 
   //TODO: reflect in cart & stock leveles
   const [showBuy, setShowBuy] = useState(false);
-  const handleAdd = (quantity, name) => {
-    alert("Sumados al carrito " + quantity + " unidades del producto " + name);
-    const purchase = {"product": name, "quantity": quantity}
-    //PLACEHOLDER log
-    console.log(purchase)
+  const handleAdd = (quantity, product_id) => {
+    alert("Sumados al carrito " + quantity + " unidades del producto " + product_id);
     setShowBuy(true);
+    addToCart(quantity, product_id);
   };
 
   return (
@@ -66,7 +64,7 @@ export default function ItemDetails({item}) {
           />
           {showBuy && (
             <Link to="/cart">
-              <Button className="spacedButton" onClick={null}>
+              <Button className="spacedButton" onClick={addToCart}>
                 Terminar mi compra (ir al carrito)
               </Button>
             </Link>

@@ -1,22 +1,15 @@
 import ItemDetails from "./ItemDetails";
-import {useContext, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {MOCKPRODUCTS} from "../../utils/mockProducts";
 import Spinner from "react-bootstrap/Spinner";
-import {CartProvider, useCart} from "../../context/CartContext";
+import {useCart} from "../../context/CartContext";
 
 
 export default function ItemListContainer() {
 
 
-const data2 = useCart();
-
-  const data = useContext(CartProvider)
-
-  console.log(data?.sample, data2)
-  console.log("a")
-
-  
+  const cart = useCart();
   const [product, setProduct] = useState([]);
   const {id_product} = useParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -36,6 +29,10 @@ const data2 = useCart();
     });
   }, [id_product]);
 
+  const addToCart = (name, quantity) => {
+    cart.addItem(name, quantity)
+  }
+
   if (isLoading) {
     return (
       <div style={{textAlign: "center"}}>
@@ -48,7 +45,7 @@ const data2 = useCart();
   return (
     <>
       <h1 className="mainTitle">Detalles del producto</h1>
-      <ItemDetails item={product} />
+      <ItemDetails item={product} addToCart={addToCart} />
     </>
   );
 }
