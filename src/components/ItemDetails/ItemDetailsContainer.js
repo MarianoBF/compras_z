@@ -1,14 +1,27 @@
 import ItemDetails from "./ItemDetails";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {MOCKPRODUCTS} from "../../utils/mockProducts";
 import Spinner from "react-bootstrap/Spinner";
+import {CartProvider, useCart} from "../../context/CartContext";
+
 
 export default function ItemListContainer() {
+
+
+const data2 = useCart();
+
+  const data = useContext(CartProvider)
+
+  console.log(data?.sample, data2)
+  console.log("a")
+
+  
   const [product, setProduct] = useState([]);
   const {id_product} = useParams();
   const [isLoading, setIsLoading] = useState(true);
 
+ 
   //MOCK REQUEST OF SPECIFIC PRODUCT
   useEffect(() => {
     let filteredProduct = MOCKPRODUCTS.filter(item => item.id === +id_product);
