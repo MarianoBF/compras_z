@@ -1,29 +1,22 @@
 import {useCart} from "../../context/CartContext";
 import Button from "react-bootstrap/Button";
+import Cart from "./Cart";
+import {useHistory} from "react-router-dom";
 
 export default function CartContainer() {
   const cart = useCart();
+  const history = useHistory();
 
-  const productsInCart = cart.cartProducts.map(item => {
-    return (<div style={{display:"flex"}}>
-      <p>
-      {`ID PRODUCTO: ${item.id}, CANTIDAD: ${item.quantity} - `}
-      </p>
-      <Button onClick={()=>cart.removeItem(item.id)}>
-          Borrar Producto
-      </Button>
-      </div>
+  if (cart.cartProducts.length === 0) {
+    return (
+      <>
+        <h1>Aún no hay productos en el carrito</h1>
+        <Button onClick={() => history.goBack()}>Volver y agregar productos</Button>
+      </>
     );
-  });
+  }
 
   return (
-    <div>
-      <h2>Productos en el carrito</h2>
-      <p> Listado provisorio de productos en el carrito</p>
-
-      {productsInCart}
-      <hr />
-      <Button onClick={cart.clear}>Vaciar Carrito</Button>
-    </div>
+    <Cart products={cart.products||[]} clear={cart.clear} remove={cart.removeItem}/>
   );
 }

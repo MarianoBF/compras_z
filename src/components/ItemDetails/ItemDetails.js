@@ -37,7 +37,6 @@ export default function ItemDetails({item, addToCart}) {
   //TODO: reflect in cart & stock leveles
   const [showBuy, setShowBuy] = useState(false);
   const handleAdd = (quantity, product_id) => {
-    alert("Sumados al carrito " + quantity + " unidades del producto " + product_id);
     setShowBuy(true);
     addToCart(quantity, product_id);
   };
