@@ -31,7 +31,7 @@ export default function ItemListContainer({greeting}) {
       const getProducts = new Promise((resolve, reject) => {
         setTimeout(() => {
           resolve(filtered);
-        }, 1000);
+        }, 500);
       });
       getProducts.then(data => {
         setProducts(data);

@@ -5,20 +5,21 @@ export default function CartContainer() {
   const cart = useCart();
 
   const productsInCart = cart.cartProducts.map(item => {
-    return (
+    return (<div style={{display:"flex"}}>
       <p>
-        ID PRODUCTO: {item.id}, CANTIDAD: {item.quantity}
+      {`ID PRODUCTO: ${item.id}, CANTIDAD: ${item.quantity} - `}
       </p>
+      <Button onClick={()=>cart.removeItem(item.id)}>
+          Borrar Producto
+      </Button>
+      </div>
     );
   });
 
   return (
     <div>
-      <h1>
-        Esto es un componente donde irá el pedido para finalizar la compra
-      </h1>
       <h2>Productos en el carrito</h2>
-      <p> Listado provisional de productos en el carrito</p>
+      <p> Listado provisorio de productos en el carrito</p>
 
       {productsInCart}
       <hr />
