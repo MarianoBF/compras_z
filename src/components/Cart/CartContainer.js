@@ -16,6 +16,6 @@ export default function CartContainer() {
     );
   }
   return (
-    <Cart products={cart.products} clear={cart.clear} remove={cart.removeItem}/>
+    <Cart products={cart.cartProducts} clear={cart.clear} remove={cart.removeItem} total={cart.getTotalPrice}/>
   );
 }

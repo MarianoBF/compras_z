@@ -1,12 +1,26 @@
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
+import Image from 'react-bootstrap/Image'
 
-export default function Cart({products, clear, remove}) {
+export default function Cart({products, clear, remove, total}) {
+
+  const styles = {
+    Image: {
+      maxHeight: "50px",
+      width: "70px",
+      objectFit: "contain",
+      margin: "2px auto",
+    },
+  };
+
   const productsInCart = products.map(item => {
     return (
       <tr key={item.id}>
-        <td>{`ID PRODUCTO: ${item.id}`}</td>
-        <td>{`CANTIDAD: ${item.quantity}`}</td>
+        <td><Image style={styles.Image}src={item.image} rounded /></td>
+        <td>{item.name}</td>
+        <td>{item.quantity}</td>
+        <td>{item.price}</td>
+        <td>{item.price*item.quantity}</td>
         <td>
           <Button onClick={() => remove(item.id)}>Borrar Producto</Button>
         </td>
@@ -17,20 +31,29 @@ export default function Cart({products, clear, remove}) {
   return (
     <div>
       <h2>Productos en el carrito</h2>
-      <p> Listado provisorio de productos en el carrito</p>
       <Table striped bordered hover>
         <thead>
           <tr>
-            <th>#</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Username</th>
+            <th></th>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio unitario</th>
+            <th>Precio total</th>
+            <th>Borrar</th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>{productsInCart}</tbody>
+        <tfoot>
+          <tr>
+            <td>Total</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{total()}</td>
+          </tr>
+        </tfoot>
       </Table>
 
-      {productsInCart}
       <hr />
       <Button onClick={clear}>Vaciar Carrito</Button>
     </div>
