@@ -9,13 +9,22 @@ export default function CartContainer() {
 
   if (cart.cartProducts.length === 0) {
     return (
-      <>
+      <div className="centered">
         <h1>Aún no hay productos en el carrito</h1>
-        <Button onClick={() => history.goBack()}>Volver y agregar productos</Button>
-      </>
+        <Button onClick={() => history.goBack()}>
+          Volver y agregar productos
+        </Button>
+      </div>
     );
   }
   return (
-    <Cart products={cart.cartProducts} clear={cart.clear} remove={cart.removeItem} total={cart.getTotalPrice}/>
+    <div className="centered">
+      <Cart
+        products={cart.cartProducts}
+        clear={cart.clear}
+        remove={cart.removeItem}
+        total={cart.getTotalPrice}
+      />
+    </div>
   );
 }

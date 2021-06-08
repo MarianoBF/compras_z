@@ -1,15 +1,26 @@
-import { Cart } from 'react-bootstrap-icons';
-import Badge from 'react-bootstrap/Badge';
+import {Cart} from "react-bootstrap-icons";
 import {useCart} from "../../context/CartContext";
 
 export default function CartWidget() {
+  const cart = useCart();
 
-    const cart = useCart();
+  const styles = {
+    div: {
+      color: "white",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    number: {
+      fontSize: "2rem",
+      margin: "0 10px",
+    },
+  };
 
-    return(
-        <div style={{color:"white", display:"flex"}}>
-        <Cart className="ml-4" size={36}/>  
-        <Badge variant="secondary">{cart.getTotalNumberOfItems()}</Badge>
-        </div>
-    )
+  return (
+    <div style={styles.div}>
+      <Cart size={36} />
+      {cart.getTotalNumberOfItems()>-1&&<div style={styles.number}>{cart.getTotalNumberOfItems()}</div>}
+    </div>
+  );
 }

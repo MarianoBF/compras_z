@@ -63,7 +63,7 @@ function NavBar() {
           </LinkContainer>
           {categoryList}
         </Nav>
-        <Link to={"/cart"}>
+        <Link style={{textDecoration: "none"}} to={"/cart"}>
           <CartWidget className="justify-content-end" />
         </Link>
       </Navbar.Collapse>

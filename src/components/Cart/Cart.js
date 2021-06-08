@@ -11,6 +11,15 @@ export default function Cart({products, clear, remove, total}) {
       objectFit: "contain",
       margin: "2px auto",
     },
+    Table: {
+      textAlign: "center",
+      verticalAlign: "middle"
+    },
+    Total: {
+      background: "lightblue",
+      fontSize: "1.2rem",
+      fontWeigth: "bold",
+    }
   };
 
   const productsInCart = products.map(item => {
@@ -31,7 +40,7 @@ export default function Cart({products, clear, remove, total}) {
   return (
     <div>
       <h2>Productos en el carrito</h2>
-      <Table striped bordered hover>
+      <Table striped bordered hover style={styles.Table}>
         <thead>
           <tr>
             <th></th>
@@ -45,11 +54,11 @@ export default function Cart({products, clear, remove, total}) {
         <tbody>{productsInCart}</tbody>
         <tfoot>
           <tr>
-            <td>Total</td>
+            <td style={styles.Total}>Total</td>
             <td></td>
             <td></td>
             <td></td>
-            <td>{total()}</td>
+            <td style={styles.Total}>{total()}</td>
           </tr>
         </tfoot>
       </Table>
