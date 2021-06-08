@@ -4,6 +4,8 @@ import {useCart} from "../../context/CartContext";
 export default function CartWidget() {
   const cart = useCart();
 
+  const NumberOfItems = cart.getTotalNumberOfItems();
+
   const styles = {
     div: {
       color: "white",
@@ -19,8 +21,12 @@ export default function CartWidget() {
 
   return (
     <div style={styles.div}>
-      <Cart size={36} />
-      {cart.getTotalNumberOfItems()>-1&&<div style={styles.number}>{cart.getTotalNumberOfItems()}</div>}
+      {NumberOfItems > 0 && (
+        <>
+          <Cart size={36} />
+          <div style={styles.number}>{NumberOfItems}</div>
+        </>
+      )}
     </div>
   );
 }
