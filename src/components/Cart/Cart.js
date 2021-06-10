@@ -17,7 +17,7 @@ export default function Cart({products, clear, remove, total}) {
     },
     Total: {
       background: "lightblue",
-      fontSize: "1.2rem",
+      fontSize: "1.3rem",
       fontWeigth: "bold",
     }
   };
@@ -28,8 +28,8 @@ export default function Cart({products, clear, remove, total}) {
         <td><Image style={styles.Image}src={item.image} rounded /></td>
         <td>{item.name}</td>
         <td>{item.quantity}</td>
-        <td>{item.price}</td>
-        <td>{item.price*item.quantity}</td>
+        <td>${item.price}</td>
+        <td>${item.price*item.quantity}</td>
         <td>
           <Button onClick={() => remove(item.id)}>Borrar Producto</Button>
         </td>
@@ -54,11 +54,11 @@ export default function Cart({products, clear, remove, total}) {
         <tbody>{productsInCart}</tbody>
         <tfoot>
           <tr>
-            <td style={styles.Total}>Total</td>
+            <td>Total</td>
             <td></td>
             <td></td>
             <td></td>
-            <td style={styles.Total}>{total()}</td>
+            <td style={styles.Total}>${total()}</td>
           </tr>
         </tfoot>
       </Table>
