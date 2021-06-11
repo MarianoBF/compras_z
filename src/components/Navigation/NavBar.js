@@ -3,9 +3,9 @@ import Nav from "react-bootstrap/Nav";
 import logo from "../../assets/logo192.png";
 import CartWidget from "./CartWidget";
 import {LinkContainer} from "react-router-bootstrap";
-import {MOCKCATEGORIES} from "../../utils/mockCategories";
 import {useState, useEffect} from "react";
 import {Link} from "react-router-dom"
+import {getFirestore} from "../../firebase";
 
 function NavBar() {
   const styles = {
@@ -25,15 +25,12 @@ function NavBar() {
 
   const [categories, setCategories] = useState([]);
 
-  //MOCK REQUEST FOR CATEGORY LIST
   useEffect(() => {
-    const getCategories = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(MOCKCATEGORIES);
-      }, 500);
-    }, []);
-    getCategories.then(data => setCategories(data));
-  });
+    const db = getFirestore();
+    const itemCollection = db.collection("categories");
+    itemCollection.get().then((data)=>{
+      setCategories(data.docs.map(item=> item.data()));
+  });})
 
   const categoryList = categories.map(item => (
     <LinkContainer

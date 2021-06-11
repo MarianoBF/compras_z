@@ -1,9 +1,8 @@
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import ItemList from "./ItemList";
-import {MOCKPRODUCTS} from "../../utils/mockProducts";
-import {MOCKCATEGORIES} from "../../utils/mockCategories";
 import Spinner from "react-bootstrap/Spinner";
+import {getFirestore} from "../../firebase";
 
 export default function ItemListContainer({greeting}) {
   const [products, setProducts] = useState([]);
@@ -11,43 +10,39 @@ export default function ItemListContainer({greeting}) {
   const {id_category} = useParams();
   const [isLoading, setIsLoading] = useState(true);
 
-  //MOCK REQUEST FOR PRODUCT LIST
   useEffect(() => {
     if (id_category === undefined) {
-      const getProducts = new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve(MOCKPRODUCTS);
-        }, 500);
-      });
-      getProducts.then(data => {
-        setProducts(data);
+      const db = getFirestore();
+      const itemCollection = db.collection("products");
+      itemCollection.get().then(data => {
+        setProducts(
+          data.docs
+            .sort((a, b) => (+a.id > +b.id ? 1 : -1))
+            .map(item => item.data())
+        );
         setIsLoading(false);
       });
     } else {
-      //MOCK REQUEST WITH "FILTER"
       setIsLoading(true);
-      let filtered = [...MOCKPRODUCTS];
-      filtered = filtered.filter(item => item.category === +id_category);
-      const getProducts = new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve(filtered);
-        }, 500);
+      const db = getFirestore();
+      const productsToGet = db
+        .collection("products")
+        .where("category", "==", 1);
+      productsToGet.get().then(data => {
+        setProducts(data.docs.map(item => item.data()));
       });
-      getProducts.then(data => {
-        setProducts(data);
-        setIsLoading(false);
-      });
+      //TODO: Add error handling
+      setIsLoading(false);
     }
   }, [id_category]);
 
   //MOCK REQUEST FOR CATEGORY LIST
   useEffect(() => {
-    const getCategories = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(MOCKCATEGORIES);
-      }, 500);
-    }, []);
-    getCategories.then(data => setCategories(data));
+    const db = getFirestore();
+    const itemCollection = db.collection("categories");
+    itemCollection.get().then(data => {
+      setCategories(data.docs.map(item => item.data()));
+    });
   });
 
   const [category, setCategory] = useState("");
