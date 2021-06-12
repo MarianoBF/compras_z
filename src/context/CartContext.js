@@ -12,7 +12,7 @@ export const CartProvider = ({children}) => {
   useEffect(() => {
     const db = getFirestore();
     const itemCollection = db.collection("products");
-    console.log("request CC");
+    console.log("FS request CC");
     itemCollection.get().then(data => {
       setAllProducts(data.docs.map(item => item.data()));
     });

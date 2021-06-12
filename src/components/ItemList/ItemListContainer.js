@@ -16,7 +16,7 @@ export default function ItemListContainer({greeting}) {
     if (id_category === undefined) {
       const db = getFirestore();
       const itemCollection = db.collection("products");
-      console.log("request ILC");
+      console.log("FS request ILC");
       itemCollection.get().then(data => {
         if (isMounted.current) {
         setProducts(
@@ -31,7 +31,7 @@ export default function ItemListContainer({greeting}) {
       const db = getFirestore();
       const productsToGet = db
         .collection("products")
-        .where("category", "==", 1);
+        .where("category", "==", +id_category);
         if (isMounted.current) {
       productsToGet.get().then(data => {
         setProducts(data.docs.map(item => item.data()));
@@ -42,7 +42,6 @@ export default function ItemListContainer({greeting}) {
     }
   }, [id_category, isMounted]);
 
-  //MOCK REQUEST FOR CATEGORY LIST
   useEffect(() => {
     const db = getFirestore();
     const itemCollection = db.collection("categories");

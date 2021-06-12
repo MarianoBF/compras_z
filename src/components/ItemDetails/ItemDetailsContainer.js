@@ -14,7 +14,7 @@ export default function ItemListContainer() {
   useEffect(() => {
     const db = getFirestore();
     const itemToGet = db.collection("products").doc(String(2));
-    console.log("request IDC");
+    console.log("FS request IDC");
     itemToGet.get().then(item => {
       //TODO: Add error handling
       setProduct({...item.data()});
