@@ -2,6 +2,7 @@ import {useCart} from "../../context/CartContext";
 import Button from "react-bootstrap/Button";
 import Cart from "./Cart";
 import {useHistory} from "react-router-dom";
+import BuyForm from "./BuyForm";
 
 export default function CartContainer() {
   const cart = useCart();
@@ -25,6 +26,9 @@ export default function CartContainer() {
         remove={cart.removeItem}
         total={cart.getTotalPrice}
       />
+      <hr />
+
+      <BuyForm />
     </div>
   );
 }
