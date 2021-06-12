@@ -1,37 +1,30 @@
 import ItemDetails from "./ItemDetails";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {MOCKPRODUCTS} from "../../utils/mockProducts";
 import Spinner from "react-bootstrap/Spinner";
 import {useCart} from "../../context/CartContext";
-
+import {getFirestore} from "../../firebase";
 
 export default function ItemListContainer() {
-
-
   const cart = useCart();
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState();
   const {id_product} = useParams();
   const [isLoading, setIsLoading] = useState(true);
 
- 
-  //MOCK REQUEST OF SPECIFIC PRODUCT
   useEffect(() => {
-    let filteredProduct = MOCKPRODUCTS.filter(item => item.id === +id_product);
-    const getProduct = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(filteredProduct[0]);
-      }, 500);
-    });
-    getProduct.then(data => {
-      setProduct(data);
+    const db = getFirestore();
+    const itemToGet = db.collection("products").doc(String(2));
+    console.log("FS request IDC");
+    itemToGet.get().then(item => {
+      //TODO: Add error handling
+      setProduct({...item.data()});
       setIsLoading(false);
     });
   }, [id_product]);
 
   const addToCart = (name, quantity) => {
-    cart.addItem(name, quantity)
-  }
+    cart.addItem(name, quantity);
+  };
 
   if (isLoading) {
     return (
