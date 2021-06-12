@@ -3,13 +3,13 @@ import NavBar from "./components/Navigation/NavBar";
 import ItemListContainer from "./components/ItemList/ItemListContainer";
 import ItemDetailsContainer from "./components/ItemDetails/ItemDetailsContainer";
 import CartContainer from "./components/Cart/CartContainer";
-import {BrowserRouter, Switch, Route} from "react-router-dom";
+import {HashRouter, Switch, Route} from "react-router-dom";
 import {CartProvider} from "./context/CartContext";
 
 function App() {
   return (
     <CartProvider>
-      <BrowserRouter>
+      <HashRouter>
         <NavBar />
         <Switch>
           <Route exact path="/category/:id_category">
@@ -25,7 +25,7 @@ function App() {
             <ItemListContainer greeting={"Hola Ricardo"} />
           </Route>
         </Switch>
-      </BrowserRouter>
+      </HashRouter>
     </CartProvider>
   );
 }
