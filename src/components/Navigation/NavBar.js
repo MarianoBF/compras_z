@@ -28,9 +28,10 @@ function NavBar() {
   useEffect(() => {
     const db = getFirestore();
     const itemCollection = db.collection("categories");
+    console.log("request NB");
     itemCollection.get().then((data)=>{
       setCategories(data.docs.map(item=> item.data()));
-  });})
+  });}, [])
 
   const categoryList = categories.map(item => (
     <LinkContainer

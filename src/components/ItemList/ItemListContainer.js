@@ -3,38 +3,44 @@ import {useParams} from "react-router-dom";
 import ItemList from "./ItemList";
 import Spinner from "react-bootstrap/Spinner";
 import {getFirestore} from "../../firebase";
+import useMounted from "../hooks/useMounted";
 
 export default function ItemListContainer({greeting}) {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const {id_category} = useParams();
   const [isLoading, setIsLoading] = useState(true);
+  const isMounted = useMounted();
 
   useEffect(() => {
     if (id_category === undefined) {
       const db = getFirestore();
       const itemCollection = db.collection("products");
+      console.log("request ILC");
       itemCollection.get().then(data => {
+        if (isMounted.current) {
         setProducts(
           data.docs
             .sort((a, b) => (+a.id > +b.id ? 1 : -1))
             .map(item => item.data())
         );
         setIsLoading(false);
-      });
+      }});
     } else {
       setIsLoading(true);
       const db = getFirestore();
       const productsToGet = db
         .collection("products")
         .where("category", "==", 1);
+        if (isMounted.current) {
       productsToGet.get().then(data => {
         setProducts(data.docs.map(item => item.data()));
       });
       //TODO: Add error handling
       setIsLoading(false);
     }
-  }, [id_category]);
+    }
+  }, [id_category, isMounted]);
 
   //MOCK REQUEST FOR CATEGORY LIST
   useEffect(() => {
@@ -43,7 +49,7 @@ export default function ItemListContainer({greeting}) {
     itemCollection.get().then(data => {
       setCategories(data.docs.map(item => item.data()));
     });
-  });
+  },[]);
 
   const [category, setCategory] = useState("");
 

@@ -12,10 +12,11 @@ export const CartProvider = ({children}) => {
   useEffect(() => {
     const db = getFirestore();
     const itemCollection = db.collection("products");
+    console.log("request CC");
     itemCollection.get().then(data => {
       setAllProducts(data.docs.map(item => item.data()));
     });
-  });
+  }, []);
 
   const addItem = (quantity, product_id) => {
     //TODO: Should only reject? Warn? Add to cartProducts duplicate product?
