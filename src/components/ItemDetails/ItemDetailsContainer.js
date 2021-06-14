@@ -13,7 +13,7 @@ export default function ItemListContainer() {
 
   useEffect(() => {
     const db = getFirestore();
-    const itemToGet = db.collection("products").doc(String(2));
+    const itemToGet = db.collection("products").doc(String(id_product));
     console.log("FS request IDC");
     itemToGet.get().then(item => {
       //TODO: Add error handling
@@ -22,8 +22,9 @@ export default function ItemListContainer() {
     });
   }, [id_product]);
 
-  const addToCart = (name, quantity) => {
-    cart.addItem(name, quantity);
+  const addToCart = (quantity, id) => {
+    cart.addItem(quantity, id);
+    console.log(quantity, id)
   };
 
   if (isLoading) {

@@ -32,6 +32,7 @@ export const CartProvider = ({children}) => {
           quantity,
           name: retrieveProduct[0].name,
           price: retrieveProduct[0].price,
+          stock: retrieveProduct[0].stock,
           image: retrieveProduct[0].image,
         },
       ]);
