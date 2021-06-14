@@ -1,12 +1,16 @@
 import {useCart} from "../../context/CartContext";
 import Button from "react-bootstrap/Button";
 import Cart from "./Cart";
+import {useState} from "react";
 import {useHistory} from "react-router-dom";
 import BuyForm from "./BuyForm";
+import {getFirestore} from "../../firebase";
 
 export default function CartContainer() {
   const cart = useCart();
   const history = useHistory();
+
+  const [orderID, setOrderID] = useState("")
 
   if (cart.cartProducts.length === 0) {
     return (
@@ -36,6 +40,11 @@ export default function CartContainer() {
       total: cart.getTotalPrice(),
     };
     console.log("Order details:", order);
+    getFirestore()
+      .collection("orders")
+      .add(order)
+      .then(res => setOrderID(res.id))
+      .catch(error => console.log(error));
   };
 
   return (
