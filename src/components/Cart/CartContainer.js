@@ -29,6 +29,8 @@ export default function CartContainer() {
       id: item.id,
       title: item.name,
       price: item.price,
+      quantity: item.quantity,
+      stock: item.stock,
     }));
     const order = {
       buyer: {
@@ -37,13 +39,19 @@ export default function CartContainer() {
         email: e.target[2].value,
       },
       items: [...orderedProducts],
+      date: new Date(),
       total: cart.getTotalPrice(),
     };
     console.log("Order details:", order);
     getFirestore()
       .collection("orders")
       .add(order)
-      .then(res => setOrderID(res.id))
+      .then(res => {
+        setOrderID(res.id);
+        order.items.forEach(item=>
+        getFirestore().collection("products").doc(String(item.id)).update({stock: item.stock-item.quantity})
+        )}
+        )
       .catch(error => console.log(error));
   };
 
