@@ -9,6 +9,7 @@ export default function BuyForm({onSubmit}) {
     }
   }
   return (
+    //TODO: FORM validation
     <Container style={{maxWidth: "800px"}}>
       <Form onSubmit={onSubmit}>
         <Form.Group controlId="formBasicName">

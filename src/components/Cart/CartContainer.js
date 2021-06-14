@@ -5,12 +5,15 @@ import {useState} from "react";
 import {useHistory} from "react-router-dom";
 import BuyForm from "./BuyForm";
 import {getFirestore} from "../../firebase";
+import Alert from "react-bootstrap/Alert";
 
 export default function CartContainer() {
   const cart = useCart();
   const history = useHistory();
 
-  const [orderID, setOrderID] = useState("")
+  const [orderID, setOrderID] = useState("");
+
+  const [finishedOrder, setFinishedOrder] = useState(false);
 
   if (cart.cartProducts.length === 0) {
     return (
@@ -22,6 +25,12 @@ export default function CartContainer() {
       </div>
     );
   }
+
+  const handleCloseAlert = () => {
+    setFinishedOrder(false);
+    cart.clear();
+    history.push("/")
+  };
 
   const onSubmit = e => {
     e.preventDefault();
@@ -48,15 +57,31 @@ export default function CartContainer() {
       .add(order)
       .then(res => {
         setOrderID(res.id);
-        order.items.forEach(item=>
-        getFirestore().collection("products").doc(String(item.id)).update({stock: item.stock-item.quantity})
-        )}
-        )
+        order.items.forEach(item =>
+          getFirestore()
+            .collection("products")
+            .doc(String(item.id))
+            .update({stock: item.stock - item.quantity})
+        );
+        setFinishedOrder(true);
+      })
       .catch(error => console.log(error));
   };
 
   return (
     <div className="centered">
+      <Alert show={finishedOrder} variant="success">
+        <p>
+          Se ha realizado un pedido exitosamente. El número de registro del
+          pedido es: {orderID}
+        </p>
+        <div className="d-flex justify-content-end">
+          <Button onClick={handleCloseAlert} className="closeBtn">
+            Finalizar y realizar una nueva compra
+          </Button>
+        </div>
+      </Alert>
+
       <Cart
         products={cart.cartProducts}
         clear={cart.clear}
@@ -65,7 +90,7 @@ export default function CartContainer() {
       />
       <hr />
 
-      <BuyForm onSubmit={onSubmit} />
+      {!finishedOrder && <BuyForm onSubmit={onSubmit} />}
     </div>
   );
 }
