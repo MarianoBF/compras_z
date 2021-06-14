@@ -24,7 +24,6 @@ export const CartProvider = ({children}) => {
       const retrieveProduct = allProducts.filter(
         item => item.id === product_id
       );
-      console.log(retrieveProduct);
       setCartProducts([
         ...cartProducts,
         {
@@ -36,7 +35,6 @@ export const CartProvider = ({children}) => {
           image: retrieveProduct[0].image,
         },
       ]);
-      console.log(cartProducts);
     }
   };
 

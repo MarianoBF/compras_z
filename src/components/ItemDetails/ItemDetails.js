@@ -6,7 +6,7 @@ import ItemCount from "./ItemCount";
 import {Link} from "react-router-dom";
 import {useState} from "react";
 
-export default function ItemDetails({item, addToCart}) {
+export default function ItemDetails({item, addToCart, inCart}) {
   const {name, description, image, price, stock, id} = item;
   const history = useHistory();
 
@@ -41,6 +41,8 @@ export default function ItemDetails({item, addToCart}) {
     addToCart(quantity, product_id);
   };
 
+  console.log(inCart)
+
   return (
     <Container style={styles.Container}>
       <Card style={styles.Card}>
@@ -54,18 +56,28 @@ export default function ItemDetails({item, addToCart}) {
           <Card.Title>{name}</Card.Title>
           <Card.Text>{"$" + price}</Card.Text>
           <Card.Text>{description}</Card.Text>
-          <ItemCount
-            stock={stock}
-            id={id}
-            handleAdd={handleAdd}
-            showBuy={showBuy}
-          />
-          {showBuy && (
+          {inCart ? (
             <Link to="/cart">
               <Button className="spacedButton">
-                Terminar mi compra (ir al carrito)
+                Producto ya seleccionado, ir al carrito
               </Button>
             </Link>
+          ) : (
+            <>
+              <ItemCount
+                stock={stock}
+                id={id}
+                handleAdd={handleAdd}
+                showBuy={showBuy}
+              />
+              {showBuy && (
+                <Link to="/cart">
+                  <Button className="spacedButton">
+                    Terminar mi compra (ir al carrito)
+                  </Button>
+                </Link>
+              )}
+            </>
           )}
           <Card.Text>
             <Button variant="secondary" onClick={() => history.goBack()}>

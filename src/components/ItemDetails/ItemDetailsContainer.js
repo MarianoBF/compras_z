@@ -11,6 +11,8 @@ export default function ItemListContainer() {
   const {id_product} = useParams();
   const [isLoading, setIsLoading] = useState(true);
 
+  const inCart = cart.isInCart(id_product);
+
   useEffect(() => {
     const db = getFirestore();
     const itemToGet = db.collection("products").doc(String(id_product));
@@ -24,7 +26,6 @@ export default function ItemListContainer() {
 
   const addToCart = (quantity, id) => {
     cart.addItem(quantity, id);
-    console.log(quantity, id)
   };
 
   if (isLoading) {
@@ -39,7 +40,7 @@ export default function ItemListContainer() {
   return (
     <>
       <h1 className="mainTitle">Detalles del producto</h1>
-      <ItemDetails item={product} addToCart={addToCart} />
+      <ItemDetails item={product} addToCart={addToCart} inCart={inCart}/>
     </>
   );
 }
