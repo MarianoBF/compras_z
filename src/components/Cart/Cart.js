@@ -64,6 +64,9 @@ export default function Cart({products, clear, remove, total}) {
             <td></td>
             <td></td>
             <td style={styles.Total}>${total()}</td>
+            <td>
+              <Button style={styles.CancelButton} onClick={clear}>Vaciar Carrito</Button>
+            </td>
           </tr>
         </tfoot>
       </Table>
