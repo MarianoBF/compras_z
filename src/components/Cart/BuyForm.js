@@ -2,10 +2,15 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 
-export default function BuyForm() {
+export default function BuyForm({onSubmit}) {
+  const styles = {
+    BuyButton: {
+      fontSize: "1.3rem",
+    }
+  }
   return (
     <Container style={{maxWidth: "800px"}}>
-      <Form>
+      <Form onSubmit={onSubmit}>
         <Form.Group controlId="formBasicName">
           <Form.Label>Nombre</Form.Label>
           <Form.Control type="text" placeholder="Nombre y Apellido" />
@@ -28,7 +33,7 @@ export default function BuyForm() {
           </Form.Text>
         </Form.Group>
 
-        <Button variant="primary" type="submit">
+        <Button style={styles.BuyButton} variant="primary" type="submit">
           Confirmar Compra
         </Button>
       </Form>

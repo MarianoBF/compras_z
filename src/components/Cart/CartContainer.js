@@ -18,6 +18,26 @@ export default function CartContainer() {
       </div>
     );
   }
+
+  const onSubmit = e => {
+    e.preventDefault();
+    const orderedProducts = cart.cartProducts.map(item => ({
+      id: item.id,
+      title: item.name,
+      price: item.price,
+    }));
+    const order = {
+      buyer: {
+        name: e.target[0].value,
+        phone: e.target[1].value,
+        email: e.target[2].value,
+      },
+      items: [...orderedProducts],
+      total: cart.getTotalPrice(),
+    };
+    console.log("Order details:", order);
+  };
+
   return (
     <div className="centered">
       <Cart
@@ -28,7 +48,7 @@ export default function CartContainer() {
       />
       <hr />
 
-      <BuyForm />
+      <BuyForm onSubmit={onSubmit} />
     </div>
   );
 }

@@ -22,8 +22,9 @@ export default function ItemListContainer() {
     });
   }, [id_product]);
 
-  const addToCart = (name, quantity) => {
-    cart.addItem(name, quantity);
+  const addToCart = (quantity, id) => {
+    cart.addItem(quantity, id);
+    console.log(quantity, id)
   };
 
   if (isLoading) {

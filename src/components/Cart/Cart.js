@@ -1,9 +1,8 @@
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
-import Image from 'react-bootstrap/Image'
+import Image from "react-bootstrap/Image";
 
 export default function Cart({products, clear, remove, total}) {
-
   const styles = {
     Image: {
       maxHeight: "50px",
@@ -13,25 +12,30 @@ export default function Cart({products, clear, remove, total}) {
     },
     Table: {
       textAlign: "center",
-      verticalAlign: "middle"
+      verticalAlign: "middle",
     },
     Total: {
       background: "lightblue",
       fontSize: "1.2rem",
       fontWeigth: "bold",
-    }
+    },
+    CancelButton: {
+      fontSize: "0.8rem",
+    },
   };
 
   const productsInCart = products.map(item => {
     return (
       <tr key={item.id}>
-        <td><Image style={styles.Image}src={item.image} rounded /></td>
+        <td>
+          <Image style={styles.Image} src={item.image} rounded />
+        </td>
         <td>{item.name}</td>
         <td>{item.quantity}</td>
         <td>{item.price}</td>
-        <td>{item.price*item.quantity}</td>
+        <td>{item.price * item.quantity}</td>
         <td>
-          <Button onClick={() => remove(item.id)}>Borrar Producto</Button>
+          <Button style={styles.CancelButton} onClick={() => remove(item.id)}>Borrar</Button>
         </td>
       </tr>
     );
@@ -40,6 +44,7 @@ export default function Cart({products, clear, remove, total}) {
   return (
     <div>
       <h2>Productos en el carrito</h2>
+
       <Table striped bordered hover style={styles.Table}>
         <thead>
           <tr>
@@ -48,7 +53,7 @@ export default function Cart({products, clear, remove, total}) {
             <th>Cantidad</th>
             <th>Precio unitario</th>
             <th>Precio total</th>
-            <th>Borrar</th>
+            <th>Borrar producto</th>
           </tr>
         </thead>
         <tbody>{productsInCart}</tbody>
@@ -59,12 +64,12 @@ export default function Cart({products, clear, remove, total}) {
             <td></td>
             <td></td>
             <td style={styles.Total}>{total()}</td>
+            <td>
+              <Button style={styles.CancelButton} onClick={clear}>Vaciar Carrito</Button>
+            </td>
           </tr>
         </tfoot>
       </Table>
-
-      <hr />
-      <Button onClick={clear}>Vaciar Carrito</Button>
     </div>
   );
 }
