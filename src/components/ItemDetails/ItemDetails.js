@@ -59,7 +59,7 @@ export default function ItemDetails({item, addToCart, inCart}) {
           {inCart ? (
             <Link to="/cart">
               <Button className="spacedButton">
-                Producto ya seleccionado, ir al carrito
+                Producto seleccionado, ir al carrito
               </Button>
             </Link>
           ) : (
@@ -70,13 +70,6 @@ export default function ItemDetails({item, addToCart, inCart}) {
                 handleAdd={handleAdd}
                 showBuy={showBuy}
               />
-              {showBuy && (
-                <Link to="/cart">
-                  <Button className="spacedButton">
-                    Terminar mi compra (ir al carrito)
-                  </Button>
-                </Link>
-              )}
             </>
           )}
           <Card.Text>

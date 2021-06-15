@@ -87,6 +87,7 @@ export default function CartContainer() {
         clear={cart.clear}
         remove={cart.removeItem}
         total={cart.getTotalPrice}
+        finished={finishedOrder}
       />
       <hr />
 

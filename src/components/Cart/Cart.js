@@ -2,7 +2,7 @@ import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import Image from "react-bootstrap/Image";
 
-export default function Cart({products, clear, remove, total}) {
+export default function Cart({products, clear, remove, total, finished}) {
   const styles = {
     Image: {
       maxHeight: "50px",
@@ -33,9 +33,11 @@ export default function Cart({products, clear, remove, total}) {
         <td>{item.name}</td>
         <td>{item.quantity}</td>
         <td>${item.price}</td>
-        <td>${item.price*item.quantity}</td>
+        <td>${item.price * item.quantity}</td>
         <td>
-          <Button style={styles.CancelButton} onClick={() => remove(item.id)}>Borrar</Button>
+          <Button style={styles.CancelButton} onClick={() => remove(item.id)}>
+            Borrar
+          </Button>
         </td>
       </tr>
     );
@@ -43,7 +45,11 @@ export default function Cart({products, clear, remove, total}) {
 
   return (
     <div>
-      <h2>Productos en el carrito</h2>
+      <h2>
+        {finished
+          ? "Este es el detalle de la orden que realizó"
+          : "Productos en el carrito"}
+      </h2>
 
       <Table striped bordered hover style={styles.Table}>
         <thead>
@@ -65,7 +71,9 @@ export default function Cart({products, clear, remove, total}) {
             <td></td>
             <td style={styles.Total}>${total()}</td>
             <td>
-              <Button style={styles.CancelButton} onClick={clear}>Vaciar Carrito</Button>
+              <Button style={styles.CancelButton} onClick={clear}>
+                Vaciar Carrito
+              </Button>
             </td>
           </tr>
         </tfoot>
