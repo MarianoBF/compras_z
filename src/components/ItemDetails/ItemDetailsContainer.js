@@ -13,7 +13,9 @@ export default function ItemListContainer() {
 
   const inCart = cart.isInCart(id_product);
 
-  fetch("../../.netlify/functions/test", {
+  console.log("test");
+
+  fetch("../../functions/test", {
     method: "GET",
     })
     .then((res) => console.log(res))
