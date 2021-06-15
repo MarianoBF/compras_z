@@ -1,7 +1,7 @@
 
-const { APIKEY } = process.env;
+const { APIKEY, APPID, SENDERID } = process.env;
 
-const payload = {"APIKEY": APIKEY, "STRING": "A STRING"}
+const payload = {"APIKEY": APIKEY, "APPID": APPID, "SENDERID": SENDERID}
 
 exports.handler = async (event, context) => {
   return {
@@ -9,12 +9,3 @@ exports.handler = async (event, context) => {
     body: JSON.stringify(payload),
   };
 };
-
-
-// exports.handler = async (event, context) => {
-//   const { name = "Anonymous" } = event.queryStringParameters;
-//   return {
-//     statusCode: 200,
-//     body: `Hello, ${name}`
-//   };
-// };
