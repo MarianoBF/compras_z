@@ -7,6 +7,19 @@ import {HashRouter, Switch, Route} from "react-router-dom";
 import {CartProvider} from "./context/CartContext";
 
 function App() {
+
+
+  console.log("test");
+
+  fetch("/.netlify/functions/test", {
+    method: "GET",
+    })
+    .then((res)=>res.json())
+    .then((res) => console.log(res))
+    .catch(error => console.log(error))
+
+
+
   return (
     <CartProvider>
       <HashRouter>

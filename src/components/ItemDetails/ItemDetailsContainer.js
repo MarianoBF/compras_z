@@ -13,15 +13,6 @@ export default function ItemListContainer() {
 
   const inCart = cart.isInCart(id_product);
 
-  console.log("test");
-
-  fetch("/.netlify/functions/test", {
-    method: "GET",
-    })
-    .then((res) => console.log(res))
-    .catch(error => console.log(error))
-
-
   useEffect(() => {
     const db = getFirestore();
     const itemToGet = db.collection("products").doc(String(id_product));
