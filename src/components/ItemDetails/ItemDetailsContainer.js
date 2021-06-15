@@ -15,7 +15,7 @@ export default function ItemListContainer() {
 
   console.log("test");
 
-  fetch("../../functions/test", {
+  fetch("/.netlify/functions/test", {
     method: "GET",
     })
     .then((res) => console.log(res))
