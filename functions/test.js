@@ -1,3 +1,3 @@
 exports.handler = async (event, context, callback) => {
-  return callback(null, {statusCode: 200, body: JSON.stringify(process.env.APIKEY)})
+  return callback(null, {statusCode: 200, body: "KEY" + process.env.APIKEY })
   }
