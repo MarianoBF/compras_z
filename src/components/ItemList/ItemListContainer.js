@@ -4,13 +4,17 @@ import ItemList from "./ItemList";
 import Spinner from "react-bootstrap/Spinner";
 import {getFirestore} from "../../firebase";
 import useMounted from "../hooks/useMounted";
+import {useHistory} from "react-router-dom";
 
-export default function ItemListContainer({greeting}) {
+
+export default function ItemListContainer() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const {id_category} = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const isMounted = useMounted();
+  const [outOfRange, setOutOfRange] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     if (id_category === undefined) {
@@ -31,23 +35,30 @@ export default function ItemListContainer({greeting}) {
       const productsToGet = db
         .collection("products")
         .where("category", "==", +id_category);
-        if (isMounted.current) {
       productsToGet.get().then(data => {
-        setProducts(data.docs.map(item => item.data()));
-      });
-      //TODO: Add error handling
+        if (isMounted.current) {
+        setProducts(data.docs.map(item => item.data()))};
+        });
+        if (products.length===0) {
+          setOutOfRange(true)
+          setTimeout(()=>{
+            setOutOfRange(false);
+            history.push("/");
+          }, 5000)
+        }
       setIsLoading(false);
     }
-    }
-  }, [id_category, isMounted]);
+  }, [id_category]);
 
   useEffect(() => {
     const db = getFirestore();
     const itemCollection = db.collection("categories");
     itemCollection.get().then(data => {
+      if (isMounted.current) {
       setCategories(data.docs.map(item => item.data()));
+      }
     });
-  },[]);
+  },[isMounted]);
 
   const [category, setCategory] = useState("");
 
@@ -65,9 +76,18 @@ export default function ItemListContainer({greeting}) {
   if (isLoading) {
     return (
       <div style={{textAlign: "center"}}>
-        <h1>{greeting}</h1>
         <h2>Trayendo listado de productos...</h2>
         <Spinner animation="border" />
+      </div>
+    );
+  }
+
+
+  if (outOfRange) {
+    return (
+      <div style={{textAlign: "center"}}>
+        <h2>Categoría inexistente</h2>
+        <h2>Serás redirigido a la página principal</h2>
       </div>
     );
   }
@@ -75,7 +95,7 @@ export default function ItemListContainer({greeting}) {
   return (
     <div>
       <h1 className="mainTitle">
-        {greeting}, desde aquí podrás ver un listado de {category}{" "}
+        Desde aquí podrás ver un listado de {category}{" "}
       </h1>
       <ItemList products={products} />
     </div>

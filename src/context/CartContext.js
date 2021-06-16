@@ -18,7 +18,6 @@ export const CartProvider = ({children}) => {
   }, []);
 
   const addItem = (quantity, product_id) => {
-    //TODO: Should only reject? Warn? Add to cartProducts duplicate product?
     if (cartProducts.filter(item => item.id === product_id).length === 0) {
       const retrieveProduct = allProducts.filter(
         item => item.id === product_id
@@ -67,7 +66,6 @@ export const CartProvider = ({children}) => {
   const increaseQuantity = product_id => {
     const position = cartProducts.findIndex(item => +item.id === +product_id);
     const newProducts = [...cartProducts];
-    console.log(newProducts, position)
     if (newProducts[position].quantity <= newProducts[position].stock)
       newProducts[position].quantity++;
     setCartProducts(newProducts);

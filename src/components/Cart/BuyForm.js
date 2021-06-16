@@ -10,7 +10,6 @@ export default function BuyForm({onSubmit}) {
     }
   }
   return (
-    //TODO: FORM validation
     <Container style={{maxWidth: "800px"}}>
     <h2>Datos del comprador</h2>
       <Form onSubmit={onSubmit}>
