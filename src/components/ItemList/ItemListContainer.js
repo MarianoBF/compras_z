@@ -16,7 +16,6 @@ export default function ItemListContainer({greeting}) {
     if (id_category === undefined) {
       const db = getFirestore();
       const itemCollection = db.collection("products");
-      console.log("FS request ILC");
       itemCollection.get().then(data => {
         if (isMounted.current) {
         setProducts(
