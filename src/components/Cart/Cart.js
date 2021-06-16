@@ -2,7 +2,7 @@ import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import Image from "react-bootstrap/Image";
 
-export default function Cart({products, clear, remove, total, finished}) {
+export default function Cart({products, cartMethods, finished}) {
   const styles = {
     Image: {
       maxHeight: "50px",
@@ -19,10 +19,13 @@ export default function Cart({products, clear, remove, total, finished}) {
       fontSize: "1.3rem",
       fontWeigth: "bold",
     },
-    CancelButton: {
+    SmallButton: {
       fontSize: "0.8rem",
     },
   };
+
+  const {remove, clear, total, increaseQuantity, decreaseQuantity} =
+    cartMethods;
 
   const productsInCart = products.map(item => {
     return (
@@ -31,11 +34,23 @@ export default function Cart({products, clear, remove, total, finished}) {
           <Image style={styles.Image} src={item.image} rounded />
         </td>
         <td>{item.name}</td>
-        <td>{item.quantity}</td>
+        <td>
+          <Button
+            onClick={() => decreaseQuantity(item.id)}
+            style={styles.SmallButton}>
+            -
+          </Button>{" "}
+          {item.quantity}{" "}
+          <Button
+            onClick={() => increaseQuantity(item.id)}
+            style={styles.SmallButton}>
+            +
+          </Button>
+        </td>
         <td>${item.price}</td>
         <td>${item.price * item.quantity}</td>
         <td>
-          <Button style={styles.CancelButton} onClick={() => remove(item.id)}>
+          <Button style={styles.SmallButton} onClick={() => remove(item.id)}>
             Borrar
           </Button>
         </td>
@@ -71,7 +86,7 @@ export default function Cart({products, clear, remove, total, finished}) {
             <td></td>
             <td style={styles.Total}>${total()}</td>
             <td>
-              <Button style={styles.CancelButton} onClick={clear}>
+              <Button style={styles.SmallButton} onClick={clear}>
                 Vaciar Carrito
               </Button>
             </td>

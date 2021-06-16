@@ -6,6 +6,7 @@ import {useHistory} from "react-router-dom";
 import BuyForm from "./BuyForm";
 import {getFirestore} from "../../firebase";
 import Alert from "react-bootstrap/Alert";
+import {Link} from "react-router-dom";
 
 export default function CartContainer() {
   const cart = useCart();
@@ -19,9 +20,9 @@ export default function CartContainer() {
     return (
       <div className="centered">
         <h1>Aún no hay productos en el carrito</h1>
-        <Button onClick={() => history.goBack()}>
-          Volver y agregar productos
-        </Button>
+        <Link to={"/"}>
+          <Button>Volver y agregar productos</Button>
+        </Link>
       </div>
     );
   }
@@ -29,7 +30,7 @@ export default function CartContainer() {
   const handleCloseAlert = () => {
     setFinishedOrder(false);
     cart.clear();
-    history.push("/")
+    history.push("/");
   };
 
   const onSubmit = e => {
@@ -51,7 +52,6 @@ export default function CartContainer() {
       date: new Date(),
       total: cart.getTotalPrice(),
     };
-    console.log("Order details:", order);
     getFirestore()
       .collection("orders")
       .add(order)
@@ -68,12 +68,22 @@ export default function CartContainer() {
       .catch(error => console.log(error));
   };
 
+  const cartMethods = {
+    clear: cart.clear,
+    remove: cart.removeItem,
+    total: cart.getTotalPrice,
+    increaseQuantity: cart.increaseQuantity,
+    decreaseQuantity: cart.decreaseQuantity,
+  };
+
   return (
     <div className="centered">
       <Alert show={finishedOrder} variant="success">
         <p>
           Se ha realizado un pedido exitosamente. El número de registro del
           pedido es: {orderID}
+          Recibirá un correo electrónico confirmando la fecha de entrega e
+          instrucciones para el pago.
         </p>
         <div className="d-flex justify-content-end">
           <Button onClick={handleCloseAlert} className="closeBtn">
@@ -84,9 +94,7 @@ export default function CartContainer() {
 
       <Cart
         products={cart.cartProducts}
-        clear={cart.clear}
-        remove={cart.removeItem}
-        total={cart.getTotalPrice}
+        cartMethods={cartMethods}
         finished={finishedOrder}
       />
       <hr />

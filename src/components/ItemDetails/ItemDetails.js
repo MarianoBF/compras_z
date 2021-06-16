@@ -32,16 +32,17 @@ export default function ItemDetails({item, addToCart, inCart}) {
     CardBody: {
       margin: "auto",
     },
+    NoStock: {
+      fontStyle: "italic",
+      color: "blue"
+    }
   };
 
-  //TODO: reflect in cart & stock leveles
   const [showBuy, setShowBuy] = useState(false);
   const handleAdd = (quantity, product_id) => {
     setShowBuy(true);
     addToCart(quantity, product_id);
   };
-
-  console.log(inCart)
 
   return (
     <Container style={styles.Container}>
@@ -62,7 +63,7 @@ export default function ItemDetails({item, addToCart, inCart}) {
                 Producto seleccionado, ir al carrito
               </Button>
             </Link>
-          ) : (
+          ) : (stock>0?(
             <>
               <ItemCount
                 stock={stock}
@@ -70,7 +71,7 @@ export default function ItemDetails({item, addToCart, inCart}) {
                 handleAdd={handleAdd}
                 showBuy={showBuy}
               />
-            </>
+            </>):<Card.Text style={styles.NoStock}>Lo sentimos, no hay stock disponible de este artículo</Card.Text>
           )}
           <Card.Text>
             <Button variant="secondary" onClick={() => history.goBack()}>
@@ -78,7 +79,9 @@ export default function ItemDetails({item, addToCart, inCart}) {
             </Button>
           </Card.Text>
         </Card.Body>
-        {!showBuy && <Card.Footer>{stock} unidades disponibles</Card.Footer>}
+        {!showBuy && stock > 0 && (
+          <Card.Footer>{stock} unidades disponibles</Card.Footer>
+        ) }
       </Card>
     </Container>
   );

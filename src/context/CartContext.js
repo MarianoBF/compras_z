@@ -12,7 +12,6 @@ export const CartProvider = ({children}) => {
   useEffect(() => {
     const db = getFirestore();
     const itemCollection = db.collection("products");
-    console.log("FS request CC");
     itemCollection.get().then(data => {
       setAllProducts(data.docs.map(item => item.data()));
     });
@@ -65,6 +64,23 @@ export const CartProvider = ({children}) => {
     return totalPrice;
   };
 
+  const increaseQuantity = product_id => {
+    const position = cartProducts.findIndex(item => +item.id === +product_id);
+    const newProducts = [...cartProducts];
+    console.log(newProducts, position)
+    if (newProducts[position].quantity <= newProducts[position].stock)
+      newProducts[position].quantity++;
+    setCartProducts(newProducts);
+  };
+
+  const decreaseQuantity = product_id => {
+    const position = cartProducts.findIndex(item => item.id === product_id);
+    const newProducts = [...cartProducts];
+    if (newProducts[position].quantity >= 2)
+      newProducts[position].quantity--;
+    setCartProducts(newProducts);
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -75,6 +91,8 @@ export const CartProvider = ({children}) => {
         isInCart,
         getTotalNumberOfItems,
         getTotalPrice,
+        increaseQuantity,
+        decreaseQuantity,
       }}>
       {children}
     </CartContext.Provider>
