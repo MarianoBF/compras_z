@@ -6,7 +6,6 @@ import {getFirestore} from "../../firebase";
 import useMounted from "../hooks/useMounted";
 import {useHistory} from "react-router-dom";
 
-
 export default function ItemListContainer() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -20,45 +19,56 @@ export default function ItemListContainer() {
     if (id_category === undefined) {
       const db = getFirestore();
       const itemCollection = db.collection("products");
-      itemCollection.get().then(data => {
-        if (isMounted.current) {
-        setProducts(
-          data.docs
-            .sort((a, b) => (+a.id > +b.id ? 1 : -1))
-            .map(item => item.data())
-        );
-        setIsLoading(false);
-      }});
+      itemCollection
+        .get()
+        .then(data => {
+          if (isMounted.current) {
+            setProducts(
+              data.docs
+                .sort((a, b) => (+a.id > +b.id ? 1 : -1))
+                .map(item => item.data())
+            );
+            setIsLoading(false);
+          }
+        })
+        .catch(error => console.log(error));
     } else {
-      setIsLoading(true);
       const db = getFirestore();
       const productsToGet = db
         .collection("products")
         .where("category", "==", +id_category);
-      productsToGet.get().then(data => {
-        if (isMounted.current) {
-        setProducts(data.docs.map(item => item.data()))};
-        });
-        if (products.length===0) {
-          setOutOfRange(true)
-          setTimeout(()=>{
-            setOutOfRange(false);
-            history.push("/");
-          }, 5000)
-        }
-      setIsLoading(false);
+      productsToGet
+        .get()
+        .then(data => {
+          if (isMounted.current) {
+            if (data.empty === true) {
+              setOutOfRange(true);
+              setTimeout(() => {
+                setOutOfRange(false);
+                history.push("/");
+              }, 5000);
+            } else {
+              setProducts(data.docs.map(item => item.data()));
+              setIsLoading(false);
+            }
+          }
+        })
+        .catch(error => console.log(error));
     }
-  }, [id_category]);
+  }, [id_category, history, isMounted, products.length]);
 
   useEffect(() => {
     const db = getFirestore();
     const itemCollection = db.collection("categories");
-    itemCollection.get().then(data => {
-      if (isMounted.current) {
-      setCategories(data.docs.map(item => item.data()));
-      }
-    });
-  },[isMounted]);
+    itemCollection
+      .get()
+      .then(data => {
+        if (isMounted.current) {
+          setCategories(data.docs.map(item => item.data()));
+        }
+      })
+      .catch(error => console.log(error));
+  }, [isMounted]);
 
   const [category, setCategory] = useState("");
 
@@ -81,7 +91,6 @@ export default function ItemListContainer() {
       </div>
     );
   }
-
 
   if (outOfRange) {
     return (

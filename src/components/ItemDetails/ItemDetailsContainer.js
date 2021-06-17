@@ -7,7 +7,6 @@ import {getFirestore} from "../../firebase";
 import useMounted from "../hooks/useMounted";
 import {useHistory} from "react-router-dom";
 
-
 export default function ItemListContainer() {
   const cart = useCart();
   const [product, setProduct] = useState({});
@@ -22,20 +21,23 @@ export default function ItemListContainer() {
   useEffect(() => {
     const db = getFirestore();
     const itemToGet = db.collection("products").doc(String(id_product));
-    itemToGet.get().then(item => {
-      if (isMounted.current) {
-        setProduct({...item.data()});
-        setIsLoading(false);
-        console.log(item.exists)
-        if (!item.exists) {
-          setOutOfRange(true);
-          setTimeout(()=>{
-            setOutOfRange(false);
-            history.push("/");
-          }, 5000)
+    itemToGet
+      .get()
+      .then(item => {
+        if (isMounted.current) {
+          setProduct({...item.data()});
+          setIsLoading(false);
+          console.log(item.exists);
+          if (!item.exists) {
+            setOutOfRange(true);
+            setTimeout(() => {
+              setOutOfRange(false);
+              history.push("/");
+            }, 5000);
+          }
         }
-      }
-    });
+      })
+      .catch(error => console.log(error));
   }, [id_product]);
 
   const addToCart = (quantity, id) => {

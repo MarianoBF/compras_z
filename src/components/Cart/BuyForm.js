@@ -15,20 +15,20 @@ export default function BuyForm({onSubmit}) {
       <Form onSubmit={onSubmit}>
         <Form.Group controlId="formBasicName">
           <Form.Label>Nombre Completo</Form.Label>
-          <Form.Control type="text" placeholder="Juan Gómez" required/>
+          <Form.Control type="text" placeholder="Juan Gómez" required minLength="4" maxLength="80"/>
         </Form.Group>
 
         <Form.Group controlId="formBasicPhone">
           <Form.Label>Teléfono (optativo)</Form.Label>
           <Form.Control
             type="text"
-            placeholder="11 4444 4444"
+            placeholder="11-4444-4444"
           />
         </Form.Group>
 
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email</Form.Label>
-          <Form.Control type="email" placeholder="juan@gomez.com" required/>
+          <Form.Control type="email" placeholder="juan@gomez.com" minLength="8" maxLength="80" required/>
           <Form.Text className="text-muted">
             Te enviaremos la confirmación de la compra e información de
             seguimiento a esta dirección.

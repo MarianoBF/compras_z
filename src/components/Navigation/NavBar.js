@@ -4,7 +4,7 @@ import logo from "../../assets/logo192.png";
 import CartWidget from "./CartWidget";
 import {LinkContainer} from "react-router-bootstrap";
 import {useState, useEffect} from "react";
-import {Link} from "react-router-dom"
+import {Link} from "react-router-dom";
 import {getFirestore} from "../../firebase";
 
 function NavBar() {
@@ -28,9 +28,13 @@ function NavBar() {
   useEffect(() => {
     const db = getFirestore();
     const itemCollection = db.collection("categories");
-    itemCollection.get().then((data)=>{
-      setCategories(data.docs.map(item=> item.data()));
-  });}, [])
+    itemCollection
+      .get()
+      .then(data => {
+        setCategories(data.docs.map(item => item.data()));
+      })
+      .catch(error => console.log(error));
+  }, []);
 
   const categoryList = categories.map(item => (
     <LinkContainer

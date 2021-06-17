@@ -12,9 +12,12 @@ export const CartProvider = ({children}) => {
   useEffect(() => {
     const db = getFirestore();
     const itemCollection = db.collection("products");
-    itemCollection.get().then(data => {
-      setAllProducts(data.docs.map(item => item.data()));
-    });
+    itemCollection
+      .get()
+      .then(data => {
+        setAllProducts(data.docs.map(item => item.data()));
+      })
+      .catch(error => console.log(error));
   }, []);
 
   const addItem = (quantity, product_id) => {
@@ -74,8 +77,7 @@ export const CartProvider = ({children}) => {
   const decreaseQuantity = product_id => {
     const position = cartProducts.findIndex(item => item.id === product_id);
     const newProducts = [...cartProducts];
-    if (newProducts[position].quantity >= 2)
-      newProducts[position].quantity--;
+    if (newProducts[position].quantity >= 2) newProducts[position].quantity--;
     setCartProducts(newProducts);
   };
 
