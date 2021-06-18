@@ -2,7 +2,7 @@ import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import Image from "react-bootstrap/Image";
 
-export default function Cart({products, clear, remove, total}) {
+export default function Cart({products, cartMethods, finished}) {
   const styles = {
     Image: {
       maxHeight: "50px",
@@ -19,10 +19,20 @@ export default function Cart({products, clear, remove, total}) {
       fontSize: "1.3rem",
       fontWeigth: "bold",
     },
-    CancelButton: {
+    SmallButton: {
       fontSize: "0.8rem",
     },
+    ItemCount: {
+      display: "flex",
+      flexWrap: "no-wrap",
+      flexDirection: "row",
+      alignItems: "center",
+      height: "100%",
+    }
   };
+
+  const {remove, clear, total, increaseQuantity, decreaseQuantity} =
+    cartMethods;
 
   const productsInCart = products.map(item => {
     return (
@@ -31,21 +41,42 @@ export default function Cart({products, clear, remove, total}) {
           <Image style={styles.Image} src={item.image} rounded />
         </td>
         <td>{item.name}</td>
-        <td>{item.quantity}</td>
-        <td>${item.price}</td>
-        <td>${item.price*item.quantity}</td>
         <td>
-          <Button style={styles.CancelButton} onClick={() => remove(item.id)}>Borrar</Button>
+        <div div class="container-fluid d-flex justify-content-around align-items-center">
+        {!finished&&
+          <Button
+            onClick={() => decreaseQuantity(item.id)}
+            style={styles.SmallButton}>
+            -
+          </Button>}
+          {item.quantity}{!finished&&
+          <Button
+            onClick={() => increaseQuantity(item.id)}
+            style={styles.SmallButton}>
+            +
+          </Button>}
+          </div>
         </td>
+        <td>${item.price}</td>
+        <td>${item.price * item.quantity}</td>
+        {!finished&&<td>
+          <Button style={styles.SmallButton} onClick={() => remove(item.id)}>
+            Borrar
+          </Button>
+        </td>}
       </tr>
     );
   });
 
   return (
     <div>
-      <h2>Productos en el carrito</h2>
+      <h2>
+        {finished
+          ? "Este es el detalle de la orden que realizó"
+          : "Productos en el carrito"}
+      </h2>
 
-      <Table striped bordered hover style={styles.Table}>
+      <Table striped bordered hover responsive style={styles.Table}>
         <thead>
           <tr>
             <th></th>
@@ -53,20 +84,22 @@ export default function Cart({products, clear, remove, total}) {
             <th>Cantidad</th>
             <th>Precio unitario</th>
             <th>Precio total</th>
-            <th>Borrar producto</th>
+            {!finished&&<th>Borrar producto</th>}
           </tr>
         </thead>
         <tbody>{productsInCart}</tbody>
         <tfoot>
           <tr>
-            <td>Total</td>
+            <td>Total: </td>
             <td></td>
             <td></td>
             <td></td>
             <td style={styles.Total}>${total()}</td>
-            <td>
-              <Button style={styles.CancelButton} onClick={clear}>Vaciar Carrito</Button>
-            </td>
+            {!finished&&<td>
+              <Button style={styles.SmallButton} onClick={clear}>
+                Vaciar Carrito
+              </Button>
+            </td>}
           </tr>
         </tfoot>
       </Table>

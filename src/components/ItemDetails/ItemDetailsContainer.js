@@ -4,27 +4,43 @@ import {useParams} from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 import {useCart} from "../../context/CartContext";
 import {getFirestore} from "../../firebase";
+import useMounted from "../hooks/useMounted";
+import {useHistory} from "react-router-dom";
 
 export default function ItemListContainer() {
   const cart = useCart();
-  const [product, setProduct] = useState();
+  const [product, setProduct] = useState({});
   const {id_product} = useParams();
   const [isLoading, setIsLoading] = useState(true);
+  const isMounted = useMounted();
+  const [outOfRange, setOutOfRange] = useState(false);
+  const history = useHistory();
+
+  const inCart = cart.isInCart(id_product);
 
   useEffect(() => {
     const db = getFirestore();
     const itemToGet = db.collection("products").doc(String(id_product));
-    console.log("FS request IDC");
-    itemToGet.get().then(item => {
-      //TODO: Add error handling
-      setProduct({...item.data()});
-      setIsLoading(false);
-    });
-  }, [id_product]);
+    itemToGet
+      .get()
+      .then(item => {
+        if (isMounted.current) {
+          setProduct({...item.data()});
+          setIsLoading(false);
+          if (!item.exists) {
+            setOutOfRange(true);
+            setTimeout(() => {
+              setOutOfRange(false);
+              history.push("/");
+            }, 5000);
+          }
+        }
+      })
+      .catch(error => console.log(error));
+  }, [id_product, history, isMounted]);
 
   const addToCart = (quantity, id) => {
     cart.addItem(quantity, id);
-    console.log(quantity, id)
   };
 
   if (isLoading) {
@@ -36,10 +52,19 @@ export default function ItemListContainer() {
     );
   }
 
+  if (outOfRange) {
+    return (
+      <div style={{textAlign: "center"}}>
+        <h2>Producto inexistente</h2>
+        <h2>Serás redirigido a la página principal</h2>
+      </div>
+    );
+  }
+
   return (
     <>
       <h1 className="mainTitle">Detalles del producto</h1>
-      <ItemDetails item={product} addToCart={addToCart} />
+      <ItemDetails item={product} addToCart={addToCart} inCart={inCart} />
     </>
   );
 }

@@ -10,6 +10,15 @@ export default function ItemList({item, name, image, description, stock}) {
       objectFit: "contain",
       margin: "5px auto",
     },
+    CBody: {
+      display: "flex",
+      flexWrap: "wrap",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    CBodyBelow: {
+      alignSelf: "flex-end"
+    }
   };
 
   return (
@@ -21,9 +30,9 @@ export default function ItemList({item, name, image, description, stock}) {
         style={styles.Image}
         alt="Imagen del producto"
       />
-      <Card.Body>
+      <Card.Body style={styles.CBody}>
         <Card.Text>{description}</Card.Text>
-        <Link to={"/item/" + item.id}>
+        <Link to={"/item/" + item.id} style={styles.CBodyBelow}>
           <Button className="spacedButton">Ver detalle del producto</Button>
         </Link>
       </Card.Body>

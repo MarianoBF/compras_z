@@ -6,6 +6,7 @@ import {useHistory} from "react-router-dom";
 import BuyForm from "./BuyForm";
 import {getFirestore} from "../../firebase";
 import Alert from "react-bootstrap/Alert";
+import {Link} from "react-router-dom";
 
 export default function CartContainer() {
   const cart = useCart();
@@ -14,14 +15,15 @@ export default function CartContainer() {
   const [orderID, setOrderID] = useState("");
 
   const [finishedOrder, setFinishedOrder] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
   if (cart.cartProducts.length === 0) {
     return (
       <div className="centered">
         <h1>Aún no hay productos en el carrito</h1>
-        <Button onClick={() => history.goBack()}>
-          Volver y agregar productos
-        </Button>
+        <Link to={"/"}>
+          <Button>Volver y agregar productos</Button>
+        </Link>
       </div>
     );
   }
@@ -29,7 +31,11 @@ export default function CartContainer() {
   const handleCloseAlert = () => {
     setFinishedOrder(false);
     cart.clear();
-    history.push("/")
+    history.push("/");
+  };
+
+  const handleShowForm = () => {
+    setShowForm(true);
   };
 
   const onSubmit = e => {
@@ -51,7 +57,6 @@ export default function CartContainer() {
       date: new Date(),
       total: cart.getTotalPrice(),
     };
-    console.log("Order details:", order);
     getFirestore()
       .collection("orders")
       .add(order)
@@ -64,8 +69,17 @@ export default function CartContainer() {
             .update({stock: item.stock - item.quantity})
         );
         setFinishedOrder(true);
+        setShowForm(false);
       })
       .catch(error => console.log(error));
+  };
+
+  const cartMethods = {
+    clear: cart.clear,
+    remove: cart.removeItem,
+    total: cart.getTotalPrice,
+    increaseQuantity: cart.increaseQuantity,
+    decreaseQuantity: cart.decreaseQuantity,
   };
 
   return (
@@ -73,24 +87,36 @@ export default function CartContainer() {
       <Alert show={finishedOrder} variant="success">
         <p>
           Se ha realizado un pedido exitosamente. El número de registro del
-          pedido es: {orderID}
+          pedido es: {orderID} 
+          </p>
+          <p>  
+          Recibirá un correo electrónico confirmando la fecha de entrega e
+          instrucciones para el pago.
         </p>
-        <div className="d-flex justify-content-end">
+        <div>
           <Button onClick={handleCloseAlert} className="closeBtn">
-            Finalizar y realizar una nueva compra
+            Cerrar aviso y volver al menú principal
           </Button>
         </div>
       </Alert>
 
-      <Cart
-        products={cart.cartProducts}
-        clear={cart.clear}
-        remove={cart.removeItem}
-        total={cart.getTotalPrice}
-      />
-      <hr />
+      {!showForm && (
+        <>
+          {" "}
+          <Cart
+            products={cart.cartProducts}
+            cartMethods={cartMethods}
+            finished={finishedOrder}
+          />
+          <hr />{!finishedOrder &&
+          <Button onClick={handleShowForm} className="closeBtn">
+            Confirmar compra y detallar mis datos.
+          </Button>
+        }
+        </>
+      )}
 
-      {!finishedOrder && <BuyForm onSubmit={onSubmit} />}
+      {!finishedOrder && showForm && <BuyForm onSubmit={onSubmit} />}
     </div>
   );
 }

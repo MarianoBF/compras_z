@@ -12,19 +12,19 @@ export const CartProvider = ({children}) => {
   useEffect(() => {
     const db = getFirestore();
     const itemCollection = db.collection("products");
-    console.log("FS request CC");
-    itemCollection.get().then(data => {
-      setAllProducts(data.docs.map(item => item.data()));
-    });
+    itemCollection
+      .get()
+      .then(data => {
+        setAllProducts(data.docs.map(item => item.data()));
+      })
+      .catch(error => console.log(error));
   }, []);
 
   const addItem = (quantity, product_id) => {
-    //TODO: Should only reject? Warn? Add to cartProducts duplicate product?
     if (cartProducts.filter(item => item.id === product_id).length === 0) {
       const retrieveProduct = allProducts.filter(
         item => item.id === product_id
       );
-      console.log(retrieveProduct);
       setCartProducts([
         ...cartProducts,
         {
@@ -36,7 +36,6 @@ export const CartProvider = ({children}) => {
           image: retrieveProduct[0].image,
         },
       ]);
-      console.log(cartProducts);
     }
   };
 
@@ -67,6 +66,21 @@ export const CartProvider = ({children}) => {
     return totalPrice;
   };
 
+  const increaseQuantity = product_id => {
+    const position = cartProducts.findIndex(item => +item.id === +product_id);
+    const newProducts = [...cartProducts];
+    if (newProducts[position].quantity <= newProducts[position].stock)
+      newProducts[position].quantity++;
+    setCartProducts(newProducts);
+  };
+
+  const decreaseQuantity = product_id => {
+    const position = cartProducts.findIndex(item => item.id === product_id);
+    const newProducts = [...cartProducts];
+    if (newProducts[position].quantity >= 2) newProducts[position].quantity--;
+    setCartProducts(newProducts);
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -77,6 +91,8 @@ export const CartProvider = ({children}) => {
         isInCart,
         getTotalNumberOfItems,
         getTotalPrice,
+        increaseQuantity,
+        decreaseQuantity,
       }}>
       {children}
     </CartContext.Provider>

@@ -6,37 +6,48 @@ export default function BuyForm({onSubmit}) {
   const styles = {
     BuyButton: {
       fontSize: "1.3rem",
+      margin: "20px",
+    },
+    CancelButton: {
+      fontSize: "0.8rem",
+      margin: "10px",
     }
   }
   return (
-    //TODO: FORM validation
     <Container style={{maxWidth: "800px"}}>
+    <h2>Datos del comprador</h2>
       <Form onSubmit={onSubmit}>
         <Form.Group controlId="formBasicName">
-          <Form.Label>Nombre</Form.Label>
-          <Form.Control type="text" placeholder="Nombre y Apellido" />
+          <Form.Label>Nombre Completo (requerido)</Form.Label>
+          <Form.Control type="text" placeholder="Juan Gómez" required minLength="4" maxLength="80"/>
         </Form.Group>
 
         <Form.Group controlId="formBasicPhone">
-          <Form.Label>Teléfono</Form.Label>
+          <Form.Label>Teléfono (optativo)</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Número de Teléfono (con código de área)"
+            placeholder="11-4444-4444"
           />
         </Form.Group>
 
         <Form.Group controlId="formBasicEmail">
-          <Form.Label>Email</Form.Label>
-          <Form.Control type="email" placeholder="Email" />
+          <Form.Label>Email (requerido)</Form.Label>
+          <Form.Control type="email" placeholder="juan@gomez.com" minLength="8" maxLength="80" required/>
           <Form.Text className="text-muted">
-            Te enviaremos la confirmación de la compra e información de
-            seguimiento a esta dirección.
+            Te enviaremos la información de
+            la compra a esta dirección.
           </Form.Text>
         </Form.Group>
 
         <Button style={styles.BuyButton} variant="primary" type="submit">
           Confirmar Compra
         </Button>
+        <hr />
+        <div className="d-flex justify-content-end">
+        <Button style={styles.CancelButton} variant="secondary">
+          Me arrepentí, cancelar compra
+        </Button>
+        </div>
       </Form>
     </Container>
   );

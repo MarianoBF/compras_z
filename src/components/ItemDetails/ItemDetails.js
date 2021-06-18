@@ -6,7 +6,7 @@ import ItemCount from "./ItemCount";
 import {Link} from "react-router-dom";
 import {useState} from "react";
 
-export default function ItemDetails({item, addToCart}) {
+export default function ItemDetails({item, addToCart, inCart}) {
   const {name, description, image, price, stock, id} = item;
   const history = useHistory();
 
@@ -32,9 +32,12 @@ export default function ItemDetails({item, addToCart}) {
     CardBody: {
       margin: "auto",
     },
+    NoStock: {
+      fontStyle: "italic",
+      color: "blue"
+    }
   };
 
-  //TODO: reflect in cart & stock leveles
   const [showBuy, setShowBuy] = useState(false);
   const handleAdd = (quantity, product_id) => {
     setShowBuy(true);
@@ -54,18 +57,21 @@ export default function ItemDetails({item, addToCart}) {
           <Card.Title>{name}</Card.Title>
           <Card.Text>{"$" + price}</Card.Text>
           <Card.Text>{description}</Card.Text>
-          <ItemCount
-            stock={stock}
-            id={id}
-            handleAdd={handleAdd}
-            showBuy={showBuy}
-          />
-          {showBuy && (
+          {inCart ? (
             <Link to="/cart">
               <Button className="spacedButton">
-                Terminar mi compra (ir al carrito)
+                Producto seleccionado, ir al carrito
               </Button>
             </Link>
+          ) : (stock>0?(
+            <>
+              <ItemCount
+                stock={stock}
+                id={id}
+                handleAdd={handleAdd}
+                showBuy={showBuy}
+              />
+            </>):<Card.Text style={styles.NoStock}>Lo sentimos, no hay stock disponible de este artículo</Card.Text>
           )}
           <Card.Text>
             <Button variant="secondary" onClick={() => history.goBack()}>
@@ -73,7 +79,9 @@ export default function ItemDetails({item, addToCart}) {
             </Button>
           </Card.Text>
         </Card.Body>
-        {!showBuy && <Card.Footer>{stock} unidades disponibles</Card.Footer>}
+        {!showBuy && stock > 0 && (
+          <Card.Footer>{stock} unidades disponibles</Card.Footer>
+        ) }
       </Card>
     </Container>
   );
