@@ -2,7 +2,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 
-export default function BuyForm({onSubmit}) {
+export default function BuyForm({handleSubmit, handleCancel, handleReturn}) {
   const styles = {
     BuyButton: {
       fontSize: "1.3rem",
@@ -16,7 +16,7 @@ export default function BuyForm({onSubmit}) {
   return (
     <Container style={{maxWidth: "800px"}}>
     <h2>Datos del comprador</h2>
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formBasicName">
           <Form.Label>Nombre Completo (requerido)</Form.Label>
           <Form.Control type="text" placeholder="Juan Gómez" required minLength="4" maxLength="80"/>
@@ -44,7 +44,10 @@ export default function BuyForm({onSubmit}) {
         </Button>
         <hr />
         <div className="d-flex justify-content-end">
-        <Button style={styles.CancelButton} variant="secondary">
+        <Button onClick={handleReturn} style={styles.CancelButton} variant="secondary">
+          Volver al listado de productos
+        </Button>
+        <Button onClick={handleCancel} style={styles.CancelButton} variant="secondary">
           Me arrepentí, cancelar compra
         </Button>
         </div>

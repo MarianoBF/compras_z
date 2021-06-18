@@ -28,6 +28,9 @@ export default function Cart({products, cartMethods, finished}) {
       flexDirection: "row",
       alignItems: "center",
       height: "100%",
+    },
+    Quantity: {
+      margin: "0 10px",
     }
   };
 
@@ -42,14 +45,14 @@ export default function Cart({products, cartMethods, finished}) {
         </td>
         <td>{item.name}</td>
         <td>
-        <div div class="container-fluid d-flex justify-content-around align-items-center">
+        <div className="container-fluid d-flex justify-content-center align-items-center">
         {!finished&&
           <Button
             onClick={() => decreaseQuantity(item.id)}
             style={styles.SmallButton}>
             -
           </Button>}
-          {item.quantity}{!finished&&
+          <p style={styles.Quantity}>{item.quantity}</p>{!finished&&
           <Button
             onClick={() => increaseQuantity(item.id)}
             style={styles.SmallButton}>

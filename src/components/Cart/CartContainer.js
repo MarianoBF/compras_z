@@ -38,7 +38,17 @@ export default function CartContainer() {
     setShowForm(true);
   };
 
-  const onSubmit = e => {
+  const handleReturn = () => {
+    setShowForm(false);
+  }
+
+  const handleCancel = () => {
+    setShowForm(false);
+    cart.clear();
+    history.push("/");
+  }
+
+  const handleSubmit = e => {
     e.preventDefault();
     const orderedProducts = cart.cartProducts.map(item => ({
       id: item.id,
@@ -116,7 +126,7 @@ export default function CartContainer() {
         </>
       )}
 
-      {!finishedOrder && showForm && <BuyForm onSubmit={onSubmit} />}
+      {!finishedOrder && showForm && <BuyForm handleSubmit={handleSubmit} handleCancel={handleCancel} handleReturn={handleReturn} />}
     </div>
   );
 }
