@@ -15,6 +15,7 @@ export default function CartContainer() {
   const [orderID, setOrderID] = useState("");
 
   const [finishedOrder, setFinishedOrder] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
   if (cart.cartProducts.length === 0) {
     return (
@@ -31,6 +32,10 @@ export default function CartContainer() {
     setFinishedOrder(false);
     cart.clear();
     history.push("/");
+  };
+
+  const handleShowForm = () => {
+    setShowForm(true);
   };
 
   const onSubmit = e => {
@@ -64,6 +69,7 @@ export default function CartContainer() {
             .update({stock: item.stock - item.quantity})
         );
         setFinishedOrder(true);
+        setShowForm(false);
       })
       .catch(error => console.log(error));
   };
@@ -81,25 +87,36 @@ export default function CartContainer() {
       <Alert show={finishedOrder} variant="success">
         <p>
           Se ha realizado un pedido exitosamente. El número de registro del
-          pedido es: {orderID}
+          pedido es: {orderID} 
+          </p>
+          <p>  
           Recibirá un correo electrónico confirmando la fecha de entrega e
           instrucciones para el pago.
         </p>
-        <div className="d-flex justify-content-end">
+        <div>
           <Button onClick={handleCloseAlert} className="closeBtn">
-            Finalizar y realizar una nueva compra
+            Cerrar aviso y volver al menú principal
           </Button>
         </div>
       </Alert>
 
-      <Cart
-        products={cart.cartProducts}
-        cartMethods={cartMethods}
-        finished={finishedOrder}
-      />
-      <hr />
+      {!showForm && (
+        <>
+          {" "}
+          <Cart
+            products={cart.cartProducts}
+            cartMethods={cartMethods}
+            finished={finishedOrder}
+          />
+          <hr />{!finishedOrder &&
+          <Button onClick={handleShowForm} className="closeBtn">
+            Confirmar compra y detallar mis datos.
+          </Button>
+        }
+        </>
+      )}
 
-      {!finishedOrder && <BuyForm onSubmit={onSubmit} />}
+      {!finishedOrder && showForm && <BuyForm onSubmit={onSubmit} />}
     </div>
   );
 }

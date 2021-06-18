@@ -22,6 +22,13 @@ export default function Cart({products, cartMethods, finished}) {
     SmallButton: {
       fontSize: "0.8rem",
     },
+    ItemCount: {
+      display: "flex",
+      flexWrap: "no-wrap",
+      flexDirection: "row",
+      alignItems: "center",
+      height: "100%",
+    }
   };
 
   const {remove, clear, total, increaseQuantity, decreaseQuantity} =
@@ -35,25 +42,28 @@ export default function Cart({products, cartMethods, finished}) {
         </td>
         <td>{item.name}</td>
         <td>
+        <div div class="container-fluid d-flex justify-content-around align-items-center">
+        {!finished&&
           <Button
             onClick={() => decreaseQuantity(item.id)}
             style={styles.SmallButton}>
             -
-          </Button>{" "}
-          {item.quantity}{" "}
+          </Button>}
+          {item.quantity}{!finished&&
           <Button
             onClick={() => increaseQuantity(item.id)}
             style={styles.SmallButton}>
             +
-          </Button>
+          </Button>}
+          </div>
         </td>
         <td>${item.price}</td>
         <td>${item.price * item.quantity}</td>
-        <td>
+        {!finished&&<td>
           <Button style={styles.SmallButton} onClick={() => remove(item.id)}>
             Borrar
           </Button>
-        </td>
+        </td>}
       </tr>
     );
   });
@@ -66,7 +76,7 @@ export default function Cart({products, cartMethods, finished}) {
           : "Productos en el carrito"}
       </h2>
 
-      <Table striped bordered hover style={styles.Table}>
+      <Table striped bordered hover responsive style={styles.Table}>
         <thead>
           <tr>
             <th></th>
@@ -74,22 +84,22 @@ export default function Cart({products, cartMethods, finished}) {
             <th>Cantidad</th>
             <th>Precio unitario</th>
             <th>Precio total</th>
-            <th>Borrar producto</th>
+            {!finished&&<th>Borrar producto</th>}
           </tr>
         </thead>
         <tbody>{productsInCart}</tbody>
         <tfoot>
           <tr>
-            <td>Total</td>
+            <td>Total: </td>
             <td></td>
             <td></td>
             <td></td>
             <td style={styles.Total}>${total()}</td>
-            <td>
+            {!finished&&<td>
               <Button style={styles.SmallButton} onClick={clear}>
                 Vaciar Carrito
               </Button>
-            </td>
+            </td>}
           </tr>
         </tfoot>
       </Table>

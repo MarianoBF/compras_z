@@ -27,7 +27,6 @@ export default function ItemListContainer() {
         if (isMounted.current) {
           setProduct({...item.data()});
           setIsLoading(false);
-          console.log(item.exists);
           if (!item.exists) {
             setOutOfRange(true);
             setTimeout(() => {
@@ -38,7 +37,7 @@ export default function ItemListContainer() {
         }
       })
       .catch(error => console.log(error));
-  }, [id_product]);
+  }, [id_product, history, isMounted]);
 
   const addToCart = (quantity, id) => {
     cart.addItem(quantity, id);
