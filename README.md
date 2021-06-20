@@ -1,17 +1,19 @@
 # Description
-Un sitio de compras, utilizando React Bootstrap para la interfaz.
+Un sitio de compras, utilizando [React Bootstrap](https://react-bootstrap.github.io/) para la interfaz.
 
-# Descripción
-A shopping website, using React Bootstrap for the UI.
+Persiste carro de compras en local storage.
 
-# Installation \ Instalación
+Autoriza al usuario vía Google Firebase.  
+
+
+# Instalación
 1. `npm install`
 1. Completar sample.env con valores de conexión a la BD \ Complete sample.env with DB connection values
 1. `npm start`
 
-# Montada en \ Live at:
+# Montado en:
 https://compras-z.netlify.app
 
-# Demo Navigation \ Demo de navegación
+# Demo de navegación
 
 ![Navegacion](navegacion.gif)
