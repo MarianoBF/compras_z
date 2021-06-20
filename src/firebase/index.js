@@ -30,6 +30,7 @@ const firebaseConfig = {
   appId: REACT_APP_APPID || ENVS.APPID,
 };
 
+console.log(firebaseConfig)
 
 const app = firebase.initializeApp(firebaseConfig);
 
@@ -47,6 +48,7 @@ export function loginWithGoogle() {
   return firebase
     .auth()
     .signInWithPopup(provider)
+    .catch(error=>console.log(error))
     .then(res=>res.user)
 }
 
