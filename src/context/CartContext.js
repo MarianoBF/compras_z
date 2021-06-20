@@ -10,14 +10,22 @@ export const CartProvider = ({children}) => {
   const [cartProducts, setCartProducts] = useState([]);
 
   useEffect(() => {
-    const db = getFirestore();
-    const itemCollection = db.collection("products");
-    itemCollection
-      .get()
-      .then(data => {
-        setAllProducts(data.docs.map(item => item.data()));
-      })
-      .catch(error => console.log(error));
+    try {
+      const existingCart = JSON.parse(localStorage.getItem("CartZ"));
+      if (existingCart.length > 0) {
+        console.log("cart", existingCart.length, existingCart);
+        setCartProducts(existingCart);
+      }
+    } finally {
+      const db = getFirestore();
+      const itemCollection = db.collection("products");
+      itemCollection
+        .get()
+        .then(data => {
+          setAllProducts(data.docs.map(item => item.data()));
+        })
+        .catch(error => console.log(error));
+    }
   }, []);
 
   const addItem = (quantity, product_id) => {
@@ -25,7 +33,7 @@ export const CartProvider = ({children}) => {
       const retrieveProduct = allProducts.filter(
         item => item.id === product_id
       );
-      setCartProducts([
+      const newCart = [
         ...cartProducts,
         {
           id: product_id,
@@ -35,17 +43,21 @@ export const CartProvider = ({children}) => {
           stock: retrieveProduct[0].stock,
           image: retrieveProduct[0].image,
         },
-      ]);
+      ];
+      setCartProducts(newCart);
+      localStorage.setItem("CartZ", JSON.stringify(newCart));
     }
   };
 
   const removeItem = product_id => {
     const filtered = cartProducts.filter(item => item.id !== product_id);
     setCartProducts(filtered);
+    localStorage.setItem("CartZ", JSON.stringify(filtered));
   };
 
   const clear = () => {
     setCartProducts([]);
+    localStorage.setItem("CartZ", []);
   };
 
   const isInCart = product_id => {

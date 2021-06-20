@@ -53,3 +53,8 @@
 .centered {
   text-align: center;
 }
+
+.centeredBtn {
+  display: block !important;
+  margin: 0 auto;
+}

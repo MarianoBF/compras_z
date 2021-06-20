@@ -14,6 +14,7 @@ export default function ItemListContainer() {
   const isMounted = useMounted();
   const [outOfRange, setOutOfRange] = useState(false);
   const history = useHistory();
+  const [noStock, setNoStock] = useState(false);
 
   useEffect(() => {
     if (id_category === undefined) {
@@ -27,6 +28,7 @@ export default function ItemListContainer() {
               data.docs
                 .sort((a, b) => (+a.id > +b.id ? 1 : -1))
                 .map(item => item.data())
+                .filter(item=>noStock?item.stock>=0:item.stock > 0)
             );
             setIsLoading(false);
           }
@@ -48,14 +50,19 @@ export default function ItemListContainer() {
                 history.push("/");
               }, 5000);
             } else {
-              setProducts(data.docs.map(item => item.data()));
+              setProducts(
+                data.docs
+                  .sort((a, b) => (+a.id > +b.id ? 1 : -1))
+                  .map(item => item.data())
+                  .filter(item=>noStock?item.stock>=0:item.stock > 0)
+              );
               setIsLoading(false);
             }
           }
         })
         .catch(error => console.log(error));
     }
-  }, [id_category, history, isMounted, products.length]);
+  }, [id_category, history, isMounted, products.length, noStock]);
 
   useEffect(() => {
     const db = getFirestore();
@@ -83,6 +90,10 @@ export default function ItemListContainer() {
     }
   }, [categories, id_category, category]);
 
+  const handleNoStock = () => {
+    setNoStock(!noStock);
+  };
+
   if (isLoading) {
     return (
       <div style={{textAlign: "center"}}>
@@ -106,6 +117,11 @@ export default function ItemListContainer() {
       <h1 className="mainTitle">
         Desde aquí podrás ver un listado de {category}{" "}
       </h1>
+      <button onClick={handleNoStock} className="btn btn-secondary centeredBtn">
+        {noStock
+          ? "Sólo mostrar artículos con stock disponible"
+          : "Ver artículos sin stock disponible"}
+      </button>
       <ItemList products={products} />
     </div>
   );

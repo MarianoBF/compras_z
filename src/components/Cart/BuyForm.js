@@ -13,16 +13,18 @@ export default function BuyForm({handleSubmit, handleCancel, handleReturn}) {
       margin: "10px",
     }
   }
+
+
   return (
     <Container style={{maxWidth: "800px"}}>
     <h2>Datos del comprador</h2>
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formBasicName">
+        <Form.Group controlId="name">
           <Form.Label>Nombre Completo (requerido)</Form.Label>
           <Form.Control type="text" placeholder="Juan Gómez" required minLength="4" maxLength="80"/>
         </Form.Group>
 
-        <Form.Group controlId="formBasicPhone">
+        <Form.Group controlId="phone">
           <Form.Label>Teléfono (optativo)</Form.Label>
           <Form.Control
             type="text"
@@ -30,7 +32,7 @@ export default function BuyForm({handleSubmit, handleCancel, handleReturn}) {
           />
         </Form.Group>
 
-        <Form.Group controlId="formBasicEmail">
+        <Form.Group controlId="email">
           <Form.Label>Email (requerido)</Form.Label>
           <Form.Control type="email" placeholder="juan@gomez.com" minLength="8" maxLength="80" required/>
           <Form.Text className="text-muted">
@@ -39,7 +41,12 @@ export default function BuyForm({handleSubmit, handleCancel, handleReturn}) {
           </Form.Text>
         </Form.Group>
 
-        <Button style={styles.BuyButton} variant="primary" type="submit">
+        <Form.Group controlId="confirmEmail">
+          <Form.Label>Confirmar email (requerido)</Form.Label>
+          <Form.Control type="email" placeholder="juan@gomez.com" minLength="8" maxLength="80" required/>
+        </Form.Group>
+
+        <Button disabled={true} style={styles.BuyButton} variant="primary" type="submit">
           Confirmar Compra
         </Button>
         <hr />

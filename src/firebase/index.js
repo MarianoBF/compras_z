@@ -18,7 +18,7 @@ fetch("/.netlify/functions/test", {
     ENVS.SENDERID = res.SENDERID;
     ENVS.APPID = res.APPID;  
   })
-  .catch(error => console.log(error))
+  .catch(error => ENVS.error = error)
 
 const firebaseConfig = {
   apiKey: REACT_APP_APIKEY || ENVS.APIKEY,
