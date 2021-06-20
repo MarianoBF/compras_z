@@ -3,7 +3,7 @@ Un sitio de compras, utilizando [React Bootstrap](https://react-bootstrap.github
 
 Persiste carro de compras en local storage.
 
-Autoriza al usuario vía Google Firebase.  
+Autoriza al usuario vía [Google Firebase](https://firebase.google.com/).  
 
 
 # Instalación

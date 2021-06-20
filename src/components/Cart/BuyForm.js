@@ -82,7 +82,6 @@ export default function BuyForm({
           <Form.Control
             type="email"
             placeholder="juan@gomez.com"
-            minLength="0"
             maxLength="80"
             value={values.email2}
             onChange={handleChange}
@@ -113,7 +112,6 @@ export default function BuyForm({
           <Form.Control
             type="text"
             placeholder="Entregar envuelto para regalo."
-            minLength="0"
             value={values.comments}
             onChange={handleChange}
             maxLength="200"

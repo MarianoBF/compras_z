@@ -62,7 +62,7 @@ export default function ItemListContainer() {
         })
         .catch(error => console.log(error));
     }
-  }, [id_category, history, isMounted, products.length, noStock]);
+  }, [id_category, history, isMounted, noStock]);
 
   useEffect(() => {
     const db = getFirestore();

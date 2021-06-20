@@ -17,7 +17,7 @@ export default function CartContainer({user}) {
   const [finishedOrder, setFinishedOrder] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
-  if (cart.cartProducts.length === 0) {
+  if (cart.cartProducts?.length === 0) {
     return (
       <div className="centered">
         <h1>Aún no hay productos en el carrito</h1>
