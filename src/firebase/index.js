@@ -40,6 +40,7 @@ export function updateDB(collection, items) {
 }
 
 export function loginWithGoogle() {
+  console.log(firebaseConfig)
   const provider = new firebase.auth.GoogleAuthProvider();
   return firebase
     .auth()
