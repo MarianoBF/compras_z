@@ -8,7 +8,7 @@ Autoriza al usuario vía [Google Firebase](https://firebase.google.com/).
 
 # Instalación
 1. `npm install`
-1. Completar sample.env con valores de conexión a la BD \ Complete sample.env with DB connection values
+1. Completar sample.env con valores de conexión a Firebase
 1. `npm start`
 
 # Montado en:
