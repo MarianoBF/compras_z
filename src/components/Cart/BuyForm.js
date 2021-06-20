@@ -43,10 +43,10 @@ export default function BuyForm({
           <Form.Control
             type="text"
             placeholder="Juan Gómez"
-            required
             minLength="4"
             maxLength="80"
             value={values.name}
+            readOnly
           />
         </Form.Group>
 

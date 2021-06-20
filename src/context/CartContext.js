@@ -13,7 +13,6 @@ export const CartProvider = ({children}) => {
     try {
       const existingCart = JSON.parse(localStorage.getItem("CartZ"));
       if (existingCart?.length > 0) {
-        console.log("cart", existingCart.length, existingCart);
         setCartProducts(existingCart);
       }
     } finally {

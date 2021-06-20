@@ -96,8 +96,8 @@ export default function CartContainer({user}) {
     <div className="centered">
       <Alert show={finishedOrder} variant="success">
         <p>
-          Se ha realizado tu pedido exitosamente {user.name}. El número de registro del
-          pedido es: {orderID}
+          Se ha realizado tu pedido exitosamente {user.name}. El número de
+          registro del pedido es: {orderID}
         </p>
         <p>
           Recibirás un correo electrónico confirmando la fecha de entrega e
@@ -119,7 +119,7 @@ export default function CartContainer({user}) {
             finished={finishedOrder}
           />
           <hr />
-          {!finishedOrder && user.name ? (
+          {!finishedOrder && user.name && (
             <>
               <Button onClick={handleShowForm} className="closeBtn">
                 Confirmar compra
@@ -129,18 +129,23 @@ export default function CartContainer({user}) {
                 Realizarás la compra a nombre de {user.name}
               </p>
             </>
-          ) : (
-        <p>Necesitas loguearte desde la barra para completar una compra.</p>
-      ) }
+          )}
+          {!finishedOrder && !user.name && (
+            <div className="loginRequired">
+              <p>
+                Necesitás loguearte desde la barra para completar una compra.
+              </p>
+            </div>
+          )}
         </>
-      ) }
+      )}
 
       {!finishedOrder && showForm && (
         <BuyForm
           handleSubmit={handleSubmit}
           handleCancel={handleCancel}
           handleReturn={handleReturn}
-          user = {user}
+          user={user}
         />
       )}
     </div>
