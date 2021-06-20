@@ -19,16 +19,19 @@ const firebaseConfig = {
   appId: REACT_APP_APPID,
 };
 
+let app;
+
 fetch("/.netlify/functions/test")
   .then((res)=>res.json())
   .then((res) => {
     firebaseConfig.apiKey = res.APIKEY;
     firebaseConfig.messagingSenderId = res.SENDERID;
-    firebaseConfig.appId = res.APPID;  
+    firebaseConfig.appId = res.APPID;
+    app = firebase.initializeApp(firebaseConfig);
+  
   })
   .catch(error => ENVS.error = error)
 
-const app = firebase.initializeApp(firebaseConfig);
 
 export const getFirebase = () => app;
 
