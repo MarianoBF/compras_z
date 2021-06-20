@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
+import "firebase/auth";
 
 const {
   REACT_APP_APIKEY,
@@ -39,4 +40,16 @@ export const getFirestore = () => firebase.firestore(app);
 export function updateDB(collection, items) {
   let db = firebase.firestore().collection(collection);
   items.forEach(item => db.doc(String(item.id)).set({...item}));
+}
+
+export function loginWithGoogle() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  return firebase
+    .auth()
+    .signInWithPopup(provider)
+    .then(res=>res.user)
+}
+
+export function logoutFromGoogle() {
+  firebase.auth().signOut();
 }

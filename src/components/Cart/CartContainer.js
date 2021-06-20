@@ -8,7 +8,7 @@ import {getFirestore} from "../../firebase";
 import Alert from "react-bootstrap/Alert";
 import {Link} from "react-router-dom";
 
-export default function CartContainer() {
+export default function CartContainer({user}) {
   const cart = useCart();
   const history = useHistory();
 
@@ -40,13 +40,13 @@ export default function CartContainer() {
 
   const handleReturn = () => {
     setShowForm(false);
-  }
+  };
 
   const handleCancel = () => {
     setShowForm(false);
     cart.clear();
     history.push("/");
-  }
+  };
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -96,11 +96,11 @@ export default function CartContainer() {
     <div className="centered">
       <Alert show={finishedOrder} variant="success">
         <p>
-          Se ha realizado un pedido exitosamente. El número de registro del
-          pedido es: {orderID} 
-          </p>
-          <p>  
-          Recibirá un correo electrónico confirmando la fecha de entrega e
+          Se ha realizado tu pedido exitosamente {user.name}. El número de registro del
+          pedido es: {orderID}
+        </p>
+        <p>
+          Recibirás un correo electrónico confirmando la fecha de entrega e
           instrucciones para el pago.
         </p>
         <div>
@@ -118,15 +118,31 @@ export default function CartContainer() {
             cartMethods={cartMethods}
             finished={finishedOrder}
           />
-          <hr />{!finishedOrder &&
-          <Button onClick={handleShowForm} className="closeBtn">
-            Confirmar compra y detallar mis datos.
-          </Button>
-        }
+          <hr />
+          {!finishedOrder && user.name ? (
+            <>
+              <Button onClick={handleShowForm} className="closeBtn">
+                Confirmar compra
+              </Button>
+              <p>
+                En el siguiente paso podrás detallar los datos para el envío.
+                Realizarás la compra a nombre de {user.name}
+              </p>
+            </>
+          ) : (
+        <p>Necesitas loguearte desde la barra para completar una compra.</p>
+      ) }
         </>
-      )}
+      ) }
 
-      {!finishedOrder && showForm && <BuyForm handleSubmit={handleSubmit} handleCancel={handleCancel} handleReturn={handleReturn} />}
+      {!finishedOrder && showForm && (
+        <BuyForm
+          handleSubmit={handleSubmit}
+          handleCancel={handleCancel}
+          handleReturn={handleReturn}
+          user = {user}
+        />
+      )}
     </div>
   );
 }

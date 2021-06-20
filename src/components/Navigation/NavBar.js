@@ -7,7 +7,7 @@ import {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
 import {getFirestore} from "../../firebase";
 
-function NavBar() {
+function NavBar({login, logout, user}) {
   const styles = {
     categories: {
       padding: "15px",
@@ -20,6 +20,7 @@ function NavBar() {
       color: "darkolivegreen",
       borderRadius: "50px",
       marginRight: "10%",
+      textAlign: "center",
     },
   };
 
@@ -34,7 +35,7 @@ function NavBar() {
         setCategories(data.docs.map(item => item.data()));
       })
       .catch(error => console.log(error));
-  }, []);
+  }, [user]);
 
   const categoryList = categories.map(item => (
     <LinkContainer
@@ -64,6 +65,12 @@ function NavBar() {
           </LinkContainer>
           {categoryList}
         </Nav>
+        <Nav.Link style={styles.HomeCategory} onClick={login}>
+          {user.name ? user.name : "Login"}
+        </Nav.Link>
+        {user.name && <Nav.Link style={styles.HomeCategory} onClick={logout}>
+          Logout
+        </Nav.Link>}
         <Link style={{textDecoration: "none"}} to={"/cart"}>
           <CartWidget className="justify-content-end" />
         </Link>
