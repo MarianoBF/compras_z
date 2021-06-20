@@ -19,7 +19,7 @@ const firebaseConfig = {
   appId: REACT_APP_APPID,
 };
 
-fetch("/.netlify/functions/test")
+fetch("/.netlify/functions/keys")
   .then((res)=>res.json())
   .then((res) => {
     firebaseConfig.apiKey = res.APIKEY;
@@ -40,12 +40,10 @@ export function updateDB(collection, items) {
 }
 
 export function loginWithGoogle() {
-  console.log(firebaseConfig)
   const provider = new firebase.auth.GoogleAuthProvider();
   return firebase
     .auth()
     .signInWithPopup(provider)
-    .catch(error=>console.log(error))
     .then(res=>res.user)
 }
 
