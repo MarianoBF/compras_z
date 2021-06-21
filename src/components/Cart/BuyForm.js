@@ -24,7 +24,6 @@ export default function BuyForm({
     name: user.name,
     phone: "",
     email: user.email,
-    email2: "",
     address: "",
     comments: "",
   });
@@ -74,22 +73,6 @@ export default function BuyForm({
           />
           <Form.Text className="text-muted">
             Te enviaremos la información de la compra a esta dirección.
-          </Form.Text>
-        </Form.Group>
-
-        <Form.Group controlId="email2">
-          <Form.Label>Email secundario (opcional)</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="juan@gomez.com"
-            maxLength="80"
-            value={values.email2}
-            onChange={handleChange}
-            name="email2"
-            
-          />
-          <Form.Text className="text-muted">
-            En caso que quieras recibir la información a un seguno correo.
           </Form.Text>
         </Form.Group>
 
