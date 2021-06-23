@@ -3,22 +3,23 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import {useState} from "react";
 
+const styles = {
+  BuyButton: {
+    fontSize: "1.3rem",
+    margin: "20px",
+  },
+  CancelButton: {
+    fontSize: "0.8rem",
+    margin: "10px",
+  },
+};
+
 export default function BuyForm({
   handleSubmit,
   handleCancel,
   handleReturn,
   user,
 }) {
-  const styles = {
-    BuyButton: {
-      fontSize: "1.3rem",
-      margin: "20px",
-    },
-    CancelButton: {
-      fontSize: "0.8rem",
-      margin: "10px",
-    },
-  };
 
   const [values, setValues] = useState({
     name: user.name,

@@ -7,22 +7,23 @@ import {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
 import {getFirestore} from "../../firebase";
 
+const styles = {
+  categories: {
+    padding: "15px",
+    fontWeight: "bold",
+  },
+  HomeCategory: {
+    padding: "15px",
+    fontWeight: "bold",
+    backgroundColor: "white",
+    color: "darkolivegreen",
+    borderRadius: "50px",
+    marginRight: "10%",
+    textAlign: "center",
+  },
+};
+
 function NavBar({login, logout, user}) {
-  const styles = {
-    categories: {
-      padding: "15px",
-      fontWeight: "bold",
-    },
-    HomeCategory: {
-      padding: "15px",
-      fontWeight: "bold",
-      backgroundColor: "white",
-      color: "darkolivegreen",
-      borderRadius: "50px",
-      marginRight: "10%",
-      textAlign: "center",
-    },
-  };
 
   const [categories, setCategories] = useState([]);
 
