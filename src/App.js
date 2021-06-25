@@ -6,6 +6,7 @@ import CartContainer from "./components/Cart/CartContainer";
 import ErrorComponent from "./components/ErrorComponent";
 import {HashRouter, Switch, Route} from "react-router-dom";
 import {CartProvider} from "./context/CartContext";
+import { ProductsProvider } from "./context/ProductsContext";
 import {useState} from "react";
 import {loginWithGoogle, logoutFromGoogle} from "./firebase";
 
@@ -21,7 +22,7 @@ function App() {
           uid: loginData.uid,
         });
       })
-      .catch(error=>console.log("Unable to login", error));
+      .catch(error => console.log("Unable to login", error));
   };
 
   const logout = () => {
@@ -35,28 +36,30 @@ function App() {
   };
 
   return (
-    <CartProvider>
-      <HashRouter>
-        <NavBar login={login} logout={logout} user={user} />
-        <Switch>
-          <Route exact path="/category/:id_category">
-            <ItemListContainer />
-          </Route>
-          <Route exact path="/item/:id_product">
-            <ItemDetailsContainer />
-          </Route>
-          <Route exact path="/cart">
-            <CartContainer user={user} />
-          </Route>
-          <Route exact path="/">
-            <ItemListContainer />
-          </Route>
-          <Route>
-            <ErrorComponent />
-          </Route>
-        </Switch>
-      </HashRouter>
-    </CartProvider>
+    <ProductsProvider>
+      <CartProvider>
+        <HashRouter>
+          <NavBar login={login} logout={logout} user={user} />
+          <Switch>
+            <Route exact path="/category/:id_category">
+              <ItemListContainer />
+            </Route>
+            <Route exact path="/item/:id_product">
+              <ItemDetailsContainer />
+            </Route>
+            <Route exact path="/cart">
+              <CartContainer user={user} />
+            </Route>
+            <Route exact path="/">
+              <ItemListContainer />
+            </Route>
+            <Route>
+              <ErrorComponent />
+            </Route>
+          </Switch>
+        </HashRouter>
+      </CartProvider>
+    </ProductsProvider>
   );
 }
 

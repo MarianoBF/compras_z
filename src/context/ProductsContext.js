@@ -44,7 +44,7 @@ export const ProductsProvider = ({children}) => {
   };
 
   const getProductsByCategory = category => {
-    return products.filter(item => item.category === category);
+    return products.sort((a, b) => (+a.id > +b.id ? 1 : -1)).filter(item => item.category === category);
   };
 
   const getCategories = () => {
