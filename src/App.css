@@ -58,3 +58,25 @@
   display: block !important;
   margin: 0 auto;
 }
+
+.loginRequired {
+  font-size: 1.5rem;
+  background: lightcyan;
+}
+
+.error {
+  border: 2px solid red;
+}
+
+.errorMessage {
+  color: tomato;
+  font-size: 11px;
+}
+
+.form-group {
+  margin-bottom: 30px;
+}
+
+.form-label {
+  font-weight: bold;
+}

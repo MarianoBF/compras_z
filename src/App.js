@@ -20,9 +20,8 @@ function App() {
           email: loginData.email,
           uid: loginData.uid,
         });
-        console.log("aa", user);
       })
-      .catch(console.log("Unable to login"));
+      .catch(error=>console.log("Unable to login", error));
   };
 
   const logout = () => {

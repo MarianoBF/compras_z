@@ -2,24 +2,25 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import {Link} from "react-router-dom";
 
+const styles = {
+  Image: {
+    maxHeight: "100px",
+    maxWidth: "200px",
+    objectFit: "contain",
+    margin: "5px auto",
+  },
+  CBody: {
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  CBodyBelow: {
+    alignSelf: "flex-end"
+  }
+};
+
 export default function ItemList({item, name, image, description, stock}) {
-  const styles = {
-    Image: {
-      maxHeight: "100px",
-      maxWidth: "200px",
-      objectFit: "contain",
-      margin: "5px auto",
-    },
-    CBody: {
-      display: "flex",
-      flexWrap: "wrap",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    CBodyBelow: {
-      alignSelf: "flex-end"
-    }
-  };
 
   return (
     <Card border="dark" className="card" bg="light">

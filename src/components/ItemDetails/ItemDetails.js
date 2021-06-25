@@ -6,37 +6,37 @@ import ItemCount from "./ItemCount";
 import {Link} from "react-router-dom";
 import {useState} from "react";
 
+const styles = {
+  Container: {
+    display: "flex",
+    justifyContent: "center",
+    marginTop: "2em",
+  },
+  Card: {
+    justifyContent: "center",
+    textAlign: "center",
+    alignItems: "center",
+    maxWidth: "400px",
+    maxHeight: "800px",
+  },
+  Image: {
+    maxHeight: "350px",
+    maxWidth: "350px",
+    objectFit: "contain",
+    margin: "25px auto",
+  },
+  CardBody: {
+    margin: "auto",
+  },
+  NoStock: {
+    fontStyle: "italic",
+    color: "blue"
+  }
+};
+
 export default function ItemDetails({item, addToCart, inCart}) {
   const {name, description, image, price, stock, id} = item;
   const history = useHistory();
-
-  const styles = {
-    Container: {
-      display: "flex",
-      justifyContent: "center",
-      marginTop: "2em",
-    },
-    Card: {
-      justifyContent: "center",
-      textAlign: "center",
-      alignItems: "center",
-      maxWidth: "400px",
-      maxHeight: "800px",
-    },
-    Image: {
-      maxHeight: "350px",
-      maxWidth: "350px",
-      objectFit: "contain",
-      margin: "25px auto",
-    },
-    CardBody: {
-      margin: "auto",
-    },
-    NoStock: {
-      fontStyle: "italic",
-      color: "blue"
-    }
-  };
 
   const [showBuy, setShowBuy] = useState(false);
   const handleAdd = (quantity, product_id) => {

@@ -11,12 +11,14 @@ export const CartProvider = ({children}) => {
 
   useEffect(() => {
     try {
-      const existingCart = JSON.parse(localStorage.getItem("CartZ"));
-      if (existingCart.length > 0) {
-        console.log("cart", existingCart.length, existingCart);
+      const local = localStorage.getItem("CartZ")
+      if (local?.length > 0) {
+        const existingCart = JSON.parse(local);
         setCartProducts(existingCart);
       }
-    } finally {
+    } catch {
+      console.log("Unable to recover previous order")
+    }finally {
       const db = getFirestore();
       const itemCollection = db.collection("products");
       itemCollection
