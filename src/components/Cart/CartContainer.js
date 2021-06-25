@@ -133,7 +133,7 @@ export default function CartContainer({user}) {
           {!finishedOrder && !user.name && (
             <div className="loginRequired">
               <p>
-                Necesitás loguearte desde la barra para completar una compra.
+                Necesitás loguearte desde la barra superior para completar una compra.
               </p>
             </div>
           )}

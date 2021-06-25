@@ -20,7 +20,6 @@ export default function BuyForm({
   handleReturn,
   user,
 }) {
-
   const [values, setValues] = useState({
     name: user.name,
     phone: "",
@@ -29,7 +28,7 @@ export default function BuyForm({
     comments: "",
   });
 
-  const handleChange =  e => {
+  const handleChange = e => {
     const {name, value} = e.target;
     setValues({...values, [name]: value});
   };
@@ -53,6 +52,7 @@ export default function BuyForm({
         <Form.Group controlId="phone">
           <Form.Label>Teléfono (requerido)</Form.Label>
           <Form.Control
+            className="formItem"
             type="text"
             placeholder="11-4444-4444"
             value={values.phone}
@@ -67,8 +67,6 @@ export default function BuyForm({
           <Form.Control
             type="email"
             placeholder="juan@gomez.com"
-            minLength="8"
-            maxLength="80"
             value={values.email}
             readOnly
           />
@@ -78,17 +76,21 @@ export default function BuyForm({
         </Form.Group>
 
         <Form.Group controlId="address">
-          <Form.Label>Dirección para la entrega. Indicar calle, número y localidad (requerido)</Form.Label>
+          <Form.Label>Dirección para la entrega. (requerido)</Form.Label>
           <Form.Control
+            className="formItem"
             type="text"
             placeholder="Av. Rivadavia 4532 6°E, CABA"
-            minLength="8"
             value={values.address}
             onChange={handleChange}
             maxLength="200"
             required
             name="address"
           />
+          <Form.Text className="text-muted">
+            Indicar calle, número, piso, localidad y provincia.
+          </Form.Text>
+          <Form.Control.Feedback type="invalid">"TEST"</Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group controlId="comments">
@@ -100,7 +102,6 @@ export default function BuyForm({
             onChange={handleChange}
             maxLength="200"
             name="comments"
-            
           />
           <Form.Text className="text-muted">
             Indicá en este campo si tenés alguna observación para el pedido.
@@ -108,7 +109,7 @@ export default function BuyForm({
         </Form.Group>
 
         <Button
-          disabled={values.address.length < 12 || values.phone.length<8}
+          disabled={values.address.length < 12 || values.phone.length < 8}
           style={styles.BuyButton}
           variant="primary"
           type="submit">
