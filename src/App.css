@@ -63,3 +63,12 @@
   font-size: 1.5rem;
   background: lightcyan;
 }
+
+.error {
+  border: 2px solid red;
+}
+
+.errorMessage {
+  color: tomato;
+  font-size: 11px;
+}

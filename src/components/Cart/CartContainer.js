@@ -48,8 +48,7 @@ export default function CartContainer({user}) {
     history.push("/");
   };
 
-  const handleSubmit = e => {
-    e.preventDefault();
+  const handleSubmit = values => {
     const orderedProducts = cart.cartProducts.map(item => ({
       id: item.id,
       title: item.name,
@@ -59,9 +58,11 @@ export default function CartContainer({user}) {
     }));
     const order = {
       buyer: {
-        name: e.target[0].value,
-        phone: e.target[1].value,
-        email: e.target[2].value,
+        name: values.name,
+        phone: values.phone,
+        email: values.email,
+        address: values.address,
+        comments: values.comments,
       },
       items: [...orderedProducts],
       date: new Date(),
@@ -133,7 +134,8 @@ export default function CartContainer({user}) {
           {!finishedOrder && !user.name && (
             <div className="loginRequired">
               <p>
-                Necesitás loguearte desde la barra superior para completar una compra.
+                Necesitás loguearte desde la barra superior para completar una
+                compra.
               </p>
             </div>
           )}
@@ -142,7 +144,7 @@ export default function CartContainer({user}) {
 
       {!finishedOrder && showForm && (
         <BuyForm
-          handleSubmit={handleSubmit}
+          handleSubmitForm={handleSubmit}
           handleCancel={handleCancel}
           handleReturn={handleReturn}
           user={user}

@@ -5,6 +5,7 @@ Persiste carro de compras en local storage.
 
 Autoriza al usuario vía [Google Firebase](https://firebase.google.com/).  
 
+Manejo del formulario con [Formik](https://formik.org/) y [Yup](https://www.npmjs.com/package/yup)
 
 # Instalación
 1. `npm install`
@@ -13,7 +14,3 @@ Autoriza al usuario vía [Google Firebase](https://firebase.google.com/).
 
 # Montado en:
 https://compras-z.netlify.app
-
-# Demo de navegación
-
-![Navegacion](navegacion.gif)
