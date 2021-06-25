@@ -72,3 +72,11 @@
   color: tomato;
   font-size: 11px;
 }
+
+.form-group {
+  margin-bottom: 30px;
+}
+
+.form-label {
+  font-weight: bold;
+}

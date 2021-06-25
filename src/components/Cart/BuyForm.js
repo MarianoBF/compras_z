@@ -16,8 +16,15 @@ const styles = {
 };
 
 const schema = yup.object().shape({
-  phone: yup.string().min(8, "El teléfono debe tener al menos 8 dígitos").required("Teléfono es un campo requerido"),
-  address: yup.string().min(12, "La dirección debe tener al menos 12 caracteres").max(250).required("Dirección es un campo requerido"),
+  phone: yup
+    .string()
+    .min(8, "El teléfono debe tener al menos 8 dígitos")
+    .required("Teléfono es un campo requerido"),
+  address: yup
+    .string()
+    .min(12, "La dirección debe tener al menos 12 caracteres")
+    .max(250)
+    .required("Dirección es un campo requerido"),
   comments: yup.string().max(250),
 });
 
@@ -32,7 +39,7 @@ export default function BuyForm({
       <h2>Datos del comprador</h2>
       <Formik
         validationSchema={schema}
-        onSubmit={(values)=>handleSubmitForm(values)}
+        onSubmit={values => handleSubmitForm(values)}
         initialValues={{
           name: user.name,
           phone: "",
@@ -44,6 +51,7 @@ export default function BuyForm({
           handleSubmit,
           handleChange,
           handleBlur,
+          dirty,
           values,
           touched,
           isValid,
@@ -58,7 +66,6 @@ export default function BuyForm({
                 maxLength="80"
                 name="name"
                 value={values.name}
-                // isValid={{touched.name && !errors.name}}
                 readOnly
               />
             </Form.Group>
@@ -116,6 +123,9 @@ export default function BuyForm({
 
             <Form.Group controlId="comments">
               <Form.Label>Observaciones (opcional)</Form.Label>
+                            <Form.Text className="text-muted">
+                Indicá en este campo si tenés alguna observación para el pedido.
+              </Form.Text>
               <Form.Control
                 type="text"
                 placeholder="Entregar envuelto para regalo."
@@ -124,13 +134,11 @@ export default function BuyForm({
                 onBlur={handleBlur}
                 name="comments"
               />
-              <Form.Text className="text-muted">
-                Indicá en este campo si tenés alguna observación para el pedido.
-              </Form.Text>
+
             </Form.Group>
 
             <Button
-              // disabled={values.address.length < 12 || values.phone.length < 8}
+              disabled={!(isValid && dirty)}
               style={styles.BuyButton}
               variant="primary"
               type="submit">
