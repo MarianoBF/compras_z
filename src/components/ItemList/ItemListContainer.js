@@ -2,9 +2,9 @@ import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import ItemList from "./ItemList";
 import Spinner from "react-bootstrap/Spinner";
-import {getFirestore} from "../../firebase";
 import useMounted from "../hooks/useMounted";
 import {useHistory} from "react-router-dom";
+import {useProducts} from "../../context/ProductsContext";
 
 export default function ItemListContainer() {
   const [products, setProducts] = useState([]);
@@ -15,67 +15,44 @@ export default function ItemListContainer() {
   const [outOfRange, setOutOfRange] = useState(false);
   const history = useHistory();
   const [noStock, setNoStock] = useState(false);
+  const prods = useProducts();
 
   useEffect(() => {
     if (id_category === undefined) {
-      const db = getFirestore();
-      const itemCollection = db.collection("products");
-      itemCollection
-        .get()
-        .then(data => {
-          if (isMounted.current) {
-            setProducts(
-              data.docs
-                .sort((a, b) => (+a.id > +b.id ? 1 : -1))
-                .map(item => item.data())
-                .filter(item=>noStock?item.stock>=0:item.stock > 0)
-            );
-            setIsLoading(false);
-          }
-        })
-        .catch(error => console.log(error));
+      const allProds = prods.getSortedProducts();
+      if (isMounted.current) {
+        setProducts(
+          allProds.filter(item => (noStock ? item.stock >= 0 : item.stock > 0))
+        );
+        setIsLoading(false);
+      }
     } else {
-      const db = getFirestore();
-      const productsToGet = db
-        .collection("products")
-        .where("category", "==", +id_category);
-      productsToGet
-        .get()
-        .then(data => {
-          if (isMounted.current) {
-            if (data.empty === true) {
-              setOutOfRange(true);
-              setTimeout(() => {
-                setOutOfRange(false);
-                history.push("/");
-              }, 5000);
-            } else {
-              setProducts(
-                data.docs
-                  .sort((a, b) => (+a.id > +b.id ? 1 : -1))
-                  .map(item => item.data())
-                  .filter(item=>noStock?item.stock>=0:item.stock > 0)
-              );
-              setIsLoading(false);
-            }
-          }
-        })
-        .catch(error => console.log(error));
+      const allProds = prods.getProductsByCategory(+id_category);
+      if (isMounted.current) {
+        if (allProds.length === 0) {
+          setOutOfRange(true);
+          setTimeout(() => {
+            setOutOfRange(false);
+            history.push("/");
+          }, 5000);
+        } else {
+          setProducts(
+            allProds.filter(item =>
+              noStock ? item.stock >= 0 : item.stock > 0
+            )
+          );
+          setIsLoading(false);
+        }
+      }
     }
-  }, [id_category, history, isMounted, noStock]);
+  }, [id_category, history, isMounted, noStock, prods]);
 
   useEffect(() => {
-    const db = getFirestore();
-    const itemCollection = db.collection("categories");
-    itemCollection
-      .get()
-      .then(data => {
-        if (isMounted.current) {
-          setCategories(data.docs.map(item => item.data()));
-        }
-      })
-      .catch(error => console.log(error));
-  }, [isMounted]);
+    const allCategories = prods.getCategories();
+    if (isMounted.current) {
+      setCategories(allCategories);
+    }
+  }, [isMounted, prods]);
 
   const [category, setCategory] = useState("");
 
