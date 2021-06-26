@@ -40,7 +40,10 @@ export const ProductsProvider = ({children}) => {
   };
 
   const getProductById = id => {
-    return products.filter(item => item.id === id)[0];
+    let product;
+    try {product = products.filter(item => +item.id === +id)[0];}
+    catch {product = []}
+    return product 
   };
 
   const getProductsByCategory = category => {

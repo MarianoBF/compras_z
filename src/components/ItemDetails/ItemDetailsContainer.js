@@ -3,9 +3,9 @@ import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 import {useCart} from "../../context/CartContext";
-import {getFirestore} from "../../firebase";
 import useMounted from "../hooks/useMounted";
 import {useHistory} from "react-router-dom";
+import {useProducts} from "../../context/ProductsContext";
 
 export default function ItemListContainer() {
   const cart = useCart();
@@ -15,29 +15,23 @@ export default function ItemListContainer() {
   const isMounted = useMounted();
   const [outOfRange, setOutOfRange] = useState(false);
   const history = useHistory();
+  const prods = useProducts();
 
   const inCart = cart.isInCart(id_product);
 
   useEffect(() => {
-    const db = getFirestore();
-    const itemToGet = db.collection("products").doc(String(id_product));
-    itemToGet
-      .get()
-      .then(item => {
-        if (isMounted.current) {
-          setProduct({...item.data()});
-          setIsLoading(false);
-          if (!item.exists) {
-            setOutOfRange(true);
-            setTimeout(() => {
-              setOutOfRange(false);
-              history.push("/");
-            }, 5000);
-          }
-        }
-      })
-      .catch(error => console.log(error));
-  }, [id_product, history, isMounted]);
+    const currentProduct = prods.getProductById(id_product);
+    if (currentProduct?.length === 0 || currentProduct === undefined) {
+      setOutOfRange(true);
+      setTimeout(() => {
+        setOutOfRange(false);
+        history.push("/");
+      }, 5000);
+    } else if (isMounted.current) {
+      setProduct(currentProduct);
+      setIsLoading(false);
+    }
+  }, [id_product, history, isMounted, prods]);
 
   const addToCart = (quantity, id) => {
     cart.addItem(quantity, id);

@@ -5,7 +5,7 @@ import CartWidget from "./CartWidget";
 import {LinkContainer} from "react-router-bootstrap";
 import {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
-import {getFirestore} from "../../firebase";
+import {useProducts} from "../../context/ProductsContext";
 
 const styles = {
   categories: {
@@ -24,19 +24,12 @@ const styles = {
 };
 
 function NavBar({login, logout, user}) {
-
   const [categories, setCategories] = useState([]);
+  const prods = useProducts();
 
   useEffect(() => {
-    const db = getFirestore();
-    const itemCollection = db.collection("categories");
-    itemCollection
-      .get()
-      .then(data => {
-        setCategories(data.docs.map(item => item.data()));
-      })
-      .catch(error => console.log(error));
-  }, [user]);
+    setCategories(prods.getCategories());
+  }, [user, prods]);
 
   const categoryList = categories.map(item => (
     <LinkContainer
@@ -69,9 +62,11 @@ function NavBar({login, logout, user}) {
         <Nav.Link style={styles.HomeCategory} onClick={login}>
           {user.name ? user.name : "Login"}
         </Nav.Link>
-        {user.name && <Nav.Link style={styles.HomeCategory} onClick={logout}>
-          Logout
-        </Nav.Link>}
+        {user.name && (
+          <Nav.Link style={styles.HomeCategory} onClick={logout}>
+            Logout
+          </Nav.Link>
+        )}
         <Link style={{textDecoration: "none"}} to={"/cart"}>
           <CartWidget className="justify-content-end" />
         </Link>
