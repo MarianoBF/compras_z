@@ -5,6 +5,7 @@ import {useHistory} from "react-router-dom";
 import ItemCount from "./ItemCount";
 import {Link} from "react-router-dom";
 import {useState} from "react";
+import Form from "react-bootstrap/Form";
 
 const styles = {
   Container: {
@@ -30,12 +31,12 @@ const styles = {
   },
   NoStock: {
     fontStyle: "italic",
-    color: "blue"
-  }
+    color: "blue",
+  },
 };
 
 export default function ItemDetails({item, addToCart, inCart}) {
-  const {name, description, image, price, stock, id} = item;
+  const {name, description, image, price, stock, id, options} = item;
   const history = useHistory();
 
   const [showBuy, setShowBuy] = useState(false);
@@ -43,6 +44,10 @@ export default function ItemDetails({item, addToCart, inCart}) {
     setShowBuy(true);
     addToCart(quantity, product_id);
   };
+
+  const optionsList = options
+    ? options.values.map(item => <option>{item}</option>)
+    : "";
 
   return (
     <Container style={styles.Container}>
@@ -63,7 +68,7 @@ export default function ItemDetails({item, addToCart, inCart}) {
                 Producto seleccionado, ir al carrito
               </Button>
             </Link>
-          ) : (stock>0?(
+          ) : stock > 0 ? (
             <>
               <ItemCount
                 stock={stock}
@@ -71,7 +76,17 @@ export default function ItemDetails({item, addToCart, inCart}) {
                 handleAdd={handleAdd}
                 showBuy={showBuy}
               />
-            </>):<Card.Text style={styles.NoStock}>Lo sentimos, no hay stock disponible de este artículo</Card.Text>
+            </>
+          ) : (
+            <Card.Text style={styles.NoStock}>
+              Lo sentimos, no hay stock disponible de este artículo
+            </Card.Text>
+          )}
+          {options && (
+            <Card.Text>
+              {options.name + ": "}
+              <Form.Control as="select">{optionsList}</Form.Control>
+            </Card.Text>
           )}
           <Card.Text>
             <Button variant="secondary" onClick={() => history.goBack()}>
@@ -81,7 +96,7 @@ export default function ItemDetails({item, addToCart, inCart}) {
         </Card.Body>
         {!showBuy && stock > 0 && (
           <Card.Footer>{stock} unidades disponibles</Card.Footer>
-        ) }
+        )}
       </Card>
     </Container>
   );
