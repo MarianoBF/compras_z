@@ -29,7 +29,7 @@ export default function ItemListContainer() {
     } else {
       const allProds = prods.getProductsByCategory(+id_category);
       if (isMounted.current) {
-        if (allProds.length === 0) {
+        if (prods.getSortedProducts() === 0) {
           setOutOfRange(true);
           setTimeout(() => {
             setOutOfRange(false);
@@ -63,7 +63,9 @@ export default function ItemListContainer() {
       const categoryFilter = categories.filter(
         item => item.id === +id_category
       );
-      setCategory("la categoría " + categoryFilter[0]?.name);
+      setCategory(
+        "la categoría " + categoryFilter[0]?.name ? categoryFilter[0]?.name : ""
+      );
     }
   }, [categories, id_category, category]);
 

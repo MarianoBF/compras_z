@@ -54,6 +54,7 @@ export default function CartContainer({user}) {
       title: item.name,
       price: item.price,
       quantity: item.quantity,
+      stock: item.stock,
       option: item.option,
     }));
     const order = {
