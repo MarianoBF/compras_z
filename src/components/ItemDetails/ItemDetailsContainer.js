@@ -33,8 +33,8 @@ export default function ItemListContainer() {
     }
   }, [id_product, history, isMounted, prods]);
 
-  const addToCart = (quantity, id) => {
-    cart.addItem(quantity, id);
+  const addToCart = (quantity, id, option) => {
+    cart.addItem(quantity, id, option);
   };
 
   if (isLoading) {

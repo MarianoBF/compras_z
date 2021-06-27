@@ -30,7 +30,7 @@ export const CartProvider = ({children}) => {
     }
   }, []);
 
-  const addItem = (quantity, product_id) => {
+  const addItem = (quantity, product_id, option) => {
     if (cartProducts.filter(item => item.id === product_id).length === 0) {
       const retrieveProduct = allProducts.filter(
         item => item.id === product_id
@@ -40,6 +40,7 @@ export const CartProvider = ({children}) => {
         {
           id: product_id,
           quantity,
+          option,
           name: retrieveProduct[0].name,
           price: retrieveProduct[0].price,
           stock: retrieveProduct[0].stock,

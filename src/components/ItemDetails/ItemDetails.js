@@ -42,12 +42,18 @@ export default function ItemDetails({item, addToCart, inCart}) {
   const [showBuy, setShowBuy] = useState(false);
   const handleAdd = (quantity, product_id) => {
     setShowBuy(true);
-    addToCart(quantity, product_id);
+    addToCart(quantity, product_id, option);
   };
 
   const optionsList = options
-    ? options.values.map(item => <option>{item}</option>)
+    ? options.values.map(item => <option key={item}>{item}</option>)
     : "";
+
+  const [option, setOption] = useState(options?.values[0]);
+
+  const handleSelectOption = (e) => {
+    setOption(e.target.value)
+  }
 
   return (
     <Container style={styles.Container}>
@@ -82,10 +88,10 @@ export default function ItemDetails({item, addToCart, inCart}) {
               Lo sentimos, no hay stock disponible de este artículo
             </Card.Text>
           )}
-          {options && (
+          {options && !showBuy && (
             <Card.Text>
               {options.name + ": "}
-              <Form.Control as="select">{optionsList}</Form.Control>
+              <Form.Control as="select" value={option} onChange={handleSelectOption}>{optionsList}</Form.Control>
             </Card.Text>
           )}
           <Card.Text>

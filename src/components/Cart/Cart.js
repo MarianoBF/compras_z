@@ -61,6 +61,7 @@ export default function Cart({products, cartMethods, finished}) {
           </Button>}
           </div>
         </td>
+        <td>{item.option}</td>
         <td>${item.price}</td>
         <td>${item.price * item.quantity}</td>
         {!finished&&<td>
@@ -86,6 +87,7 @@ export default function Cart({products, cartMethods, finished}) {
             <th></th>
             <th>Producto</th>
             <th>Cantidad</th>
+            <th>Opción</th>
             <th>Precio unitario</th>
             <th>Precio total</th>
             {!finished&&<th>Borrar producto</th>}
@@ -95,6 +97,7 @@ export default function Cart({products, cartMethods, finished}) {
         <tfoot>
           <tr>
             <td>Total: </td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
