@@ -35,7 +35,7 @@ const styles = {
   },
 };
 
-export default function ItemDetails({item, addToCart, inCart}) {
+export default function ItemDetails({item, addToCart, inCart, isOptionInCart, optionInCart}) {
   const {name, description, image, price, stock, id, options} = item;
   const history = useHistory();
 
@@ -49,11 +49,17 @@ export default function ItemDetails({item, addToCart, inCart}) {
     ? options.values.map(item => <option key={item}>{item}</option>)
     : "";
 
-  const [option, setOption] = useState(options?.values[0]);
+  const [option, setOption] = useState({
+    name: options?.name,
+    value: options?.values[0],
+  });
 
-  const handleSelectOption = (e) => {
-    setOption(e.target.value)
-  }
+  const handleSelectOption = e => {
+    setOption({name: options.name, value: e.target.value});
+    isOptionInCart(id, e.target.value);
+  };
+
+  
 
   return (
     <Container style={styles.Container}>
@@ -68,10 +74,17 @@ export default function ItemDetails({item, addToCart, inCart}) {
           <Card.Title>{name}</Card.Title>
           <Card.Text>{"$" + price}</Card.Text>
           <Card.Text>{description}</Card.Text>
-          {inCart ? (
+          {(inCart && !options) ? (
             <Link to="/cart">
               <Button className="spacedButton">
                 Producto seleccionado, ir al carrito
+              </Button>
+            </Link>
+          ) : optionInCart ? (
+            <Link to="/cart">
+              <Button className="spacedButton">
+                Opción ya seleccionada, ir al carrito (o elegí otra opción para
+                agregarla)
               </Button>
             </Link>
           ) : stock > 0 ? (
@@ -91,7 +104,12 @@ export default function ItemDetails({item, addToCart, inCart}) {
           {options && !showBuy && (
             <Card.Text>
               {options.name + ": "}
-              <Form.Control as="select" value={option} onChange={handleSelectOption}>{optionsList}</Form.Control>
+              <Form.Control
+                as="select"
+                value={option.value}
+                onChange={handleSelectOption}>
+                {optionsList}
+              </Form.Control>
             </Card.Text>
           )}
           <Card.Text>

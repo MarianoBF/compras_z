@@ -29,12 +29,22 @@ export default function ItemListContainer() {
       }, 5000);
     } else if (isMounted.current) {
       setProduct(currentProduct);
+      if (currentProduct.options) {
+        isOptionInCart(currentProduct.id, currentProduct?.options?.values[0]);
+      }
       setIsLoading(false);
     }
+    //eslint-disable-next-line
   }, [id_product, history, isMounted, prods]);
 
   const addToCart = (quantity, id, option) => {
     cart.addItem(quantity, id, option);
+  };
+
+  const [optionInCart, setOptionInCart] = useState(false);
+
+  const isOptionInCart = (id, option) => {
+    setOptionInCart(cart.isOptionInCart(id, option));
   };
 
   if (isLoading) {
@@ -58,7 +68,13 @@ export default function ItemListContainer() {
   return (
     <>
       <h1 className="mainTitle">Detalles del producto</h1>
-      <ItemDetails item={product} addToCart={addToCart} inCart={inCart} />
+      <ItemDetails
+        item={product}
+        addToCart={addToCart}
+        inCart={inCart}
+        isOptionInCart={isOptionInCart}
+        optionInCart={optionInCart}
+      />
     </>
   );
 }

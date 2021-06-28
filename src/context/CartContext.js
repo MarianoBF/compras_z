@@ -11,14 +11,14 @@ export const CartProvider = ({children}) => {
 
   useEffect(() => {
     try {
-      const local = localStorage.getItem("CartZ")
+      const local = localStorage.getItem("CartZ");
       if (local?.length > 0) {
         const existingCart = JSON.parse(local);
         setCartProducts(existingCart);
       }
     } catch {
-      console.log("Unable to recover previous order")
-    }finally {
+      console.log("Unable to recover previous order");
+    } finally {
       const db = getFirestore();
       const itemCollection = db.collection("products");
       itemCollection
@@ -69,6 +69,11 @@ export const CartProvider = ({children}) => {
     );
   };
 
+  const isOptionInCart = (product_id, option) => {
+    const product = cartProducts.filter(item => +item.id === +product_id);
+    return (product[0].option?.value === option);
+  };
+
   const getTotalNumberOfItems = () => {
     const reducer = (prev, cur) => prev + cur.quantity;
     const totalItems = cartProducts.reduce(reducer, 0);
@@ -104,6 +109,7 @@ export const CartProvider = ({children}) => {
         removeItem,
         clear,
         isInCart,
+        isOptionInCart,
         getTotalNumberOfItems,
         getTotalPrice,
         increaseQuantity,

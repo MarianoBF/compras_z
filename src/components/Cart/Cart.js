@@ -61,7 +61,7 @@ export default function Cart({products, cartMethods, finished}) {
           </Button>}
           </div>
         </td>
-        <td>{item.option}</td>
+        <td>{item.option?.name} {item.option?.name && ": "} {item.option?.value}</td>
         <td>${item.price}</td>
         <td>${item.price * item.quantity}</td>
         {!finished&&<td>
