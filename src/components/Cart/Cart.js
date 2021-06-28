@@ -40,7 +40,7 @@ export default function Cart({products, cartMethods, finished}) {
 
   const productsInCart = products.map(item => {
     return (
-      <tr key={item.id}>
+      <tr key={item?.option?.value?item.id+item.option.value:item.id}>
         <td>
           <Image style={styles.Image} src={item.image} rounded />
         </td>
