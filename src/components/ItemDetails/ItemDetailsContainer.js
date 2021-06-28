@@ -18,10 +18,19 @@ export default function ItemListContainer() {
   const prods = useProducts();
 
   const inCart = cart.isInCart(id_product);
+  
+  console.log("prod", product)
+
+  const [wait, setWait] = useState(false)
 
   useEffect(() => {
     const currentProduct = prods.getProductById(id_product);
-    if (currentProduct?.length === 0 || currentProduct === undefined) {
+    console.log("curr", currentProduct)
+    if (currentProduct === undefined) {
+      setWait(true)
+      setTimeout(setWait(false),2000)
+    }
+    else if (currentProduct?.length === 0 || currentProduct === undefined) {
       setOutOfRange(true);
       setTimeout(() => {
         setOutOfRange(false);
@@ -35,7 +44,7 @@ export default function ItemListContainer() {
       setIsLoading(false);
     }
     //eslint-disable-next-line
-  }, [id_product, history, isMounted, prods]);
+  }, [id_product,isMounted, prods, wait]);
 
   const addToCart = (quantity, id, option) => {
     cart.addItem(quantity, id, option);
@@ -47,7 +56,7 @@ export default function ItemListContainer() {
     setOptionInCart(cart.isOptionInCart(id, option));
   };
 
-  if (isLoading) {
+  if (isLoading || wait) {
     return (
       <div style={{textAlign: "center"}}>
         <h2>Trayendo información del producto...</h2>
