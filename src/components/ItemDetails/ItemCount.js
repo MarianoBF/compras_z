@@ -7,6 +7,7 @@ export default function ItemCount({
   initialValue,
   handleAdd,
   showBuy,
+  optionInCart,
 }) {
   const [quantity, setQuantity] = useState(initialValue || 1);
 
@@ -24,7 +25,7 @@ export default function ItemCount({
 
   return (
     <>
-      {!showBuy && (
+      {(!showBuy || !optionInCart) && (
         <>
           <Button color="info" onClick={handleMore}>
             {" "}

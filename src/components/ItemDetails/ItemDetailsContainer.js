@@ -19,14 +19,11 @@ export default function ItemListContainer() {
 
   const inCart = cart.isInCart(id_product);
   
-  console.log("prod", product)
-
   const [wait, setWait] = useState(false)
 
   useEffect(() => {
     const currentProduct = prods.getProductById(id_product);
-    console.log("curr", currentProduct)
-    if (currentProduct === undefined) {
+   if (currentProduct === undefined) {
       setWait(true)
       setTimeout(setWait(false),2000)
     }
