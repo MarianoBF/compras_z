@@ -102,19 +102,36 @@ export const CartProvider = ({children}) => {
     return totalPrice;
   };
 
-  const increaseQuantity = product_id => {
-    const position = cartProducts.findIndex(item => +item.id === +product_id);
+  const increaseQuantity = (product_id, option) => {
+    let position;
     const newProducts = [...cartProducts];
-    if (newProducts[position].quantity <= newProducts[position].stock)
+    if (option?.name) {
+      position = newProducts.findIndex(
+        item => item.option.value === option.value && +item.id === +product_id
+      );
+    } else {
+      position = cartProducts.findIndex(item => +item.id === +product_id);
+    }
+    if (newProducts[position].quantity <= newProducts[position].stock) {
       newProducts[position].quantity++;
-    setCartProducts(newProducts);
+      setCartProducts(newProducts);
+    }
   };
 
-  const decreaseQuantity = product_id => {
-    const position = cartProducts.findIndex(item => item.id === product_id);
+  const decreaseQuantity = (product_id, option) => {
+    let position;
     const newProducts = [...cartProducts];
-    if (newProducts[position].quantity >= 2) newProducts[position].quantity--;
-    setCartProducts(newProducts);
+    if (option?.name) {
+      position = newProducts.findIndex(
+        item => item.option.value === option.value && +item.id === +product_id
+      );
+    } else {
+      position = cartProducts.findIndex(item => +item.id === +product_id);
+    }
+    if (newProducts[position].quantity >= 2) {
+      newProducts[position].quantity--;
+      setCartProducts(newProducts);
+    }
   };
 
   return (
