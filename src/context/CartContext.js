@@ -31,8 +31,11 @@ export const CartProvider = ({children}) => {
   }, []);
 
   const addItem = (quantity, product_id, option) => {
-    const filtered = cartProducts.filter(item => item.id === product_id)
-    if (filtered.length === 0 || (option && filtered[0].option.value !== option)) {
+    const filtered = cartProducts.filter(item => item.id === product_id);
+    if (
+      filtered.length === 0 ||
+      (option && filtered[0].option.value !== option)
+    ) {
       const retrieveProduct = allProducts.filter(
         item => item.id === product_id
       );
@@ -50,11 +53,22 @@ export const CartProvider = ({children}) => {
       ];
       setCartProducts(newCart);
       localStorage.setItem("CartZ", JSON.stringify(newCart));
-    } 
+    }
   };
 
-  const removeItem = product_id => {
-    const filtered = cartProducts.filter(item => item.id !== product_id);
+  const removeItem = (product_id, option) => {
+    let filtered;
+    console.log(option, cartProducts);
+    if (option) {
+      const otherOptions = cartProducts
+        .filter(item => item.id === product_id)
+        .filter(item => item.option.value !== option.value);
+      const otherProds = cartProducts.filter(item => item.id !== product_id);
+      filtered = [...otherProds, ...otherOptions];
+      console.log(filtered);
+    } else {
+      filtered = cartProducts.filter(item => item.id !== product_id);
+    }
     setCartProducts(filtered);
     localStorage.setItem("CartZ", JSON.stringify(filtered));
   };
@@ -72,7 +86,8 @@ export const CartProvider = ({children}) => {
 
   const isOptionInCart = (product_id, option) => {
     const product = cartProducts.filter(item => +item.id === +product_id);
-    return (product[0]?.option?.value === option);
+    const match = product.filter(item => item.option.value === option);
+    return match.length > 0;
   };
 
   const getTotalNumberOfItems = () => {

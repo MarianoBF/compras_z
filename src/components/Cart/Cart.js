@@ -49,13 +49,13 @@ export default function Cart({products, cartMethods, finished}) {
         <div className="container-fluid d-flex justify-content-center align-items-center">
         {!finished&&
           <Button
-            onClick={() => decreaseQuantity(item.id)}
+            onClick={() => decreaseQuantity(item.id, item?.option)}
             style={styles.SmallButton}>
             -
           </Button>}
           <p style={styles.Quantity}>{item.quantity}</p>{!finished&&
           <Button
-            onClick={() => increaseQuantity(item.id)}
+            onClick={() => increaseQuantity(item.id, item?.option)}
             style={styles.SmallButton}>
             +
           </Button>}
@@ -65,7 +65,7 @@ export default function Cart({products, cartMethods, finished}) {
         <td>${item.price}</td>
         <td>${item.price * item.quantity}</td>
         {!finished&&<td>
-          <Button style={styles.SmallButton} onClick={() => remove(item.id)}>
+          <Button style={styles.SmallButton} onClick={() => remove(item.id, item?.option)}>
             Borrar
           </Button>
         </td>}
