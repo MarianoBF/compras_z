@@ -26,7 +26,6 @@ function App() {
   };
 
   const logout = () => {
-    console.log("logout");
     try {
       logoutFromGoogle();
       setUser({});

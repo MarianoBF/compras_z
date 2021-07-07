@@ -58,14 +58,12 @@ export const CartProvider = ({children}) => {
 
   const removeItem = (product_id, option) => {
     let filtered;
-    console.log(option, cartProducts);
     if (option) {
       const otherOptions = cartProducts
         .filter(item => item.id === product_id)
         .filter(item => item.option.value !== option.value);
       const otherProds = cartProducts.filter(item => item.id !== product_id);
       filtered = [...otherProds, ...otherOptions];
-      console.log(filtered);
     } else {
       filtered = cartProducts.filter(item => item.id !== product_id);
     }
