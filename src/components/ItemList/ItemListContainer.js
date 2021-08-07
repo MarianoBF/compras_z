@@ -33,7 +33,7 @@ export default function ItemListContainer() {
     } else {
       const allProds = prods.getProductsByCategory(+id_category);
       if (isMounted.current) {
-        if (prods.getSortedProducts() === 0) {
+        if (allProds.length === 0) {
           setOutOfRange(true);
           setTimeout(() => {
             setOutOfRange(false);
