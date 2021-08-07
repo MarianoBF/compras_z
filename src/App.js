@@ -7,11 +7,19 @@ import ErrorComponent from "./components/ErrorComponent";
 import {HashRouter, Switch, Route} from "react-router-dom";
 import {CartProvider} from "./context/CartContext";
 import { ProductsProvider } from "./context/ProductsContext";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {loginWithGoogle, logoutFromGoogle} from "./firebase";
 
 function App() {
   const [user, setUser] = useState({});
+
+  // Placeholder "restore auth"
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("compras_z_user"));
+    if (userData && userData.time > Date.now() - 1000 * 60 * 60) {
+      setUser(userData);
+    }
+  },[])
 
   const login = () => {
     loginWithGoogle()
@@ -20,7 +28,14 @@ function App() {
           name: loginData.displayName,
           email: loginData.email,
           uid: loginData.uid,
+          time: Date.now()
         });
+        localStorage.setItem("compras_z_user", JSON.stringify({
+          name: loginData.displayName,
+          email: loginData.email,
+          uid: loginData.uid,
+          time: Date.now()
+        }));
       })
       .catch(error => console.log("Unable to login", error));
   };
