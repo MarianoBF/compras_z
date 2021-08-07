@@ -1,14 +1,15 @@
-import {useCart} from "../../context/CartContext";
+import { useCart } from "../../context/CartContext";
 import Button from "react-bootstrap/Button";
 import Cart from "./Cart";
-import {useState} from "react";
-import {useHistory} from "react-router-dom";
+import { useState } from "react";
+import { useHistory } from "react-router-dom";
 import BuyForm from "./BuyForm";
-import {getFirestore} from "../../firebase";
+import { getFirestore } from "../../firebase";
 import Alert from "react-bootstrap/Alert";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
-export default function CartContainer({user}) {
+export default function CartContainer({ user }) {
+  user.name = "sdasdsa";
   const cart = useCart();
   const history = useHistory();
 
@@ -16,6 +17,7 @@ export default function CartContainer({user}) {
 
   const [finishedOrder, setFinishedOrder] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [checkingStock, setCheckingStock] = useState(false);
 
   if (cart.cartProducts?.length === 0) {
     return (
@@ -34,8 +36,20 @@ export default function CartContainer({user}) {
     history.push("/");
   };
 
+
   const handleShowForm = () => {
-    setShowForm(true);
+    setCheckingStock(true);
+    //TODO fix timing
+    setTimeout(() => {
+    const stock = cart.checkStock();
+    console.log("result", stock);
+    if (stock === "OK") {
+      setCheckingStock(false);
+      setShowForm(true);
+    } else {
+      alert("HAY PROBLEMAS DE STOCK!");
+    }
+  }, 2000);
   };
 
   const handleReturn = () => {
@@ -48,8 +62,8 @@ export default function CartContainer({user}) {
     history.push("/");
   };
 
-  const handleSubmit = values => {
-    const orderedProducts = cart.cartProducts.map(item => ({
+  const handleSubmit = (values) => {
+    const orderedProducts = cart.cartProducts.map((item) => ({
       id: item.id,
       title: item.name,
       price: item.price,
@@ -72,18 +86,18 @@ export default function CartContainer({user}) {
     getFirestore()
       .collection("orders")
       .add(order)
-      .then(res => {
+      .then((res) => {
         setOrderID(res.id);
-        order.items.forEach(item =>
+        order.items.forEach((item) =>
           getFirestore()
             .collection("products")
             .doc(String(item.id))
-            .update({stock: item.stock - item.quantity})
+            .update({ stock: item.stock - item.quantity })
         );
         setFinishedOrder(true);
         setShowForm(false);
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   };
 
   const cartMethods = {
@@ -111,7 +125,6 @@ export default function CartContainer({user}) {
           </Button>
         </div>
       </Alert>
-
       {!showForm && (
         <>
           {" "}
@@ -126,6 +139,10 @@ export default function CartContainer({user}) {
               <Button onClick={handleShowForm} className="closeBtn">
                 Confirmar compra
               </Button>
+              <Alert show={checkingStock} variant="success">
+                <p>Chequeando stock....</p>
+              </Alert>
+
               <p>
                 En el siguiente paso podrás detallar los datos para el envío.
                 Realizarás la compra a nombre de {user.name}

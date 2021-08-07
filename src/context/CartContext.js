@@ -1,11 +1,11 @@
-import {useState, useEffect, useContext, createContext} from "react";
-import {getFirestore} from "../firebase";
+import { useState, useEffect, useContext, createContext } from "react";
+import { getFirestore } from "../firebase";
 
 const CartContext = createContext();
 
 export const useCart = () => useContext(CartContext);
 
-export const CartProvider = ({children}) => {
+export const CartProvider = ({ children }) => {
   const [allProducts, setAllProducts] = useState([]);
   const [cartProducts, setCartProducts] = useState([]);
 
@@ -23,21 +23,21 @@ export const CartProvider = ({children}) => {
       const itemCollection = db.collection("products");
       itemCollection
         .get()
-        .then(data => {
-          setAllProducts(data.docs.map(item => item.data()));
+        .then((data) => {
+          setAllProducts(data.docs.map((item) => item.data()));
         })
-        .catch(error => console.log(error));
+        .catch((error) => console.log(error));
     }
   }, []);
 
   const addItem = (quantity, product_id, option) => {
-    const filtered = cartProducts.filter(item => item.id === product_id);
+    const filtered = cartProducts.filter((item) => item.id === product_id);
     if (
       filtered.length === 0 ||
       (option && filtered[0].option.value !== option)
     ) {
       const retrieveProduct = allProducts.filter(
-        item => item.id === product_id
+        (item) => item.id === product_id
       );
       const newCart = [
         ...cartProducts,
@@ -51,7 +51,7 @@ export const CartProvider = ({children}) => {
           image: retrieveProduct[0].image,
         },
       ];
-      newCart.sort((a,b)=>a.name > b.name?1:-1);
+      newCart.sort((a, b) => (a.name > b.name ? 1 : -1));
       setCartProducts(newCart);
       localStorage.setItem("CartZ", JSON.stringify(newCart));
     }
@@ -61,14 +61,14 @@ export const CartProvider = ({children}) => {
     let filtered;
     if (option) {
       const otherOptions = cartProducts
-        .filter(item => item.id === product_id)
-        .filter(item => item.option.value !== option.value);
-      const otherProds = cartProducts.filter(item => item.id !== product_id);
+        .filter((item) => item.id === product_id)
+        .filter((item) => item.option.value !== option.value);
+      const otherProds = cartProducts.filter((item) => item.id !== product_id);
       filtered = [...otherProds, ...otherOptions];
     } else {
-      filtered = cartProducts.filter(item => item.id !== product_id);
+      filtered = cartProducts.filter((item) => item.id !== product_id);
     }
-    filtered.sort((a,b)=>a.name > b.name?1:-1);
+    filtered.sort((a, b) => (a.name > b.name ? 1 : -1));
     setCartProducts(filtered);
     localStorage.setItem("CartZ", JSON.stringify(filtered));
   };
@@ -78,15 +78,31 @@ export const CartProvider = ({children}) => {
     localStorage.setItem("CartZ", []);
   };
 
-  const isInCart = product_id => {
+  const isInCart = (product_id) => {
     return !(
-      cartProducts.filter(item => +item.id === +product_id).length === 0
+      cartProducts.filter((item) => +item.id === +product_id).length === 0
     );
   };
 
+  const checkStock = () => {
+    let stockError = false;
+    cartProducts.forEach((item) => {
+      const filtered = allProducts.filter((all) => all.id === item.id)[0];
+      if (+filtered.stock < +item.quantity) {
+        //TODO: specify error message
+        stockError = true;
+      }
+    });
+    if (!stockError) {
+      return "OK";
+    } else {
+      return "StockError";
+    }
+  };
+
   const isOptionInCart = (product_id, option) => {
-    const product = cartProducts.filter(item => +item.id === +product_id);
-    const match = product.filter(item => item.option.value === option);
+    const product = cartProducts.filter((item) => +item.id === +product_id);
+    const match = product.filter((item) => item.option.value === option);
     return match.length > 0;
   };
 
@@ -107,10 +123,10 @@ export const CartProvider = ({children}) => {
     const newProducts = [...cartProducts];
     if (option?.name) {
       position = newProducts.findIndex(
-        item => item.option.value === option.value && +item.id === +product_id
+        (item) => item.option.value === option.value && +item.id === +product_id
       );
     } else {
-      position = cartProducts.findIndex(item => +item.id === +product_id);
+      position = cartProducts.findIndex((item) => +item.id === +product_id);
     }
     if (newProducts[position].quantity <= newProducts[position].stock) {
       newProducts[position].quantity++;
@@ -123,10 +139,10 @@ export const CartProvider = ({children}) => {
     const newProducts = [...cartProducts];
     if (option?.name) {
       position = newProducts.findIndex(
-        item => item.option.value === option.value && +item.id === +product_id
+        (item) => item.option.value === option.value && +item.id === +product_id
       );
     } else {
-      position = cartProducts.findIndex(item => +item.id === +product_id);
+      position = cartProducts.findIndex((item) => +item.id === +product_id);
     }
     if (newProducts[position].quantity >= 2) {
       newProducts[position].quantity--;
@@ -147,7 +163,9 @@ export const CartProvider = ({children}) => {
         getTotalPrice,
         increaseQuantity,
         decreaseQuantity,
-      }}>
+        checkStock,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

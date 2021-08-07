@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 import {useCart} from "../../context/CartContext";
-import useMounted from "../hooks/useMounted";
+import useMounted from "../../hooks/useMounted";
 import {useHistory} from "react-router-dom";
 import {useProducts} from "../../context/ProductsContext";
 
