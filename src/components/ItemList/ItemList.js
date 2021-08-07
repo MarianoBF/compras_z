@@ -1,7 +1,7 @@
 import CardDeck from "react-bootstrap/CardDeck";
 import Item from "./Item";
 
-export default function ItemList({products}) {
+export default function ItemList({products, inCart}) {
   const productList = products?.map(item => (
     <Item
       key={item.id}
@@ -11,6 +11,7 @@ export default function ItemList({products}) {
       description={item.description}
       stock={item.stock}
       initialValue={item.initialValue}
+      inCart={inCart}
     />
   ));
 

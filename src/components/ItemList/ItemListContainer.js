@@ -5,6 +5,7 @@ import Spinner from "react-bootstrap/Spinner";
 import useMounted from "../hooks/useMounted";
 import {useHistory} from "react-router-dom";
 import {useProducts} from "../../context/ProductsContext";
+import {useCart} from "../../context/CartContext";
 
 export default function ItemListContainer() {
   const [products, setProducts] = useState([]);
@@ -16,6 +17,9 @@ export default function ItemListContainer() {
   const history = useHistory();
   const [noStock, setNoStock] = useState(false);
   const prods = useProducts();
+  const cart = useCart();
+
+  const inCart = (item) => cart.isInCart(item)
 
   useEffect(() => {
     if (id_category === undefined) {
@@ -101,7 +105,7 @@ export default function ItemListContainer() {
           ? "Sólo mostrar artículos con stock disponible"
           : "Ver artículos sin stock disponible"}
       </button>
-      <ItemList products={products} />
+      <ItemList products={products} inCart={inCart}/>
     </div>
   );
 }

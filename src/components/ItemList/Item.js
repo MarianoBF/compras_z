@@ -20,7 +20,7 @@ const styles = {
   }
 };
 
-export default function ItemList({item, name, image, description, stock}) {
+export default function ItemList({item, name, image, description, stock, inCart}) {
 
   return (
     <Card border="dark" className="card" bg="light">
@@ -33,6 +33,7 @@ export default function ItemList({item, name, image, description, stock}) {
       />
       <Card.Body style={styles.CBody}>
         <Card.Text>{description}</Card.Text>
+        <p className="inCartMessage">{inCart(item.id)&&"(Ya tenés este producto en tu carro)"}</p>
         <Link to={"/item/" + item.id} style={styles.CBodyBelow}>
           <Button className="spacedButton">Ver detalle del producto</Button>
         </Link>
