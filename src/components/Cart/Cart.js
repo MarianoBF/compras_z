@@ -61,7 +61,7 @@ export default function Cart({products, cartMethods, finished}) {
           </Button>}
           </div>
         </td>
-        <td>{item.option?.name} {item.option?.name && ": "} {item.option?.value}</td>
+        <td>{item.option.name ? item.option.name + ": " + item.option.value : "N/A" }</td>
         <td>${item.price}</td>
         <td>${item.price * item.quantity}</td>
         {!finished&&<td>
@@ -96,11 +96,11 @@ export default function Cart({products, cartMethods, finished}) {
         <tbody>{productsInCart}</tbody>
         <tfoot>
           <tr>
-            <td>Total: </td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
+            <td style={styles.Total}>Total:</td>
             <td style={styles.Total}>${total()}</td>
             {!finished&&<td>
               <Button style={styles.SmallButton} onClick={clear}>

@@ -51,6 +51,7 @@ export const CartProvider = ({children}) => {
           image: retrieveProduct[0].image,
         },
       ];
+      newCart.sort((a,b)=>a.name > b.name?1:-1);
       setCartProducts(newCart);
       localStorage.setItem("CartZ", JSON.stringify(newCart));
     }
@@ -67,6 +68,7 @@ export const CartProvider = ({children}) => {
     } else {
       filtered = cartProducts.filter(item => item.id !== product_id);
     }
+    filtered.sort((a,b)=>a.name > b.name?1:-1);
     setCartProducts(filtered);
     localStorage.setItem("CartZ", JSON.stringify(filtered));
   };
