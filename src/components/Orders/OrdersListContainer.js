@@ -5,7 +5,6 @@ import { useOrders } from "../../context/OrdersContext";
 import OrdersList from "./OrdersList";
 
 export default function ItemListContainer({ email }) {
-  console.log("email", email);
   const orders = useOrders();
   const [orderList, setOrderList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -24,6 +23,14 @@ export default function ItemListContainer({ email }) {
     }
   }, [email, isMounted, orders]);
 
+  if (!email) {
+    return (
+      <div style={{ textAlign: "center" }}>
+        <h2>No se encuentra logueado, debe loguearse</h2>
+      </div>
+    );
+  }
+
   if (isLoading) {
     return (
       <div style={{ textAlign: "center" }}>
@@ -40,6 +47,8 @@ export default function ItemListContainer({ email }) {
       </div>
     );
   }
+
+
 
   return (
     <>

@@ -14,21 +14,25 @@ export const OrdersProvider = ({ children }) => {
     itemCollection
       .get()
       .then((data) => {
-        setPlacedOrders(data.docs.map((item) => item.data()));
+        setPlacedOrders(data.docs.map((item) => {return {id: item.id, details: item.data()}}));
       })
       .catch((error) => console.log(error));
   }, []);
 
   const getUserOrders = (userEmail) => {
-    console.log("placed", placedOrders);
-    console.log(userEmail)
-    return placedOrders.filter(item=>item.buyer.email === userEmail);
+    console.log(placedOrders)
+    return placedOrders.filter(item=>item.details.buyer.email === userEmail);
   };
+
+  const getOrderById = (id) => {
+    return placedOrders.find(item=>item.id === id);
+  }
 
   return (
     <OrdersContext.Provider
       value={{
         getUserOrders,
+        getOrderById,
       }}
     >
       {children}
