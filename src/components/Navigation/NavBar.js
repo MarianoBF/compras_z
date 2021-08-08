@@ -58,6 +58,9 @@ function NavBar({login, logout, user}) {
             <Nav.Link>Inicio</Nav.Link>
           </LinkContainer>
           {categoryList}
+          <LinkContainer style={styles.HomeCategory} to={"/orders/search"}>
+            <Nav.Link>Buscar Orden</Nav.Link>
+          </LinkContainer>
         </Nav>
         <Nav.Link style={styles.HomeCategory} onClick={login}>
           {user.name ? user.name : "Login"}

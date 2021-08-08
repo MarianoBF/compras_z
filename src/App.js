@@ -4,6 +4,8 @@ import ItemListContainer from "./components/ItemList/ItemListContainer";
 import ItemDetailsContainer from "./components/ItemDetails/ItemDetailsContainer";
 import CartContainer from "./components/Cart/CartContainer";
 import OrdersContainer from "./components/Orders/OrdersListContainer";
+import SearchOrders from "./components/Orders/SearchOrders";
+import OrdersDetail from "./components/Orders/OrdersDetail";
 import ErrorComponent from "./components/ErrorComponent";
 import { HashRouter, Switch, Route } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";
@@ -72,6 +74,12 @@ function App() {
               </Route>
               <Route exact path="/">
                 <ItemListContainer />
+              </Route>
+              <Route exact path="/orders/search">
+                <SearchOrders />
+              </Route>
+              <Route exact path="/orders/:id_order">
+                <OrdersDetail />
               </Route>
               <Route exact path="/orders">
                 <OrdersContainer email={user.email} />
