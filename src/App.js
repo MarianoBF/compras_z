@@ -3,12 +3,15 @@ import NavBar from "./components/Navigation/NavBar";
 import ItemListContainer from "./components/ItemList/ItemListContainer";
 import ItemDetailsContainer from "./components/ItemDetails/ItemDetailsContainer";
 import CartContainer from "./components/Cart/CartContainer";
+import OrdersContainer from "./components/Orders/OrdersContainer";
 import ErrorComponent from "./components/ErrorComponent";
-import {HashRouter, Switch, Route} from "react-router-dom";
-import {CartProvider} from "./context/CartContext";
+import { HashRouter, Switch, Route } from "react-router-dom";
+import { CartProvider } from "./context/CartContext";
 import { ProductsProvider } from "./context/ProductsContext";
-import {useEffect, useState} from "react";
-import {loginWithGoogle, logoutFromGoogle} from "./firebase";
+import { OrdersProvider } from "./context/OrdersContext"
+import { useEffect, useState } from "react";
+import { loginWithGoogle, logoutFromGoogle } from "./firebase";
+
 
 function App() {
   const [user, setUser] = useState({});
@@ -19,25 +22,28 @@ function App() {
     if (userData && userData.time > Date.now() - 1000 * 60 * 60) {
       setUser(userData);
     }
-  },[])
+  }, []);
 
   const login = () => {
     loginWithGoogle()
-      .then(loginData => {
+      .then((loginData) => {
         setUser({
           name: loginData.displayName,
           email: loginData.email,
           uid: loginData.uid,
-          time: Date.now()
+          time: Date.now(),
         });
-        localStorage.setItem("compras_z_user", JSON.stringify({
-          name: loginData.displayName,
-          email: loginData.email,
-          uid: loginData.uid,
-          time: Date.now()
-        }));
+        localStorage.setItem(
+          "compras_z_user",
+          JSON.stringify({
+            name: loginData.displayName,
+            email: loginData.email,
+            uid: loginData.uid,
+            time: Date.now(),
+          })
+        );
       })
-      .catch(error => console.log("Unable to login", error));
+      .catch((error) => console.log("Unable to login", error));
   };
 
   const logout = () => {
@@ -58,6 +64,11 @@ function App() {
             <Route exact path="/category/:id_category">
               <ItemListContainer />
             </Route>
+            <OrdersProvider>
+              <Route exact path="/orders">
+                <OrdersContainer user={user} />
+              </Route>
+            </OrdersProvider>
             <Route exact path="/item/:id_product">
               <ItemDetailsContainer />
             </Route>
