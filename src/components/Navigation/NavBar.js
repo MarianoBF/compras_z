@@ -62,10 +62,14 @@ function NavBar({login, logout, user}) {
         <Nav.Link style={styles.HomeCategory} onClick={login}>
           {user.name ? user.name : "Login"}
         </Nav.Link>
-        {user.name && (
+        {user.name && (<>
+          <LinkContainer style={styles.HomeCategory} to={"/orders"}>
+            <Nav.Link>Mis órdenes</Nav.Link>
+          </LinkContainer>
           <Nav.Link style={styles.HomeCategory} onClick={logout}>
             Logout
           </Nav.Link>
+          </>
         )}
         <Link style={{textDecoration: "none"}} to={"/cart"}>
           <CartWidget className="justify-content-end" />

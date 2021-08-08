@@ -8,10 +8,9 @@ import ErrorComponent from "./components/ErrorComponent";
 import { HashRouter, Switch, Route } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";
 import { ProductsProvider } from "./context/ProductsContext";
-import { OrdersProvider } from "./context/OrdersContext"
+import { OrdersProvider } from "./context/OrdersContext";
 import { useEffect, useState } from "react";
 import { loginWithGoogle, logoutFromGoogle } from "./firebase";
-
 
 function App() {
   const [user, setUser] = useState({});
@@ -56,35 +55,35 @@ function App() {
   };
 
   return (
-    <ProductsProvider>
-      <CartProvider>
-        <HashRouter>
-          <NavBar login={login} logout={logout} user={user} />
-          <Switch>
-            <Route exact path="/category/:id_category">
-              <ItemListContainer />
-            </Route>
-            <OrdersProvider>
-              <Route exact path="/orders">
-                <OrdersContainer user={user} />
+    <OrdersProvider>
+      <ProductsProvider>
+        <CartProvider>
+          <HashRouter>
+            <NavBar login={login} logout={logout} user={user} />
+            <Switch>
+              <Route exact path="/category/:id_category">
+                <ItemListContainer />
               </Route>
-            </OrdersProvider>
-            <Route exact path="/item/:id_product">
-              <ItemDetailsContainer />
-            </Route>
-            <Route exact path="/cart">
-              <CartContainer user={user} />
-            </Route>
-            <Route exact path="/">
-              <ItemListContainer />
-            </Route>
-            <Route>
-              <ErrorComponent />
-            </Route>
-          </Switch>
-        </HashRouter>
-      </CartProvider>
-    </ProductsProvider>
+              <Route exact path="/item/:id_product">
+                <ItemDetailsContainer />
+              </Route>
+              <Route exact path="/cart">
+                <CartContainer user={user} />
+              </Route>
+              <Route exact path="/">
+                <ItemListContainer />
+              </Route>
+              <Route exact path="/orders">
+                <OrdersContainer email={user.email} />
+              </Route>
+              <Route>
+                <ErrorComponent />
+              </Route>
+            </Switch>
+          </HashRouter>
+        </CartProvider>
+      </ProductsProvider>
+    </OrdersProvider>
   );
 }
 
