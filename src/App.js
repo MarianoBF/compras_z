@@ -3,7 +3,7 @@ import NavBar from "./components/Navigation/NavBar";
 import ItemListContainer from "./components/ItemList/ItemListContainer";
 import ItemDetailsContainer from "./components/ItemDetails/ItemDetailsContainer";
 import CartContainer from "./components/Cart/CartContainer";
-import OrdersContainer from "./components/Orders/OrdersContainer";
+import OrdersContainer from "./components/Orders/OrdersListContainer";
 import ErrorComponent from "./components/ErrorComponent";
 import { HashRouter, Switch, Route } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";

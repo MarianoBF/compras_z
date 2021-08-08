@@ -43,7 +43,7 @@ export default function ItemListContainer({ email }) {
 
   return (
     <>
-      <h1 className="mainTitle">Listado de órdenes</h1>
+      <h1 className="mainTitle">Listado de órdenes para el correo {email}</h1>
       <OrdersList orders={orderList} />
     </>
   );
