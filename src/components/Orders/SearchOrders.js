@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useOrders } from "../../context/OrdersContext";
 import { Link } from "react-router-dom";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 export default function SearchOrders() {
   const orders = useOrders();
@@ -11,17 +13,20 @@ export default function SearchOrders() {
     setSearchOrder(e.target.value);
   };
 
-  const handleSearch = () => {
-    console.log(searchOrder, orders.getOrderById(searchOrder));
+  const handleSearch = (e) => {
+    e.preventDefault();
     setOrder(orders.getOrderById(searchOrder));
   };
 
   return (
     <div>
-      <form onSubmit={handleSearch}>
-        <input type="text" onChange={handleInput} />
-        <input type="submit" value="Buscar" />
-      </form>
+      <Form onSubmit={handleSearch}>
+        <Form.Group className="mb-3">
+          <Form.Label>Buscar orden:</Form.Label>
+          <Form.Control type="text" onChange={handleInput} />
+        </Form.Group>
+        <Button type="submit">Buscar</Button>
+      </Form>
       {order && (
         <Link to={"/orders/" + order.id}>
           Se encontró la orden {order.id} del día{" "}

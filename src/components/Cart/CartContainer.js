@@ -9,7 +9,6 @@ import Alert from "react-bootstrap/Alert";
 import { Link } from "react-router-dom";
 
 export default function CartContainer({ user }) {
-  user.name = "sdasdsa";
   const cart = useCart();
   const history = useHistory();
 

@@ -20,7 +20,6 @@ export const OrdersProvider = ({ children }) => {
   }, []);
 
   const getUserOrders = (userEmail) => {
-    console.log(placedOrders)
     return placedOrders.filter(item=>item.details.buyer.email === userEmail);
   };
 

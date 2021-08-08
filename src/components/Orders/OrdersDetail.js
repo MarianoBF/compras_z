@@ -60,7 +60,7 @@ export default function OrdersDetails({ email }) {
               email que realizó la compra
             </Card.Text>
           )}
-          <Card.Text>Monto total: $ {order.total}</Card.Text>
+          <Card.Text>Monto total: $ {order.details.total}</Card.Text>
           <hr />
           <Card.Text>Items: </Card.Text>
           {order.details.items.map((item) => (

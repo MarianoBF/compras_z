@@ -10,7 +10,7 @@ import { useProducts } from "../../context/ProductsContext";
 const styles = {
   categories: {
     padding: "15px",
-    fontWeight: "bold",
+    fontWeight: "bolder",
     textAlign: "center",
   },
   actionLink: {
