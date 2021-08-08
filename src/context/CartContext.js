@@ -85,18 +85,20 @@ export const CartProvider = ({ children }) => {
   };
 
   const checkStock = () => {
-    let stockError = false;
+    let stockError = [];
     cartProducts.forEach((item) => {
       const filtered = allProducts.filter((all) => all.id === item.id)[0];
-      if (+filtered.stock < +item.quantity) {
+      if (filtered.stock < item.quantity) {
         //TODO: specify error message
-        stockError = true;
+        stockError.push({id: item.id, name: item.name, stock: filtered.stock, type: "tooMuch"});
+      } else if (item.quantity < 1) {
+        stockError.push({id: item.id, name: item.name, stock: filtered.stock, type: "tooFew"});
       }
     });
-    if (!stockError) {
+    if (stockError.length === 0) {
       return "OK";
     } else {
-      return "StockError";
+      return stockError;
     }
   };
 

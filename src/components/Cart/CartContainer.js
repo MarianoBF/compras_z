@@ -18,6 +18,9 @@ export default function CartContainer({ user }) {
   const [finishedOrder, setFinishedOrder] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [checkingStock, setCheckingStock] = useState(false);
+  const [stockError, setStockError] = useState(false);
+  const [stockErrorMessage, setStockErrorMessage] = useState([]);
+
 
   if (cart.cartProducts?.length === 0) {
     return (
@@ -38,19 +41,25 @@ export default function CartContainer({ user }) {
 
 
   const handleShowForm = () => {
+    setStockError(false)
     setCheckingStock(true);
     //TODO fix timing
     setTimeout(() => {
     const stock = cart.checkStock();
     console.log("result", stock);
     if (stock === "OK") {
-      setCheckingStock(false);
       setShowForm(true);
+      setCheckingStock(false);
     } else {
-      alert("HAY PROBLEMAS DE STOCK!");
+      setCheckingStock(false);
+      setStockError(true);
+      setStockErrorMessage(stock);
     }
   }, 2000);
   };
+
+  //TODO: remove
+  console.log(stockErrorMessage)
 
   const handleReturn = () => {
     setShowForm(false);
@@ -140,7 +149,14 @@ export default function CartContainer({ user }) {
                 Confirmar compra
               </Button>
               <Alert show={checkingStock} variant="success">
-                <p>Chequeando stock....</p>
+                <p>Chequeando stock...</p>
+              </Alert>
+              <Alert show={stockError} variant="danger">
+              {/*TODO: Specify error*/}
+                <p>Se encontró un problema con el stock:</p>
+                {stockErrorMessage.map(item =>  { return item.type="tooMuch" ? <p>El artículo {item.name} tiene {item.stock} cantidades disponibles</p> : <p> Debe pedir al menos una unidad de {item.name} </p> })}
+                <p>Esto puede deberse a que se modificó el stock disponible mientras realizabas la compra, en caso de que persista este mensaje por favor contactanos</p>
+                <p>Por favor, ajustá tu pedido y volvé a presionar Confirmar compra </p>
               </Alert>
 
               <p>
