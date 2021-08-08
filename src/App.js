@@ -79,7 +79,7 @@ function App() {
                 <SearchOrders />
               </Route>
               <Route exact path="/orders/:id_order">
-                <OrdersDetail />
+                <OrdersDetail email={user.email} />
               </Route>
               <Route exact path="/orders">
                 <OrdersContainer email={user.email} />

@@ -4,7 +4,7 @@ import { useOrders } from "../../context/OrdersContext";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 
-export default function OrdersDetails() {
+export default function OrdersDetails({ email }) {
   const { id_order } = useParams();
   const orders = useOrders();
   const [order, setOrder] = useState();
@@ -23,8 +23,8 @@ export default function OrdersDetails() {
       justifyContent: "center",
       textAlign: "center",
       alignItems: "center",
-      maxWidth: "400px",
-      maxHeight: "800px",
+      maxWidth: "700px",
+      maxHeight: "1200px",
     },
     CardBody: {
       margin: "auto",
@@ -39,12 +39,36 @@ export default function OrdersDetails() {
     );
   }
 
+  console.log(order);
+
   return (
     <Container style={styles.Container}>
       <Card style={styles.Card}>
         <Card.Body style={styles.CardBody}>
-          <Card.Title>{order.id}</Card.Title>
-          <Card.Text>{order.details.buyer.name}</Card.Text>
+          <Card.Title>Orden: {order.id}</Card.Title>
+          {email === order.details.buyer.email ? (
+            <>
+              <Card.Text>{order.details.buyer.name}</Card.Text>
+              <Card.Text>{order.details.buyer.phone}</Card.Text>
+              <Card.Text>{order.details.buyer.address}</Card.Text>
+              <Card.Text>{order.details.buyer.email}</Card.Text>
+              <Card.Text>{order.details.buyer.comments}</Card.Text>
+            </>
+          ) : (
+            <Card.Text>
+              Para ver los datos personales necesita estar logueado con el mismo
+              email que realizó la compra
+            </Card.Text>
+          )}
+          <Card.Text>Monto total: $ {order.total}</Card.Text>
+          <hr />
+          <Card.Text>Items: </Card.Text>
+          {order.details.items.map((item) => (
+            <Card.Text key={item.id + item.option}>
+              {item.title} {item.option.name} {item.option.value} -{" "}
+              {item.quantity} unidades
+            </Card.Text>
+          ))}
         </Card.Body>
         <Card.Footer></Card.Footer>
       </Card>

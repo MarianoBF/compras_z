@@ -46,7 +46,6 @@ export default function CartContainer({ user }) {
     //TODO fix timing
     setTimeout(() => {
     const stock = cart.checkStock();
-    console.log("result", stock);
     if (stock === "OK") {
       setShowForm(true);
       setCheckingStock(false);
@@ -57,9 +56,6 @@ export default function CartContainer({ user }) {
     }
   }, 2000);
   };
-
-  //TODO: remove
-  console.log(stockErrorMessage)
 
   const handleReturn = () => {
     setShowForm(false);

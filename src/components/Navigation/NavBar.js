@@ -83,7 +83,7 @@ function NavBar({ login, logout, user }) {
                 <Nav.Link>Mis órdenes</Nav.Link>
               </LinkContainer>
               <Nav.Link style={styles.actionLink} onClick={logout}>
-                {user.name} Logout
+                {user.name} <br /> Logout
               </Nav.Link>
             </>
           )}
