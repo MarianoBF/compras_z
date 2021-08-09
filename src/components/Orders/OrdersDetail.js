@@ -3,14 +3,20 @@ import { useState, useEffect } from "react";
 import { useOrders } from "../../context/OrdersContext";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
+import Spinner from "react-bootstrap/Spinner";
 
 export default function OrdersDetails({ email }) {
   const { id_order } = useParams();
   const orders = useOrders();
   const [order, setOrder] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setOrder(orders.getOrderById(id_order));
+    const retrievedOrder = orders.getOrderById(id_order);
+    if (retrievedOrder) {
+      setOrder(retrievedOrder);
+      setIsLoading(false);
+    }
   }, [id_order, orders]);
 
   const styles = {
@@ -31,6 +37,15 @@ export default function OrdersDetails({ email }) {
     },
   };
 
+  if (isLoading) {
+    return (
+      <div style={{ textAlign: "center" }}>
+        <h2>Buscando la orden...</h2>
+        <Spinner animation="border" />
+      </div>
+    );
+  }
+
   if (!order) {
     return (
       <div style={{ textAlign: "center" }}>
@@ -38,8 +53,6 @@ export default function OrdersDetails({ email }) {
       </div>
     );
   }
-
-  console.log(order);
 
   return (
     <Container style={styles.Container}>

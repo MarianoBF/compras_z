@@ -42,7 +42,6 @@ export default function CartContainer({ user }) {
   const handleShowForm = () => {
     setStockError(false)
     setCheckingStock(true);
-    //TODO fix timing
     setTimeout(() => {
     const stock = cart.checkStock();
     if (stock === "OK") {
@@ -147,7 +146,6 @@ export default function CartContainer({ user }) {
                 <p>Chequeando stock...</p>
               </Alert>
               <Alert show={stockError} variant="danger">
-              {/*TODO: Specify error*/}
                 <p>Se encontró un problema con el stock:</p>
                 {stockErrorMessage.map(item =>  { return item.type="tooMuch" ? <p>El artículo {item.name} tiene {item.stock} cantidades disponibles</p> : <p> Debe pedir al menos una unidad de {item.name} </p> })}
                 <p>Esto puede deberse a que se modificó el stock disponible mientras realizabas la compra, en caso de que persista este mensaje por favor contactanos</p>
