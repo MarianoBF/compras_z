@@ -4,16 +4,12 @@ import Cart from "./Cart";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import BuyForm from "./BuyForm";
-import { getFirestore } from "../../firebase";
 import Alert from "react-bootstrap/Alert";
 import { Link } from "react-router-dom";
 
 export default function CartContainer({ user }) {
   const cart = useCart();
   const history = useHistory();
-
-  const [orderID, setOrderID] = useState("");
-
   const [finishedOrder, setFinishedOrder] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [checkingStock, setCheckingStock] = useState(false);
@@ -72,7 +68,7 @@ export default function CartContainer({ user }) {
       price: item.price,
       quantity: item.quantity,
       stock: item.stock,
-      option: item.option,
+      option: item.option.name?item.option:"N/A",
     }));
     const order = {
       buyer: {
@@ -86,21 +82,10 @@ export default function CartContainer({ user }) {
       date: new Date(),
       total: cart.getTotalPrice(),
     };
-    getFirestore()
-      .collection("orders")
-      .add(order)
-      .then((res) => {
-        setOrderID(res.id);
-        order.items.forEach((item) =>
-          getFirestore()
-            .collection("products")
-            .doc(String(item.id))
-            .update({ stock: item.stock - item.quantity })
-        );
-        setFinishedOrder(true);
+    cart.saveOrder(order)
+    setFinishedOrder(true);
         setShowForm(false);
-      })
-      .catch((error) => console.log(error));
+        
   };
 
   const cartMethods = {
@@ -116,7 +101,7 @@ export default function CartContainer({ user }) {
       <Alert show={finishedOrder} variant="success">
         <p>
           Se ha realizado tu pedido exitosamente {user.name}. El número de
-          registro del pedido es: {orderID}
+          registro del pedido es: {cart.getOrderID()}
         </p>
         <p>
           Recibirás un correo electrónico confirmando la fecha de entrega e

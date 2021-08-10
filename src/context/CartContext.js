@@ -88,11 +88,20 @@ export const CartProvider = ({ children }) => {
     let stockError = [];
     cartProducts.forEach((item) => {
       const filtered = allProducts.filter((all) => all.id === item.id)[0];
-      console.log(filtered, item)
       if (filtered.stock < item.quantity) {
-        stockError.push({id: item.id, name: item.name, stock: filtered.stock, type: "tooMuch"});
+        stockError.push({
+          id: item.id,
+          name: item.name,
+          stock: filtered.stock,
+          type: "tooMuch",
+        });
       } else if (item.quantity < 1) {
-        stockError.push({id: item.id, name: item.name, stock: filtered.stock, type: "tooFew"});
+        stockError.push({
+          id: item.id,
+          name: item.name,
+          stock: filtered.stock,
+          type: "tooFew",
+        });
       }
     });
     if (stockError.length === 0) {
@@ -152,6 +161,30 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  const [orderID, setOrderID] = useState(null);
+
+  const getOrderID = () => {
+    return orderID }
+
+  const saveOrder = (order) => {
+    getFirestore()
+      .collection("orders")
+      .add(order)
+      .then((res) => {
+        order.items.forEach((item) =>
+          getFirestore()
+            .collection("products")
+            .doc(String(item.id))
+            .update({ stock: item.stock - item.quantity })
+        );
+        setOrderID(res.id);  
+      })
+      .catch((error) => {
+        console.log(error);
+        return error;
+      });
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -166,6 +199,8 @@ export const CartProvider = ({ children }) => {
         increaseQuantity,
         decreaseQuantity,
         checkStock,
+        saveOrder,
+        getOrderID,
       }}
     >
       {children}
