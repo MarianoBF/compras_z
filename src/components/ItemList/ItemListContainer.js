@@ -38,7 +38,7 @@ export default function ItemListContainer() {
           setTimeout(() => {
             setOutOfRange(false);
             history.push("/");
-          }, 5000);
+          }, 2000);
         } else {
           setProducts(
             allProds.filter(item =>

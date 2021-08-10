@@ -29,7 +29,7 @@ const styles = {
   },
   brand: {
     textAlign: "center",
-  }
+  },
 };
 
 function NavBar({ login, logout, user }) {
@@ -51,18 +51,11 @@ function NavBar({ login, logout, user }) {
   ));
 
   return (
-    <Navbar
-      style={styles.navbar}
-      collapseOnSelect
-      expand="lg"
-      variant="dark"
-    >
+    <Navbar style={styles.navbar} collapseOnSelect expand="lg" variant="dark">
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <LinkContainer to={"/"}>
-          <Navbar.Brand
-            style={styles.brand}
-          >
+          <Navbar.Brand style={styles.brand}>
             <img src={logo} alt="logo" className="logo" />
           </Navbar.Brand>
         </LinkContainer>
@@ -74,9 +67,11 @@ function NavBar({ login, logout, user }) {
           <LinkContainer style={styles.actionLink} to={"/orders/search"}>
             <Nav.Link>Buscar Orden</Nav.Link>
           </LinkContainer>
-          <Nav.Link style={styles.actionLink} onClick={login}>
-            {!user.name && "Login"}
-          </Nav.Link>
+          {!user.name && (
+            <Nav.Link style={styles.actionLink} onClick={login}>
+              "Login"
+            </Nav.Link>
+          )}
           {user.name && (
             <>
               <LinkContainer style={styles.actionLink} to={"/orders"}>
