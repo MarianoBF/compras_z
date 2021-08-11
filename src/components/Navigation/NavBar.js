@@ -69,7 +69,7 @@ function NavBar({ login, logout, user }) {
           </LinkContainer>
           {!user.name && (
             <Nav.Link style={styles.actionLink} onClick={login}>
-              "Login"
+              Login
             </Nav.Link>
           )}
           {user.name && (

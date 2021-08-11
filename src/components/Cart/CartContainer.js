@@ -1,7 +1,7 @@
 import { useCart } from "../../context/CartContext";
 import Button from "react-bootstrap/Button";
 import Cart from "./Cart";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import BuyForm from "./BuyForm";
 import Alert from "react-bootstrap/Alert";
@@ -16,6 +16,15 @@ export default function CartContainer({ user }) {
   const [stockError, setStockError] = useState(false);
   const [stockErrorMessage, setStockErrorMessage] = useState([]);
 
+  useEffect(() => {
+    return () => {
+      if (finishedOrder) {
+        cart.clear();
+        setFinishedOrder(false);
+      }
+    };
+    // eslint-disable-next-line
+  }, [finishedOrder]);
 
   if (cart.cartProducts?.length === 0) {
     return (
@@ -34,21 +43,20 @@ export default function CartContainer({ user }) {
     history.push("/");
   };
 
-
   const handleShowForm = () => {
-    setStockError(false)
+    setStockError(false);
     setCheckingStock(true);
     setTimeout(() => {
-    const stock = cart.checkStock();
-    if (stock === "OK") {
-      setShowForm(true);
-      setCheckingStock(false);
-    } else {
-      setCheckingStock(false);
-      setStockError(true);
-      setStockErrorMessage(stock);
-    }
-  }, 2000);
+      const stock = cart.checkStock();
+      if (stock === "OK") {
+        setShowForm(true);
+        setCheckingStock(false);
+      } else {
+        setCheckingStock(false);
+        setStockError(true);
+        setStockErrorMessage(stock);
+      }
+    }, 2000);
   };
 
   const handleReturn = () => {
@@ -68,7 +76,7 @@ export default function CartContainer({ user }) {
       price: item.price,
       quantity: item.quantity,
       stock: item.stock,
-      option: item.option.name?item.option:"N/A",
+      option: item.option.name ? item.option : "N/A",
     }));
     const order = {
       buyer: {
@@ -82,10 +90,9 @@ export default function CartContainer({ user }) {
       date: new Date(),
       total: cart.getTotalPrice(),
     };
-    cart.saveOrder(order)
+    cart.saveOrder(order);
     setFinishedOrder(true);
-        setShowForm(false);
-        
+    setShowForm(false);
   };
 
   const cartMethods = {
@@ -98,6 +105,7 @@ export default function CartContainer({ user }) {
 
   return (
     <div className="centered">
+      <h1>status: {String(finishedOrder)}</h1>
       <Alert show={finishedOrder} variant="success">
         <p>
           Se ha realizado tu pedido exitosamente {user.name}. El número de
@@ -132,9 +140,25 @@ export default function CartContainer({ user }) {
               </Alert>
               <Alert show={stockError} variant="danger">
                 <p>Se encontró un problema con el stock:</p>
-                {stockErrorMessage.map(item =>  { return item.type="tooMuch" ? <p>El artículo {item.name} tiene {item.stock} cantidades disponibles</p> : <p> Debe pedir al menos una unidad de {item.name} </p> })}
-                <p>Esto puede deberse a que se modificó el stock disponible mientras realizabas la compra, en caso de que persista este mensaje por favor contactanos</p>
-                <p>Por favor, ajustá tu pedido y volvé a presionar Confirmar compra </p>
+                {stockErrorMessage.map((item) => {
+                  return (item.type = "tooMuch" ? (
+                    <p>
+                      El artículo {item.name} tiene {item.stock} cantidades
+                      disponibles
+                    </p>
+                  ) : (
+                    <p> Debe pedir al menos una unidad de {item.name} </p>
+                  ));
+                })}
+                <p>
+                  Esto puede deberse a que se modificó el stock disponible
+                  mientras realizabas la compra, en caso de que persista este
+                  mensaje por favor contactanos
+                </p>
+                <p>
+                  Por favor, ajustá tu pedido y volvé a presionar Confirmar
+                  compra{" "}
+                </p>
               </Alert>
 
               <p>

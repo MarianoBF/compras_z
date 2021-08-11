@@ -11,7 +11,7 @@ export const CartProvider = ({ children }) => {
 
   useEffect(() => {
     try {
-      const local = localStorage.getItem("CartZ");
+      const local = localStorage.getItem("compras_z_cart");
       if (local?.length > 0) {
         const existingCart = JSON.parse(local);
         setCartProducts(existingCart);
@@ -53,7 +53,7 @@ export const CartProvider = ({ children }) => {
       ];
       newCart.sort((a, b) => (a.name > b.name ? 1 : -1));
       setCartProducts(newCart);
-      localStorage.setItem("CartZ", JSON.stringify(newCart));
+      localStorage.setItem("compras_z_cart", JSON.stringify(newCart));
     }
   };
 
@@ -70,12 +70,13 @@ export const CartProvider = ({ children }) => {
     }
     filtered.sort((a, b) => (a.name > b.name ? 1 : -1));
     setCartProducts(filtered);
-    localStorage.setItem("CartZ", JSON.stringify(filtered));
+    localStorage.setItem("compras_z_cart", JSON.stringify(filtered));
   };
 
   const clear = () => {
     setCartProducts([]);
-    localStorage.setItem("CartZ", []);
+    setOrderID("")
+    localStorage.setItem("compras_z_cart", []);
   };
 
   const isInCart = (product_id) => {
