@@ -12,12 +12,14 @@ const styles = {
     padding: "15px",
     fontWeight: "bolder",
     textAlign: "center",
+    color: "#ccc",
   },
   actionLink: {
     padding: "15px",
     fontWeight: "bold",
-    color: "darkolivegreen",
+    color: "green",
     textAlign: "center",
+    border: "none",
   },
   cart: {
     textDecoration: "none",

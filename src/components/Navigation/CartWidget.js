@@ -9,7 +9,7 @@ const styles = {
     justifyContent: "center",
   },
   number: {
-    fontSize: "2rem",
+    fontSize: "20px",
     margin: "0 10px",
   },
 };
@@ -23,8 +23,8 @@ export default function CartWidget() {
     <div style={styles.div}>
       {NumberOfItems > 0 && (
         <>
-          <Cart size={36} />
-          <div style={styles.number}>{NumberOfItems}</div>
+          <Cart size={30} />
+          <div style={styles.number}>({NumberOfItems})</div>
         </>
       )}
     </div>
