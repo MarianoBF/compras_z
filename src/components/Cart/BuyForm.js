@@ -32,6 +32,7 @@ export default function BuyForm({
   handleSubmitForm,
   handleCancel,
   handleReturn,
+  disable,
   user,
 }) {
   return (
@@ -138,7 +139,7 @@ export default function BuyForm({
             </Form.Group>
 
             <Button
-              disabled={!(isValid && dirty)}
+              disabled={!(isValid && dirty) || disable}
               style={styles.BuyButton}
               variant="primary"
               type="submit">
@@ -147,12 +148,14 @@ export default function BuyForm({
             <hr />
             <div className="d-flex justify-content-end">
               <Button
+                disabled={disable}
                 onClick={handleReturn}
                 style={styles.CancelButton}
                 variant="secondary">
                 Volver al listado de productos
               </Button>
               <Button
+                disabled={disable}
                 onClick={handleCancel}
                 style={styles.CancelButton}
                 variant="secondary">

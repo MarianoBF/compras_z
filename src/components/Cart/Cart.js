@@ -33,7 +33,7 @@ const styles = {
   }
 };
 
-export default function Cart({products, cartMethods, finished}) {
+export default function Cart({products, cartMethods, finished, disable}) {
 
   const {remove, clear, total, increaseQuantity, decreaseQuantity} =
     cartMethods;
@@ -50,13 +50,13 @@ export default function Cart({products, cartMethods, finished}) {
         {!finished&&
           <Button
             onClick={() => decreaseQuantity(item.id, item?.option)}
-            style={styles.SmallButton}>
+            style={styles.SmallButton} disabled={disable}>
             -
           </Button>}
           <p style={styles.Quantity}>{item.quantity}</p>{!finished&&
           <Button
             onClick={() => increaseQuantity(item.id, item?.option)}
-            style={styles.SmallButton}>
+            style={styles.SmallButton} disabled={disable}>
             +
           </Button>}
           </div>
@@ -65,7 +65,7 @@ export default function Cart({products, cartMethods, finished}) {
         <td>${item.price}</td>
         <td>${item.price * item.quantity}</td>
         {!finished&&<td>
-          <Button style={styles.SmallButton} onClick={() => remove(item.id, item?.option)}>
+          <Button style={styles.SmallButton} onClick={() => remove(item.id, item?.option)} disabled={disable}>
             Borrar
           </Button>
         </td>}
@@ -103,7 +103,7 @@ export default function Cart({products, cartMethods, finished}) {
             <td style={styles.Total}>Total:</td>
             <td style={styles.Total}>${total()}</td>
             {!finished&&<td>
-              <Button style={styles.SmallButton} onClick={clear}>
+              <Button style={styles.SmallButton} onClick={clear} disabled={disable}>
                 Vaciar Carrito
               </Button>
             </td>}

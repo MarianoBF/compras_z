@@ -1,10 +1,10 @@
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import ItemCount from "./ItemCount";
-import {Link} from "react-router-dom";
-import {useState} from "react";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 import Form from "react-bootstrap/Form";
 
 const styles = {
@@ -42,7 +42,7 @@ export default function ItemDetails({
   isOptionInCart,
   optionInCart,
 }) {
-  const {name, description, image, price, stock, id, options} = item;
+  const { name, description, image, price, stock, id, options } = item;
   const history = useHistory();
 
   const [inCartFlag, setInCartFlag] = useState(false);
@@ -50,13 +50,15 @@ export default function ItemDetails({
   const [showBuy, setShowBuy] = useState(false);
   const handleAdd = (quantity, product_id) => {
     setShowBuy(true);
-    setInCartFlag(true)
+    setInCartFlag(true);
     addToCart(quantity, product_id, option);
-    if (option?.name) {console.log("a");isOptionInCart(product_id,option.name)};
+    if (option?.name) {
+      isOptionInCart(product_id, option.name);
+    }
   };
 
   const optionsList = options
-    ? options.values.map(item => <option key={item}>{item}</option>)
+    ? options.values.map((item) => <option key={item}>{item}</option>)
     : "";
 
   const [option, setOption] = useState({
@@ -64,9 +66,9 @@ export default function ItemDetails({
     value: options?.values[0],
   });
 
-  const handleSelectOption = e => {
-    setInCartFlag(false)
-    setOption({name: options.name, value: e.target.value});
+  const handleSelectOption = (e) => {
+    setInCartFlag(false);
+    setOption({ name: options.name, value: e.target.value });
     isOptionInCart(id, e.target.value);
   };
 
@@ -89,7 +91,7 @@ export default function ItemDetails({
                 Producto seleccionado, ir al carrito
               </Button>
             </Link>
-          ) : (optionInCart || inCartFlag) ? (
+          ) : optionInCart || inCartFlag ? (
             <Link to="/cart">
               <Button className="spacedButton">
                 Opción ya seleccionada, ir al carrito (o elegí otra opción para
@@ -117,7 +119,8 @@ export default function ItemDetails({
               <Form.Control
                 as="select"
                 value={option.value}
-                onChange={handleSelectOption}>
+                onChange={handleSelectOption}
+              >
                 {optionsList}
               </Form.Control>
             </Card.Text>

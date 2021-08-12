@@ -15,6 +15,7 @@ export default function CartContainer({ user }) {
   const [checkingStock, setCheckingStock] = useState(false);
   const [stockError, setStockError] = useState(false);
   const [stockErrorMessage, setStockErrorMessage] = useState([]);
+  const [disable, setDisable] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -44,6 +45,7 @@ export default function CartContainer({ user }) {
   };
 
   const handleShowForm = () => {
+    setDisable(false);
     setStockError(false);
     setCheckingStock(true);
     setTimeout(() => {
@@ -60,16 +62,19 @@ export default function CartContainer({ user }) {
   };
 
   const handleReturn = () => {
+    setDisable(true);
     setShowForm(false);
   };
 
   const handleCancel = () => {
+    setDisable(true);
     setShowForm(false);
     cart.clear();
     history.push("/");
   };
 
   const handleSubmit = (values) => {
+    setDisable(true);
     const orderedProducts = cart.cartProducts.map((item) => ({
       id: item.id,
       title: item.name,
@@ -105,7 +110,6 @@ export default function CartContainer({ user }) {
 
   return (
     <div className="centered">
-      <h1>status: {String(finishedOrder)}</h1>
       <Alert show={finishedOrder} variant="success">
         <p>
           Se ha realizado tu pedido exitosamente {user.name}. El número de
@@ -128,12 +132,13 @@ export default function CartContainer({ user }) {
             products={cart.cartProducts}
             cartMethods={cartMethods}
             finished={finishedOrder}
+            disable={checkingStock}
           />
           <hr />
           {!finishedOrder && user.name && (
             <>
-              <Button onClick={handleShowForm} className="closeBtn">
-                Confirmar compra
+              <Button onClick={handleShowForm} className="closeBtn" disabled={checkingStock}>
+                Completar mis datos y confirmar compra
               </Button>
               <Alert show={checkingStock} variant="success">
                 <p>Chequeando stock...</p>
@@ -184,6 +189,7 @@ export default function CartContainer({ user }) {
           handleCancel={handleCancel}
           handleReturn={handleReturn}
           user={user}
+          disable={disable}
         />
       )}
     </div>
