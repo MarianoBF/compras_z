@@ -10,6 +10,10 @@ export const CartProvider = ({ children }) => {
   const [cartProducts, setCartProducts] = useState([]);
 
   useEffect(() => {
+    retrieveProducts();
+  }, []);
+
+  function retrieveProducts() {
     try {
       const local = localStorage.getItem("compras_z_cart");
       if (local?.length > 0) {
@@ -28,7 +32,7 @@ export const CartProvider = ({ children }) => {
         })
         .catch((error) => console.log(error));
     }
-  }, []);
+  }
 
   const addItem = (quantity, product_id, option) => {
     const filtered = cartProducts.filter((item) => item.id === product_id);
@@ -75,7 +79,7 @@ export const CartProvider = ({ children }) => {
 
   const clear = () => {
     setCartProducts([]);
-    setOrderID("")
+    setOrderID("");
     localStorage.setItem("compras_z_cart", []);
   };
 
@@ -86,23 +90,54 @@ export const CartProvider = ({ children }) => {
   };
 
   const checkStock = () => {
+    retrieveProducts();
     let stockError = [];
     cartProducts.forEach((item) => {
       const filtered = allProducts.filter((all) => all.id === item.id)[0];
-      if (filtered.stock < item.quantity) {
-        stockError.push({
-          id: item.id,
-          name: item.name,
-          stock: filtered.stock,
-          type: "tooMuch",
-        });
-      } else if (item.quantity < 1) {
-        stockError.push({
-          id: item.id,
-          name: item.name,
-          stock: filtered.stock,
-          type: "tooFew",
-        });
+      const alreadyAccountedFor = stockError.filter(
+        (errorItem) => errorItem.id === item.id
+      );
+      if (alreadyAccountedFor.length === 0) {
+        const othersInCart = cartProducts.filter(
+          (cartItem) => cartItem.id === item.id
+        );
+        if (othersInCart.length > 1) {
+          const totalQuantity = othersInCart.reduce(
+            (acc, curr) => acc + curr.quantity,
+            0
+          );
+          if (filtered.stock < totalQuantity) {
+            stockError.push({
+              id: item.id,
+              name: item.name,
+              stock: filtered.stock,
+              type: "tooMuch",
+            });
+          } else if (totalQuantity < 1) {
+            stockError.push({
+              id: item.id,
+              name: item.name,
+              stock: filtered.stock,
+              type: "tooFew",
+            });
+          }
+        } else {
+          if (filtered.stock < item.quantity) {
+            stockError.push({
+              id: item.id,
+              name: item.name,
+              stock: filtered.stock,
+              type: "tooMuch",
+            });
+          } else if (item.quantity < 1) {
+            stockError.push({
+              id: item.id,
+              name: item.name,
+              stock: filtered.stock,
+              type: "tooFew",
+            });
+          }
+        }
       }
     });
     if (stockError.length === 0) {
@@ -165,7 +200,8 @@ export const CartProvider = ({ children }) => {
   const [orderID, setOrderID] = useState(null);
 
   const getOrderID = () => {
-    return orderID }
+    return orderID;
+  };
 
   const saveOrder = (order) => {
     getFirestore()
@@ -178,7 +214,7 @@ export const CartProvider = ({ children }) => {
             .doc(String(item.id))
             .update({ stock: item.stock - item.quantity })
         );
-        setOrderID(res.id);  
+        setOrderID(res.id);
       })
       .catch((error) => {
         console.log(error);
