@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext, createContext } from "react";
 import { getFirestore } from "../firebase";
+import emailjs from "emailjs-com";
 
 const CartContext = createContext();
 
@@ -8,6 +9,9 @@ export const useCart = () => useContext(CartContext);
 export const CartProvider = ({ children }) => {
   const [allProducts, setAllProducts] = useState([]);
   const [cartProducts, setCartProducts] = useState([]);
+  const [order, setOrder] = useState();
+
+  const { REACT_APP_MAIL_TEMPLATE, REACT_APP_MAIL_USER_ID, REACT_APP_MAIL_SERVICE } = process.env;
 
   useEffect(() => {
     retrieveProducts();
@@ -203,7 +207,28 @@ export const CartProvider = ({ children }) => {
     return orderID;
   };
 
+  const sendOrderMail = (id) => {
+
+    const templateParams = {
+      nombre: order?.buyer?.name,
+      id_pedido: id,
+      articulos: JSON.stringify(order.items),
+      direccion: order?.buyer?.address,
+      total: order?.total,
+  };
+
+    emailjs
+      .send(
+        REACT_APP_MAIL_SERVICE,
+        REACT_APP_MAIL_TEMPLATE,
+        templateParams,
+        REACT_APP_MAIL_USER_ID
+      )
+      .then((res) => {console.log(res.status)});
+  };
+
   const saveOrder = (order) => {
+    setOrder(order);
     getFirestore()
       .collection("orders")
       .add(order)
@@ -215,6 +240,7 @@ export const CartProvider = ({ children }) => {
             .update({ stock: item.stock - item.quantity })
         );
         setOrderID(res.id);
+        setTimeout(()=>sendOrderMail(res.id),2000);
       })
       .catch((error) => {
         console.log(error);
