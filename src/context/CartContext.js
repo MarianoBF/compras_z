@@ -207,24 +207,37 @@ export const CartProvider = ({ children }) => {
     return orderID;
   };
 
-  const sendOrderMail = (id) => {
+  const itemsIntoText = (items) => {
+    let message = ""
+    for (let item of items) {
+      console.log("item", item)
+      message += `${item.quantity} unidad(es) del artículo ${item.title} con precio unitario AR$ ${item.price}
+`
+    }
+    return message;
+  }
+
+  const sendOrderMail = (order, id) => {
 
     const templateParams = {
+      buyerMail: order?.buyer?.email,
       nombre: order?.buyer?.name,
       id_pedido: id,
-      articulos: JSON.stringify(order.items),
+      articulos: itemsIntoText(order?.items),
       direccion: order?.buyer?.address,
       total: order?.total,
   };
-
-    emailjs
-      .send(
-        REACT_APP_MAIL_SERVICE,
-        REACT_APP_MAIL_TEMPLATE,
-        templateParams,
-        REACT_APP_MAIL_USER_ID
-      )
-      .then((res) => {console.log(res.status)});
+    console.log(templateParams)
+    // emailjs
+    //   .send(
+    //     REACT_APP_MAIL_SERVICE,
+    //     REACT_APP_MAIL_TEMPLATE,
+    //     templateParams,
+    //     REACT_APP_MAIL_USER_ID
+    //   )
+    //   .then((res) => {
+    //     // console.log(res.status)
+    //   });
   };
 
   const saveOrder = (order) => {
@@ -240,7 +253,7 @@ export const CartProvider = ({ children }) => {
             .update({ stock: item.stock - item.quantity })
         );
         setOrderID(res.id);
-        setTimeout(()=>sendOrderMail(res.id),2000);
+        setTimeout(()=>sendOrderMail(order, res.id),500);
       })
       .catch((error) => {
         console.log(error);

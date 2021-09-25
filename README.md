@@ -1,14 +1,14 @@
 # Description
 A store using [React Bootstrap](https://react-bootstrap.github.io/) for the UI.
 
-The shopping cart is persisted in local storage.
+The shopping cart is persisted in local storage and the order confirmed by email using emailJS.
 
 Authentication through [Google Firebase](https://firebase.google.com/).  
 
 # Descripción
 Un sitio de compras, utilizando [React Bootstrap](https://react-bootstrap.github.io/) para la interfaz.
 
-Persiste carro de compras en local storage.
+Persiste carro de compras en local storage y se envía confirmación de la orden por emaail usando emailJS.
 
 Autoriza al usuario vía [Google Firebase](https://firebase.google.com/).  
 
