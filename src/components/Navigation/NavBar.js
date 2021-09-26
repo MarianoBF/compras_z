@@ -48,7 +48,7 @@ function NavBar({ login, logout, user }) {
       to={"/category/" + item.id}
       key={item.id}
     >
-      <Nav.Link>{item.name}</Nav.Link>
+      <Nav.Link active={false}>{item.name}</Nav.Link>
     </LinkContainer>
   ));
 
