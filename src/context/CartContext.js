@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext, createContext } from "react";
 import { getFirestore } from "../firebase";
 import emailjs from "emailjs-com";
+import { useProducts } from "./ProductsContext";
 
 const CartContext = createContext();
 
@@ -10,7 +11,13 @@ export const CartProvider = ({ children }) => {
   const [allProducts, setAllProducts] = useState([]);
   const [cartProducts, setCartProducts] = useState([]);
 
-  const { REACT_APP_MAIL_TEMPLATE, REACT_APP_MAIL_USER_ID, REACT_APP_MAIL_SERVICE } = process.env;
+  const prods = useProducts();
+
+  const {
+    REACT_APP_MAIL_TEMPLATE,
+    REACT_APP_MAIL_USER_ID,
+    REACT_APP_MAIL_SERVICE,
+  } = process.env;
 
   useEffect(() => {
     retrieveProducts();
@@ -97,6 +104,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const checkStock = () => {
+    prods.NotifyPurchase();
     retrieveProducts();
     let stockError = [];
     cartProducts.forEach((item) => {
@@ -211,17 +219,15 @@ export const CartProvider = ({ children }) => {
   };
 
   const itemsIntoText = (items) => {
-    let message = ""
+    let message = "";
     for (let item of items) {
-      console.log("item", item)
-      message += `${item.quantity} unidad(es) del artículo ${item.title} con precio unitario AR$ ${item.price}`
-      message += "<br>"
+      message += `${item.quantity} unidad(es) del artículo ${item.title} con precio unitario AR$ ${item.price}`;
+      message += "<br>";
     }
     return message;
-  }
+  };
 
   const sendOrderMail = (order, id) => {
-
     const templateParams = {
       buyerMail: order?.buyer?.email,
       nombre: order?.buyer?.name,
@@ -229,8 +235,7 @@ export const CartProvider = ({ children }) => {
       articulos: itemsIntoText(order?.items),
       direccion: order?.buyer?.address,
       total: order?.total,
-  };
-    console.log(templateParams)
+    };
     emailjs
       .send(
         REACT_APP_MAIL_SERVICE,
@@ -255,10 +260,10 @@ export const CartProvider = ({ children }) => {
             .update({ stock: item.stock - item.quantity })
         );
         setOrderID(res.id);
-        setTimeout(()=>{
+        setTimeout(() => {
           sendOrderMail(order, res.id);
           clearFromLocalStorage();
-        },500);
+        }, 500);
       })
       .catch((error) => {
         console.log(error);

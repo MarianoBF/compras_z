@@ -8,6 +8,7 @@ export const useProducts = () => useContext(ProductsContext);
 export const ProductsProvider = ({children}) => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [purchase, setPurchase] = useState(false);
 
   useEffect(() => {
     const db = getFirestore();
@@ -18,7 +19,7 @@ export const ProductsProvider = ({children}) => {
         setProducts(data.docs.map(item => item.data()));
       })
       .catch(error => console.log(error));
-  }, []);
+  }, [purchase]);
 
   useEffect(() => {
     const db = getFirestore();
@@ -30,6 +31,10 @@ export const ProductsProvider = ({children}) => {
       })
       .catch(error => console.log(error));
   }, []);
+
+  const NotifyPurchase = () => {
+    setPurchase(!purchase)
+  }
 
   const getProducts = () => {
     return products;
@@ -62,6 +67,7 @@ export const ProductsProvider = ({children}) => {
         getProductById,
         getProductsByCategory,
         getCategories,
+        NotifyPurchase,
       }}>
       {children}
     </ProductsContext.Provider>
