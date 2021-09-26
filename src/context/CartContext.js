@@ -9,7 +9,6 @@ export const useCart = () => useContext(CartContext);
 export const CartProvider = ({ children }) => {
   const [allProducts, setAllProducts] = useState([]);
   const [cartProducts, setCartProducts] = useState([]);
-  const [order, setOrder] = useState();
 
   const { REACT_APP_MAIL_TEMPLATE, REACT_APP_MAIL_USER_ID, REACT_APP_MAIL_SERVICE } = process.env;
 
@@ -84,6 +83,10 @@ export const CartProvider = ({ children }) => {
   const clear = () => {
     setCartProducts([]);
     setOrderID("");
+    localStorage.setItem("compras_z_cart", []);
+  };
+
+  const clearFromLocalStorage = () => {
     localStorage.setItem("compras_z_cart", []);
   };
 
@@ -211,8 +214,8 @@ export const CartProvider = ({ children }) => {
     let message = ""
     for (let item of items) {
       console.log("item", item)
-      message += `${item.quantity} unidad(es) del artículo ${item.title} con precio unitario AR$ ${item.price}
-`
+      message += `${item.quantity} unidad(es) del artículo ${item.title} con precio unitario AR$ ${item.price}`
+      message += "<br>"
     }
     return message;
   }
@@ -228,20 +231,19 @@ export const CartProvider = ({ children }) => {
       total: order?.total,
   };
     console.log(templateParams)
-    // emailjs
-    //   .send(
-    //     REACT_APP_MAIL_SERVICE,
-    //     REACT_APP_MAIL_TEMPLATE,
-    //     templateParams,
-    //     REACT_APP_MAIL_USER_ID
-    //   )
-    //   .then((res) => {
-    //     // console.log(res.status)
-    //   });
+    emailjs
+      .send(
+        REACT_APP_MAIL_SERVICE,
+        REACT_APP_MAIL_TEMPLATE,
+        templateParams,
+        REACT_APP_MAIL_USER_ID
+      )
+      .then((res) => {
+        // console.log(res.status)
+      });
   };
 
   const saveOrder = (order) => {
-    setOrder(order);
     getFirestore()
       .collection("orders")
       .add(order)
@@ -253,7 +255,10 @@ export const CartProvider = ({ children }) => {
             .update({ stock: item.stock - item.quantity })
         );
         setOrderID(res.id);
-        setTimeout(()=>sendOrderMail(order, res.id),500);
+        setTimeout(()=>{
+          sendOrderMail(order, res.id);
+          clearFromLocalStorage();
+        },500);
       })
       .catch((error) => {
         console.log(error);
