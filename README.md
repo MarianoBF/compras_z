@@ -8,7 +8,7 @@ Authentication through [Google Firebase](https://firebase.google.com/).
 # Descripción
 Un sitio de compras, utilizando [React Bootstrap](https://react-bootstrap.github.io/) para la interfaz.
 
-Persiste carro de compras en local storage y se envía confirmación de la orden por emaail usando emailJS.
+Persiste carro de compras en local storage y se envía confirmación de la orden por email usando emailJS.
 
 Autoriza al usuario vía [Google Firebase](https://firebase.google.com/).  
 
