@@ -18,12 +18,18 @@ import { AES, enc } from "crypto-js";
 function App() {
   const [user, setUser] = useState({});
 
-  // Placeholder "restore auth"
   useEffect(() => {
-    const decryptedUserData = AES.decrypt(localStorage.getItem("compras_z_user"), "key")
-    const userData = JSON.parse(decryptedUserData.toString(enc.Utf8));
-    if (userData && userData.time > Date.now() - 1000 * 60 * 60) {
-      setUser(userData);
+    try {
+      const decryptedUserData = AES.decrypt(
+        localStorage.getItem("compras_z_user"),
+        process.env.REACT_APP_PRIVATE_KEY
+      );
+      const userData = JSON.parse(decryptedUserData.toString(enc.Utf8));
+      if (userData && userData.time > Date.now() - 1000 * 60 * 60) {
+        setUser(userData);
+      }
+    } catch {
+      localStorage.removeItem("compras_z_user")
     }
   }, []);
 
@@ -41,8 +47,11 @@ function App() {
           email: loginData.email,
           uid: loginData.uid,
           time: Date.now(),
-        }
-        const encryptedUserData = AES.encrypt(JSON.stringify(userData),"key").toString();
+        };
+        const encryptedUserData = AES.encrypt(
+          JSON.stringify(userData),
+          process.env.REACT_APP_PRIVATE_KEY
+        ).toString();
         localStorage.setItem("compras_z_user", encryptedUserData);
       })
       .catch((error) => console.log("Unable to login", error));
