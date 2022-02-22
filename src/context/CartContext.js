@@ -94,7 +94,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const clearFromLocalStorage = () => {
-    localStorage.setItem("compras_z_cart", []);
+    localStorage.removeItem("compras_z_cart", []);
   };
 
   const isInCart = (product_id) => {
