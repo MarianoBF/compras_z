@@ -13,13 +13,15 @@ import { ProductsProvider } from "./context/ProductsContext";
 import { OrdersProvider } from "./context/OrdersContext";
 import { useEffect, useState } from "react";
 import { loginWithGoogle, logoutFromGoogle } from "./firebase";
+import { AES, enc } from "crypto-js";
 
 function App() {
   const [user, setUser] = useState({});
 
   // Placeholder "restore auth"
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("compras_z_user"));
+    const decryptedUserData = AES.decrypt(localStorage.getItem("compras_z_user"), "key")
+    const userData = JSON.parse(decryptedUserData.toString(enc.Utf8));
     if (userData && userData.time > Date.now() - 1000 * 60 * 60) {
       setUser(userData);
     }
@@ -34,15 +36,14 @@ function App() {
           uid: loginData.uid,
           time: Date.now(),
         });
-        localStorage.setItem(
-          "compras_z_user",
-          JSON.stringify({
-            name: loginData.displayName,
-            email: loginData.email,
-            uid: loginData.uid,
-            time: Date.now(),
-          })
-        );
+        const userData = {
+          name: loginData.displayName,
+          email: loginData.email,
+          uid: loginData.uid,
+          time: Date.now(),
+        }
+        const encryptedUserData = AES.encrypt(JSON.stringify(userData),"key").toString();
+        localStorage.setItem("compras_z_user", encryptedUserData);
       })
       .catch((error) => console.log("Unable to login", error));
   };
