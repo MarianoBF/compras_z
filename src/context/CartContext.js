@@ -2,6 +2,7 @@ import { useState, useEffect, useContext, createContext } from "react";
 import { getFirestore } from "../firebase";
 import emailjs from "emailjs-com";
 import { useProducts } from "./ProductsContext";
+import { AES, enc } from "crypto-js";
 
 const CartContext = createContext();
 
@@ -25,12 +26,17 @@ export const CartProvider = ({ children }) => {
 
   function retrieveProducts() {
     try {
-      const local = localStorage.getItem("compras_z_cart");
+      const decryptedCart = AES.decrypt(
+        localStorage.getItem("compras_z_cart"),
+        process.env.REACT_APP_PRIVATE_KEY
+      );
+      const local = decryptedCart.toString(enc.Utf8);
       if (local?.length > 0) {
-        const existingCart = JSON.parse(local);
+        const existingCart = JSON.parse(local);       
         setCartProducts(existingCart);
       }
     } catch {
+      localStorage.removeItem("compras_z_cart")
       console.log("Unable to recover previous order");
     } finally {
       const db = getFirestore();
@@ -67,7 +73,11 @@ export const CartProvider = ({ children }) => {
       ];
       newCart.sort((a, b) => (a.name > b.name ? 1 : -1));
       setCartProducts(newCart);
-      localStorage.setItem("compras_z_cart", JSON.stringify(newCart));
+      const encryptedCart = AES.encrypt(
+        JSON.stringify(newCart),
+        process.env.REACT_APP_PRIVATE_KEY
+      ).toString();
+      localStorage.setItem("compras_z_cart", encryptedCart);
     }
   };
 
@@ -84,7 +94,11 @@ export const CartProvider = ({ children }) => {
     }
     filtered.sort((a, b) => (a.name > b.name ? 1 : -1));
     setCartProducts(filtered);
-    localStorage.setItem("compras_z_cart", JSON.stringify(filtered));
+    const encryptedCart = AES.encrypt(
+      JSON.stringify(filtered),
+      process.env.REACT_APP_PRIVATE_KEY
+    ).toString();
+    localStorage.setItem("compras_z_cart", encryptedCart);
   };
 
   const clear = () => {
