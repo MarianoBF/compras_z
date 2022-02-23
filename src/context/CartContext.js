@@ -207,6 +207,11 @@ export const CartProvider = ({ children }) => {
     if (newProducts[position].quantity <= newProducts[position].stock) {
       newProducts[position].quantity++;
       setCartProducts(newProducts);
+      const encryptedCart = AES.encrypt(
+        JSON.stringify(newProducts),
+        process.env.REACT_APP_PRIVATE_KEY
+      ).toString();
+      localStorage.setItem("compras_z_cart", encryptedCart);
     }
   };
 
@@ -223,6 +228,11 @@ export const CartProvider = ({ children }) => {
     if (newProducts[position].quantity >= 2) {
       newProducts[position].quantity--;
       setCartProducts(newProducts);
+      const encryptedCart = AES.encrypt(
+        JSON.stringify(newProducts),
+        process.env.REACT_APP_PRIVATE_KEY
+      ).toString();
+      localStorage.setItem("compras_z_cart", encryptedCart);
     }
   };
 
