@@ -115,10 +115,6 @@ export default function CartContainer({ user }) {
           Se ha realizado tu pedido exitosamente {user.name}. El número de
           registro del pedido es: {cart.getOrderID()}
         </p>
-        <p>
-          Recibirás un correo electrónico confirmando la fecha de entrega e
-          instrucciones para el pago.
-        </p>
         <div>
           <Button onClick={handleCloseAlert} className="closeBtn">
             Cerrar aviso y volver al menú principal
